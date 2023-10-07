@@ -43,7 +43,7 @@ export default async function IndexPage() {
             alt="hero"
             className="mx-auto max-w-full rounded-t-xl rounded-tr-xl"
             width="1000"
-            height="700"
+            height="1000"
           />
         </div>
       </section>
