@@ -39,11 +39,11 @@ export default async function IndexPage() {
         <div className="mt-16 rounded-lg pt-8 md:pt-12 lg:pt-24" >
 
           <Image
-            src="/rectangle.png"
+            src="./rectangle.png"
             alt="hero"
             className="mx-auto max-w-full rounded-t-xl rounded-tr-xl"
             width="1000"
-            height="1000"
+            height="700"
           />
         </div>
       </section>
