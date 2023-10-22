@@ -34,6 +34,8 @@ import {
   ChevronsDownUpIcon,
   PenLineIcon,
   FileTextIcon,
+  UserPlus2Icon,
+  CheckCheckIcon,
 } from "lucide-react"
 
 
@@ -70,7 +72,8 @@ export const Icons = {
   chevronsDownUp: ChevronsDownUpIcon,
   PenLineIcon: PenLineIcon,
   fileTextIcon: FileTextIcon,
-
+  userPlus2: UserPlus2Icon,
+  checkCheckIcon: CheckCheckIcon,
 
   gitHub: ({ ...props }: LucideProps) => (
     <svg

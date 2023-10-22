@@ -20,7 +20,7 @@ export const dashboardConfig: DashboardConfig = {
     },
     {
       title: "Chat with Group",
-      href: "/chat-with-group",
+      href: "/chat-with-groups",
       icon: "message",
     },
     {
