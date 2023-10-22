@@ -1,4 +1,5 @@
 
+
 import {
   AlertTriangle,
   ArrowRight,
@@ -25,7 +26,17 @@ import {
   User,
   X,
   LucideIcon,
+  BookOpen,
+  BotIcon,
+  MSquareIcon,
+  CheckSquareIcon,
+  VideoIcon,
+  ChevronsDownUpIcon,
+  PenLineIcon,
+  FileTextIcon,
 } from "lucide-react"
+
+
 
 export type Icon = LucideIcon
 
@@ -51,6 +62,16 @@ export const Icons = {
   sun: SunMedium,
   moon: Moon,
   laptop: Laptop,
+  book: BookOpen,
+  bot: BotIcon,
+  message: MSquareIcon,
+  checkSquare: CheckSquareIcon,
+  video: VideoIcon,
+  chevronsDownUp: ChevronsDownUpIcon,
+  PenLineIcon: PenLineIcon,
+  fileTextIcon: FileTextIcon,
+
+
   gitHub: ({ ...props }: LucideProps) => (
     <svg
       aria-hidden="true"

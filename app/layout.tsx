@@ -5,6 +5,7 @@ import "@/styles/globals.css"
 import type { Metadata } from 'next'
 import { cn } from "@/lib/utils"
 import { ThemeProvider } from "@/components/theme-provider"
+import { ConvexClientProvider } from "@/components/providers/convex-provider"
 
 
 
@@ -40,9 +41,11 @@ export default function RootLayout({
         fontSans.variable,
         fontHeading.variable
       )}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          {children}
-        </ThemeProvider>
+        <ConvexClientProvider>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            {children}
+          </ThemeProvider>
+        </ConvexClientProvider>
       </body>
     </html>
   )

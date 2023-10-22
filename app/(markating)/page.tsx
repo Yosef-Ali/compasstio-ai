@@ -1,9 +1,15 @@
+"use client";
+
+import { useConvexAuth } from "convex/react";
+import { Spinner } from "@/components/spinner";
 import { buttonVariants } from "@/components/ui/button";
+import { SignInButton } from "@clerk/clerk-react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 
-export default async function IndexPage() {
+export default function IndexPage() {
+  const { isAuthenticated, isLoading } = useConvexAuth()
   return (
     <>
       <section className="space-y-6 pb-8 pt-6 md:pb-12 md:pt-10 lg:py-32">
@@ -21,27 +27,47 @@ export default async function IndexPage() {
           <p className="max-w-[42rem] leading-normal text-muted-foreground sm:text-xl sm:leading-8">
             Embark on a spiritual journey that will reshape your perception of the world. Our app focuses on self-discovery, guidance, and growth, offering you a unique chance to reconnect with yourself and the universe.
           </p>
-          <div className="space-x-4">
-            <Link href="/login" className={cn(buttonVariants({ size: "lg" }))}>
-              Join Now
-            </Link>
-            <Link
-              href="/"
-              target="_blank"
-              rel="noreferrer"
-              className={cn(buttonVariants({ variant: "outline", size: "lg" }))}
-            >
-              Learn More
-            </Link>
-          </div>
+          {isLoading && (
+            <div className="w-full flex items-center justify-center">
+              <Spinner size="lg" />
+            </div>
+          )}
+          {isAuthenticated && !isLoading && (
+            <div className="space-x-4">
+              <Link
+                href="/chat-with-ai"
+                rel="noreferrer"
+                className={cn(buttonVariants({ variant: "outline", size: "lg" }))}
+              >
+                Enter to your workspace
+              </Link>
+            </div>
+          )}
+          {!isAuthenticated && !isLoading && (
+            <div className="space-x-4">
+              <SignInButton mode="modal">
+                <Link href="/login" className={cn(buttonVariants({ size: "lg" }))}>
+                  Join Now
+                </Link>
+              </SignInButton>
+              <Link
+                href="/"
+                target="_blank"
+                rel="noreferrer"
+                className={cn(buttonVariants({ variant: "outline", size: "lg" }))}
+              >
+                Learn More
+              </Link>
+            </div>
+          )}
 
         </div>
-        <div className="mt-16 rounded-lg pt-8 md:pt-12 lg:pt-24" >
+        <div className="mt-16 rounded-lg pt-8 md:pt-12 lg:pt-24 " >
 
           <Image
-            src="/rectangle.png"
+            src="/Screenshot.jpeg"
             alt="hero"
-            className="mx-auto max-w-full rounded-t-xl rounded-tr-xl"
+            className="mx-auto max-w-full rounded-t-xl rounded-tr-xl shadow"
             width="1000"
             height="1000"
             priority
