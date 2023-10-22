@@ -17,6 +17,7 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs"
+import { ModeToggle } from "@/components/mode-toggle";
 
 const ChatWithAiPage = () => {
   return (
@@ -37,13 +38,13 @@ const ChatWithAiPage = () => {
                             <span className="text-purple-500">Chat with AI</span>
 
                           </h1>
-                          <p className="md:text-md w-full text-sm text-green-800 md:w-120 md:text-center">
+                          <p className="md:text-md w-full text-sm text-purple-800 md:w-120 md:text-center">
                             Get started by writing a task and Chat can do the rest. Not sure where to start? Check out the Prompt Library for inspiration.
                           </p>
 
                         </div>
                         <div className="flex w-full items-center py-2 md:py-5">
-                          <div className="flex h-10 w-11 items-center justify-center rounded-full bg-purple-50">
+                          <div className="flex h-10 w-11 items-center justify-center rounded-full bg-purple-100">
                             <SearchIcon className="h-5 w-5 text-purple-500" />
                           </div>
                           <div className="w-full md:pl-4">
@@ -108,13 +109,13 @@ const ChatWithAiPage = () => {
                   </div>
                 </div>
                 <div className="flex flex-grow-0 absolute left-0 bottom-0 flex-col w-full ">
-                  <div className="bg-white fade-up pb-5 md:pl-6 md:pr-10 px-3">
+                  <div className=" fade-up pb-5 md:pl-6 md:pr-10 px-3">
                     <div className="w-full relative">
                       <div className="prompt-container flex flex-wrap items-end justify-center border border-grey-200 rounded-2xl shadow-md">
                         <span className="m-2 p-2  flex w-full flex-grow">
-                          <input type="text" className="w-full h-full rounded-xl border-none outline-none focus:ring-0" placeholder="Type your prompt here" />
+                          <input type="text" className="w-full h-full rounded-xl border-none outline-none focus:ring-0 bg-transparent" placeholder="Type your prompt here" />
                         </span>
-                        <div className="flex h-10 w-full bg-slate-50 rounded-b-2xl border"></div>
+                        <div className="flex h-10 w-full bg-muted rounded-b-2xl border"></div>
                       </div>
 
                     </div>
@@ -138,11 +139,11 @@ const ChatWithAiPage = () => {
               </div>
             </div>
           </div>
-          <div className="border-l border-gray-100 min-w-[450px]">
+          <div className="border-l  min-w-[450px]">
 
             <div className="flex flex-col h-full">
 
-              <div className="bg-white border-b border-blue-300 px-6  pt-4 text-center">
+              <div className=" border-b  px-6  pt-4 pb-2 text-center">
                 <Tabs defaultValue="account" className="w-[400px]">
                   <TabsList className="grid w-full grid-cols-2">
                     <TabsTrigger value="account">Recent</TabsTrigger>
@@ -156,7 +157,7 @@ const ChatWithAiPage = () => {
                   <Card>
                     <CardHeader>
                       <div className="flex justify-between">
-                        <CardTitle>Science</CardTitle>
+                        <CardTitle className="text-lg">Science</CardTitle>
                         <button className="text-gray-500">
                           <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
@@ -174,7 +175,7 @@ const ChatWithAiPage = () => {
                   <Card>
                     <CardHeader>
                       <div className="flex justify-between">
-                        <CardTitle>Cell</CardTitle>
+                        <CardTitle className="text-lg">Cell</CardTitle>
                         <button className="text-gray-500">
                           <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
@@ -191,7 +192,7 @@ const ChatWithAiPage = () => {
                   <Card>
                     <CardHeader>
                       <div className="flex justify-between">
-                        <CardTitle>The Lancet</CardTitle>
+                        <CardTitle className="text-lg">The Lancet</CardTitle>
                         <button className="text-gray-500">
                           <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
@@ -206,7 +207,7 @@ const ChatWithAiPage = () => {
                   <Card>
                     <CardHeader>
                       <div className="flex justify-between">
-                        <CardTitle>Nature</CardTitle>
+                        <CardTitle className="text-lg">Nature</CardTitle>
                         <button className="text-gray-500">
                           <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
@@ -222,8 +223,10 @@ const ChatWithAiPage = () => {
 
               </div>
 
-              <div className="bg-white border-t border-blue-300 py-2 px-6 sticky bottom-0">
-                footer
+              <div className=" border-t py-2 px-6 sticky bottom-0">
+                <div className="w-full flex justify-end">
+                  <ModeToggle />
+                </div>
               </div>
 
             </div>

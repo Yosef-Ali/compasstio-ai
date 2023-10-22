@@ -11,7 +11,7 @@ const SideMenu = () => {
     <div className="md:sticky top-0">
       <div id="sidebar" className='fixed flex md:top-0 z-0 opacity-100 w-full transition-all md:sticky md:h-screen md:w-auto md:min-w-min mt-16 md:mt-0'>
         <div id="desktop" className='hidden md:block'>
-          <div className="flex h-screen w-full flex-col justify-start border-r border-grey-200 bg-white  pl-3 md:min-h-screen md:w-64 md:bg-grey-100 md:pl-8 md:pb-0">
+          <div className="flex h-screen w-full flex-col justify-start border-r   pl-3 md:min-h-screen md:w-64 md:bg-grey-100 md:pl-8 md:pb-0">
             <div className="flex h-full flex-col justify-between pb-40 md:pb-0">
 
               <div className="pr-3">
