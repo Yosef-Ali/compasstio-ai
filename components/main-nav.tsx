@@ -44,7 +44,7 @@ export function MainNav({ items, children }: MainNavProps) {
               </SignInButton>
               <SignInButton mode="modal">
                 <Button size="sm">
-                  Get Companion free
+                  Get free
                 </Button>
               </SignInButton>
             </>
@@ -52,8 +52,8 @@ export function MainNav({ items, children }: MainNavProps) {
           {isAuthenticated && !isLoading && (
             <>
               <Button variant="ghost" size="sm" asChild>
-                <Link href="/documents">
-                  Enter Companion
+                <Link href="/chat-with-ai">
+                  Enter workspace
                 </Link>
               </Button>
               <UserButton
