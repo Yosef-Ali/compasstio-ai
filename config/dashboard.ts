@@ -34,8 +34,8 @@ export const dashboardConfig: DashboardConfig = {
       icon: "checkSquare",
     },
     {
-      title: "Sessions",
-      href: "/Sessions",
+      title: "Live Session",
+      href: "/live-session",
       icon: "video",
     },
   ],

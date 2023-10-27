@@ -36,6 +36,8 @@ import {
   FileTextIcon,
   UserPlus2Icon,
   CheckCheckIcon,
+  SearchIcon,
+  SendHorizonalIcon,
 } from "lucide-react"
 
 
@@ -74,6 +76,8 @@ export const Icons = {
   fileTextIcon: FileTextIcon,
   userPlus2: UserPlus2Icon,
   checkCheckIcon: CheckCheckIcon,
+  search: SearchIcon,
+  SendHorizonal: SendHorizonalIcon,
 
   gitHub: ({ ...props }: LucideProps) => (
     <svg

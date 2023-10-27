@@ -4,6 +4,7 @@ import localFont from "next/font/local"
 import "@/styles/globals.css"
 import type { Metadata } from 'next'
 import { cn } from "@/lib/utils"
+import { Toaster } from "sonner";
 import { ThemeProvider } from "@/components/theme-provider"
 import { ConvexClientProvider } from "@/components/providers/convex-provider"
 
@@ -43,6 +44,7 @@ export default function RootLayout({
       )}>
         <ConvexClientProvider>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            <Toaster position="bottom-center" />
             {children}
           </ThemeProvider>
         </ConvexClientProvider>

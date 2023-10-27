@@ -1,4 +1,4 @@
-import { User } from "@prisma/client";
+// import { User } from "@prisma/client";
 import type { Icon } from "lucide-react";
 
 import { Icons } from "@/components/icons";
@@ -63,3 +63,11 @@ export type UserSubscriptionPlan = SubscriptionPlan &
     stripeCurrentPeriodEnd: number;
     isPro: boolean;
   };
+
+export type ChatInfo = {
+  title: string;
+  description: string;
+  icon?: keyof typeof Icons;
+};
+
+export type ChatConfig = ChatInfo[];

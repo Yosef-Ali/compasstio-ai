@@ -3,7 +3,7 @@ import { useConvexAuth } from "convex/react";
 import { SignInButton, UserButton } from "@clerk/clerk-react";
 
 import { MainNavItem } from "@/types"
-import { Icons } from "./icons"
+
 import Link from "next/link"
 import { siteConfig } from "@/config/site"
 import Image from "next/image"
