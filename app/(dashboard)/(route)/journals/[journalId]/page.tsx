@@ -10,8 +10,8 @@ import { PlusCircleIcon, Tablets } from "lucide-react"
 import { toast } from "sonner"
 import { api } from "@/convex/_generated/api"
 
-import CardRecentJournal from "@/app/(dashboard)/_components/journals/card-journal-recent";
-import CardArchiveJournal from "@/app/(dashboard)/_components/journals/card-journal-archive";
+import CardRecentJournal from "@/app/(dashboard)/_components/journals/journal-recent";
+import CardArchiveJournal from "@/app/(dashboard)/_components/journals/journal-archive";
 import Shell from "@/app/(dashboard)/_components/shell";
 import TopNav from "@/app/(dashboard)/_components/top-nav";
 import Wrapper from "@/app/(dashboard)/_components/wrapper";

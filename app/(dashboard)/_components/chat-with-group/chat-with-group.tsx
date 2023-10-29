@@ -2,7 +2,7 @@ import { Doc, Id } from "@/convex/_generated/dataModel";
 import { api } from "@/convex/_generated/api";
 import { useQuery } from "convex/react";
 
-import { CardMessage } from "./chard-messege";
+import { CardMessage } from "./card-messege";
 
 interface Message {
   _id: Id<"messages">;
@@ -15,7 +15,7 @@ interface Message {
   isRead: boolean;
 }
 
-export default function CardChatWithAll() {
+export default function ChatWithGroup() {
 
   const messages = useQuery(api.messages.get) as Message[];
 
