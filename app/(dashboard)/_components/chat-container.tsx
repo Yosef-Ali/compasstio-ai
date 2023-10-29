@@ -99,7 +99,7 @@ const ChatContainer = () => {
 
       {chatbots?.map(chatbot => {
         return (
-          <ChatPromptResponse prompt={chatbot.description ?? " "}
+          <ChatPromptResponse key={chatbot._id} prompt={chatbot.description ?? " "}
             response={chatbot.description ?? " "} />
         );
       })}
