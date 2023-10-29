@@ -1,9 +1,6 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Footer } from "./footer"
 
-import { RecentPinTabs } from "./chat-with-ai/recent-pin-tab"
-import CardRecent from "./journals/journal-card"
 
 interface Tab {
   name: string;
