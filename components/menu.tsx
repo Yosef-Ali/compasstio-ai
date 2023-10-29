@@ -19,28 +19,28 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 
 interface MenuProps {
-  documentId: Id<"documents">;
+  journalId: Id<"journals">;
 };
 
 export const Menu = ({
-  documentId
+  journalId
 }: MenuProps) => {
   const router = useRouter();
   const { user } = useUser();
 
-  const archive = useMutation(api.documents.archive);
+  // const archive = useMutation(api.journals.archive);
 
-  const onArchive = () => {
-    const promise = archive({ id: documentId })
+  // const onArchive = () => {
+  //   const promise = archive({ id: journalsId })
 
-    toast.promise(promise, {
-      loading: "Moving to trash...",
-      success: "Note moved to trash!",
-      error: "Failed to archive note."
-    });
+  //   toast.promise(promise, {
+  //     loading: "Moving to trash...",
+  //     success: "Note moved to trash!",
+  //     error: "Failed to archive note."
+  //   });
 
-    router.push("/documents");
-  };
+  //   router.push("/documents");
+  // };
 
   return (
     <DropdownMenu>
@@ -55,7 +55,7 @@ export const Menu = ({
         alignOffset={8}
         forceMount
       >
-        <DropdownMenuItem onClick={onArchive}>
+        <DropdownMenuItem onClick={() => { }}>
           <Trash className="h-4 w-4 mr-2" />
           Delete
         </DropdownMenuItem>

@@ -1,63 +1,56 @@
 "use client"
-import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import ChatCard from "./chat-card";
 
-interface CardData {
-  title: string;
-  description: string;
+import { Doc, Id } from "@/convex/_generated/dataModel";
+import { api } from "@/convex/_generated/api";
+import { useQuery } from "convex/react";
+import { ChatCard } from "../chat-with-ai/chat-card";
+
+
+
+interface Chatbot {
+  _id: Id<"chatbots">;
+  _creationTime: number;
+  avatarUrl?: string;
+  name?: string;
+  description?: string;
+  intents?: string;
+  responses?: string;
+  context?: string;
+  botId: string;
+  isPinned: boolean;
 }
 
-interface ChatCardProps {
-  title: string;
-  description: string;
-  onClick: () => void;
-}
+export default function CardRecentChatBots() {
+  const chatbots = useQuery(api.chatbots.get) as Chatbot[];
 
-const cardsData: CardData[] = [
-  {
-    title: 'Science',
-    description: `The world's leading journal of original scientific research, publishing innovative discoveries and scientific advances.`,
-  },
-  {
-    title: 'Cell',
-    description: 'A weekly journal publishing new and significant findings in the field of molecular cell biology.',
-  },
-  {
-    title: 'The Lancet',
-    description: `A weekly medical journal that is one of the world's leading medical journals. It publishes peer-reviewed`,
-  },
-  {
-    title: 'Nature',
-    description: 'A weekly journal of science, publishing the finest peer-reviewed research in all fields of science and technology, covering news and analysis of the latest discoveries along',
-  },
-  {
-    title: 'Cell',
-    description: 'A weekly journal publishing...',
-  },
-  {
-    title: 'Cell',
-    description: 'A weekly journal publishing...',
-  },
-  {
-    title: 'Cell',
-    description: 'A weekly journal publishing...',
-  },
+  console.log('chatbots', chatbots)
 
-];
+  if (chatbots === undefined) {
+    return (
+      <div className="space-y-3">
+        <ChatCard.Skeleton />
+        <ChatCard.Skeleton />
+        <ChatCard.Skeleton />
+      </div>
+    );
+  };
 
-
-
-export default function CardRecent() {
   return (
+
     <div className="grid grid-cols-1 gap-4 p-3">
-      {cardsData.map(card => (
-        <ChatCard
-          key={card.title}
-          title={card.title}
-          description={card.description}
-          onClick={() => { }}
-        />
-      ))}
+      {chatbots?.map(chatbot => {
+        return (
+          <ChatCard
+            key={chatbot._id}
+            botId={chatbot.botId}
+            name={chatbot.name ?? ''}
+            description={chatbot.description ?? ''}
+            creationTime={chatbot._creationTime}
+            onClick={() => { }}
+          />
+        );
+      })}
     </div>
+
   );
 }

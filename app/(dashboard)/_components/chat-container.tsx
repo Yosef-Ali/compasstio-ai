@@ -6,9 +6,28 @@ import { chatInfoConfig } from "@/config/chat-info";
 import { Avatar } from "@/components/ui/avatar";
 import ChatInput from "./chat-input";
 import Wrapper from "./wrapper";
+import ChatPromptResponse from "./chat-with-ai/chat-prompt-respos";
+
+import { api } from "@/convex/_generated/api";
+import { useQuery } from "convex/react";
+import { ChatCard } from "./chat-with-ai/chat-card";
+import { Id } from "@/convex/_generated/dataModel";
 
 interface InfoListProps {
   items: ChatInfo[];
+}
+
+interface Chatbot {
+  _id: Id<"chatbots">;
+  _creationTime: number;
+  avatarUrl?: string;
+  name?: string;
+  description?: string;
+  intents?: string;
+  responses?: string;
+  context?: string;
+  botId: string;
+  isPinned: boolean;
 }
 
 const InfoList = ({ items }: InfoListProps) => {
@@ -62,16 +81,29 @@ const Intro = () => {
   );
 };
 
+
 const ChatContainer = () => {
+  const chatbots = useQuery(api.chatbots.get) as Chatbot[]
+
+  if (chatbots === undefined) {
+    return (
+      <div className="space-y-3">
+        <ChatCard.Skeleton />
+        <ChatCard.Skeleton />
+        <ChatCard.Skeleton />
+      </div>
+    );
+  };
   return (
     <Wrapper>
-      <div className="p-[100px] ">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias deleniti natus officia, reprehenderit, fuga quidem illo aliquid reiciendis error exercitationem mollitia omnis eaque. Voluptates voluptate, nemo natus deserunt mollitia sed.
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat totam obcaecati sed architecto? Dolorem, magnam incidunt excepturi saepe fugiat perspiciatis, rem ea magni, eaque nostrum tempora veritatis sequi facere error?
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere quidem reprehenderit numquam, accusantium illo dolor esse sit consequuntur similique! Voluptates assumenda odit voluptatem nihil recusandae facere quas quibusdam accusantium optio.
-        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Velit, quaerat? Nobis fuga ullam qui numquam nihil incidunt neque ea voluptatibus accusamus quae, quia laudantium eaque libero nostrum illum nulla recusandae.
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur, iusto quod modi debitis dolore tenetur repellat eum hic sapiente neque minus perferendis iste ipsa. Quae veniam aliquid aliquam excepturi tenetur.
-      </div>
+
+      {chatbots?.map(chatbot => {
+        return (
+          <ChatPromptResponse prompt={chatbot.description ?? " "}
+            response={chatbot.description ?? " "} />
+        );
+      })}
+
     </Wrapper>
   );
 };

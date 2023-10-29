@@ -10,9 +10,10 @@ import { Button } from "@/components/ui/button"
 import { PlusCircleIcon, Tablets } from "lucide-react"
 import { toast } from "sonner"
 import { api } from "@/convex/_generated/api"
-import Shell from "../../_components/shell"
-import CardRecentJournal from "../../_components/journals/card-journal-recent";
-import CardArchiveJournal from "../../_components/journals/card-journal-archive";
+
+import CardRecentJournal from "@/app/(dashboard)/_components/journals/card-journal-recent";
+import CardArchiveJournal from "@/app/(dashboard)/_components/journals/card-journal-archive";
+import Shell from "@/app/(dashboard)/_components/shell";
 
 
 const tabs = [
@@ -29,7 +30,7 @@ const tabs = [
 ];
 
 
-const JournalsPage = () => {
+const JournalsSinglePage = () => {
   const router = useRouter();
   const { user } = useUser();
 
@@ -72,4 +73,4 @@ const JournalsPage = () => {
   )
 }
 
-export default JournalsPage
+export default JournalsSinglePage

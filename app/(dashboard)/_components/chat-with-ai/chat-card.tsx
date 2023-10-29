@@ -4,7 +4,8 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 
 interface CardData {
-  title: string;
+  botId: string;
+  name: string;
   description: string;
   creationTime: number;
 }
@@ -15,13 +16,13 @@ interface ChatCardProps extends CardData {
 
 dayjs.extend(relativeTime);
 
-export function ChatCard({ title, description, creationTime, onClick }: ChatCardProps) {
+export function ChatCard({ botId, name, description, creationTime, onClick }: ChatCardProps) {
 
   return (
     <Card>
       <CardHeader>
         <div className="flex justify-between">
-          <CardTitle className="text-lg">{title}</CardTitle>
+          <CardTitle className="text-lg">{name}</CardTitle>
           <button className="text-gray-500" onClick={onClick}>
             {/* button code */}
           </button>

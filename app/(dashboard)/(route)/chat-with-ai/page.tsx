@@ -1,9 +1,8 @@
 "use client"
 import ChatContainer from "../../_components/chat-container";
-import CardPinned from "../../_components/chat-with-ai/pinned-card";
-import CardRecent from "../../_components/chat-with-ai/recent-card";
+import CardPinnedChatBots from "../../_components/chat-with-ai/pinned-card";
+import CardRecentChatBots from "../../_components/chat-with-ai/recent-card";
 import { Footer } from "../../_components/footer";
-import CardRecentJournal from "../../_components/journals/card-journal-recent";
 import RightAside from "../../_components/right-aside";
 import Shell from "../../_components/shell";
 import TopNav from "../../_components/top-nav";
@@ -13,14 +12,13 @@ const tabs = [
   {
     name: 'Recent',
     title: 'Recent',
-    // content: <CardRecent />
-    content: <CardRecentJournal />
+    content: <CardRecentChatBots />
 
   },
   {
     name: 'Pinned',
     title: 'Pinned',
-    content: <CardPinned />
+    content: <CardPinnedChatBots />
   }
 ];
 
