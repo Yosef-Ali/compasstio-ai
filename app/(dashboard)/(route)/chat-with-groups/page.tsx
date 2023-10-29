@@ -7,21 +7,23 @@ import Wrapper from '../../_components/wrapper'
 import { Button } from '@/components/ui/button'
 import { PlusCircleIcon } from 'lucide-react'
 import RightAside from '../../_components/right-aside'
-import CardChatWithGroup from '../../_components/chat-with-group/card-chat-with-group'
-import CardChatWithAll from '../../_components/chat-with-group/card-chat-with-all'
+import CardChatWithGroup from '../../_components/chat-with-group/chat-with-group'
+import CardChatWithAll from '../../_components/chat-with-group/chat-with-all'
+import ChatWithGroup from '../../_components/chat-with-group/chat-with-group'
+import ChatWithAll from '../../_components/chat-with-group/chat-with-all'
 
 const tabs = [
   {
     name: 'Messages',
     title: 'Messages',
     // content: <CardRecent />
-    content: <CardChatWithGroup />
+    content: <ChatWithGroup />
 
   },
   {
     name: 'Invite Friends',
     title: 'Invite Friends',
-    content: <CardChatWithAll />
+    content: <ChatWithAll />
   }
 ];
 
