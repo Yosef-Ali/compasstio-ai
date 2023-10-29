@@ -2,8 +2,7 @@
 
 import { useRouter } from "next/navigation"
 import { useUser } from "@clerk/clerk-react";
-import RightAside from "../../_components/right-aside"
-import TopNav from "../../_components/top-nav"
+
 import { useMutation } from "convex/react"
 import Wrapper from "../../_components/wrapper"
 import { Button } from "@/components/ui/button"
@@ -13,6 +12,8 @@ import { api } from "@/convex/_generated/api"
 import Shell from "../../_components/shell"
 import CardRecentJournal from "../../_components/journals/card-journal-recent";
 import CardArchiveJournal from "../../_components/journals/card-journal-archive";
+import TopNav from "../../_components/top-nav";
+import RightAside from "../../_components/right-aside";
 
 
 const tabs = [

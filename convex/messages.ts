@@ -74,3 +74,23 @@ export const create = mutation({
     }
   },
 });
+
+// export const getSenderName = query({
+
+//   args: {
+//     senderId: v.string()
+//   },
+//   handler: async (ctx, args) => {
+//     const { senderId } = args;
+
+//     const sender = await ctx.db.query("users")
+//       .filter({ id: senderId })
+//       .first();
+
+//     if (!sender) {
+//       throw new Error("Sender not found");
+//     }
+
+//     return sender.name;
+//   }
+// })

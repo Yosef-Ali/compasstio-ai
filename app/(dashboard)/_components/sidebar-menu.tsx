@@ -1,5 +1,5 @@
 "use client"
-import { UserButton } from "@clerk/clerk-react";
+import { UserButton, useUser } from "@clerk/clerk-react";
 import { DashboardNav } from '@/components/nav'
 import { dashboardConfig } from '@/config/dashboard'
 import Link from 'next/link'
@@ -7,6 +7,7 @@ import React from 'react'
 import { ChevronsDownUp } from "lucide-react";
 
 const SideMenu = () => {
+  const { user } = useUser();
   return (
     <div className="md:sticky top-0">
       <div id="sidebar" className='fixed flex md:top-0 z-0 opacity-100 w-full transition-all md:sticky md:h-screen md:w-auto md:min-w-min mt-16 md:mt-0'>

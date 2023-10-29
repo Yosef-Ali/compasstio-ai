@@ -19,23 +19,6 @@ interface TabsProps {
 const RightAside = ({ tabs }: TabsProps) => {
   return (
 
-    // <div className="border-l sm:col-span-4 h-full overflow-y-auto">
-    //   <Tabs defaultValue="Recent" >
-    //     <div className=" border-b  px-6  pt-4 pb-2 text-center sticky top-0 bg-background z-35">
-    //       <TabsList className="grid w-full grid-cols-2">
-    //         <TabsTrigger value="Recent">Recent</TabsTrigger>
-    //         <TabsTrigger value="Pinned">Pinned</TabsTrigger>
-    //       </TabsList>
-    //     </div>
-    //     <TabsContent value="Recent">
-    //       <CardRecent />
-    //     </TabsContent>
-    //     {/* <TabsContent value="Pinned">
-    //       <CardRecent />
-    //     </TabsContent> */}
-    //   </Tabs>
-    // </div>
-
     <div className="border-l sm:col-span-4 h-full overflow-y-auto">
       <Tabs defaultValue={tabs[0].name}>
         <div className=" border-b px-6 pt-4 pb-2 text-center sticky top-0 bg-background z-35">
