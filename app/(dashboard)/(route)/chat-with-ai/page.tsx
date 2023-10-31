@@ -1,7 +1,9 @@
 "use client"
+import { useChat } from "ai/react";
 import ChatContainer from "../../_components/chat-container";
 import CardPinnedChatBots from "../../_components/chat-with-ai/pinned-card";
 import CardRecentChatBots from "../../_components/chat-with-ai/recent-card";
+import ChatbotContainer from "../../_components/chatbot-container";
 import { Footer } from "../../_components/footer";
 import RightAside from "../../_components/right-aside";
 import Shell from "../../_components/shell";
@@ -22,18 +24,23 @@ const tabs = [
   }
 ];
 
+
+
 const ChatWithAiPage = () => {
+  const { messages, input, handleInputChange, handleSubmit } = useChat();
+
   return (
     <>
       <TopNav />
 
       <Shell>
         <Wrapper>
-          <ChatContainer />
+
+          <ChatbotContainer messages={messages} />
         </Wrapper>
         <RightAside tabs={tabs} />
       </Shell>
-      <Footer />
+      <Footer input={input} handleInputChange={handleInputChange} />
 
     </>
   )

@@ -21,6 +21,7 @@ interface Chatbot {
 }
 
 export default function CardRecentChatBots() {
+
   const chatbots = useQuery(api.chatbots.get) as Chatbot[];
 
   console.log('chatbots', chatbots)

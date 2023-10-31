@@ -5,6 +5,7 @@ import { dashboardConfig } from '@/config/dashboard'
 import Link from 'next/link'
 import React from 'react'
 import { ChevronsDownUp } from "lucide-react";
+import { UserItem } from "@/components/user-item";
 
 const SideMenu = () => {
   const { user } = useUser();
@@ -55,19 +56,10 @@ const SideMenu = () => {
 
                   <div className="z-30 flex h-20 cursor-pointer items-center justify-between py-10 relative">
                     <button className="focus:outline-none flex h-full w-full cursor-pointer items-center text-left focus:ring-0">
-                      <UserButton
-                        afterSignOutUrl="/"
-                      />
-                      <div className="flex flex-grow flex-col ml-2">
-                        <span className="text-sm font-bold text-blue-900 line-clamp-1">{`Yosef's Workspace`}</span>
-                        <span className="text-xs font-light text-grey-600 line-clamp-1">Free Plan</span>
-                      </div>
-                      <ChevronsDownUp className="h-4 w-4" />
+                      <UserItem />
                     </button>
-
                   </div>
                 </div>
-
               </div>
             </div>
           </div>

@@ -33,4 +33,12 @@ export default defineSchema({
     avatarUrl: v.optional(v.string()),
     isPinned: v.boolean(),
   }).index("by_botId", ["botId"]),
+
+  conversations: defineTable({
+    id: v.string(),
+    createdAt: v.number(),
+    content: v.string(),
+    role: v.union(v.literal("user"), v.literal("assistant")),
+    isPinned: v.boolean(),
+  }),
 });

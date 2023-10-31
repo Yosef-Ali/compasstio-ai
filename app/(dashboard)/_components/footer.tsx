@@ -14,7 +14,7 @@ export const Footer = () => {
             name="name"
             type={"conversation"}
           /> */}
-          <ChatInputForm />
+          {/* <ChatInputForm /> */}
         </div>
       </div>
       <div className="col-span-4 flex items-center justify-end pr-7 ">

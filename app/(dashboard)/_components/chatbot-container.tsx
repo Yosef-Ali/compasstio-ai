@@ -1,4 +1,4 @@
-
+"use client"
 import { ChatInfo } from "@/types";
 import { Icons } from "@/components/icons";
 import { CardContent } from "@/components/ui/card";
@@ -9,27 +9,18 @@ import Wrapper from "./wrapper";
 import ChatPromptResponse from "./chat-with-ai/chat-prompt-respos";
 
 import { api } from "@/convex/_generated/api";
+import { useChat } from 'ai/react';
 import { useQuery } from "convex/react";
 import { ChatCard } from "./chat-with-ai/chat-card";
 import { Id } from "@/convex/_generated/dataModel";
-import { useCompletion } from 'ai/react';
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 interface InfoListProps {
   items: ChatInfo[];
 }
 
-interface Chatbot {
-  _id: Id<"chatbots">;
-  _creationTime: number;
-  avatarUrl?: string;
-  name?: string;
-  description?: string;
-  intents?: string;
-  responses?: string;
-  context?: string;
-  botId: string;
-  isPinned: boolean;
-}
+
 
 const InfoList = ({ items }: InfoListProps) => {
   if (!items?.length) {
@@ -83,32 +74,30 @@ const Intro = () => {
 };
 
 
-const ChatContainer = () => {
-  const chatbots = useQuery(api.chatbots.get) as Chatbot[]
+
+const ChatbotContainer = () => {
+
+  const { messages, input, handleInputChange, handleSubmit } = useChat();
+  console.log('messages:', messages)
+  console.log('input:', input)
 
 
-  if (chatbots === undefined) {
-    return (
-      <div className="space-y-3">
-        <ChatCard.Skeleton />
-        <ChatCard.Skeleton />
-        <ChatCard.Skeleton />
-      </div>
-    );
-  };
   return (
     <Wrapper>
-
-      {chatbots?.map(chatbot => {
-        return (
-          <ChatPromptResponse key={chatbot._id} prompt={chatbot.description ?? " "}
-            response={chatbot.description ?? " "} />
-        );
-      })}
-
+      <div className="mx-auto w-full max-w-lg py-24 flex flex-col stretch space-y-10  ">
+        {messages.map(m => (
+          <ChatPromptResponse key={m.id} role={m.role} content={m.content} />
+        ))}
+        <form onSubmit={handleSubmit} >
+          <div className="flex w-full max-w-md items-center space-x-2 fixed bottom-6 ">
+            <Input type="text" placeholder="Say something..." value={input} onChange={handleInputChange} className=" ring-offset-purple-300 focus-visible:ring-purple-400 " />
+            <Button type="submit" className="bg-purple-400">Send</Button>
+          </div>
+        </form>
+      </div>
     </Wrapper>
   );
 };
 
-export default ChatContainer;
+export default ChatbotContainer;
 
