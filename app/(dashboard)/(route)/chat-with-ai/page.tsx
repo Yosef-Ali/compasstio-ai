@@ -1,6 +1,6 @@
 "use client"
 
-import ChatContainer from "../../_components/chat-container";
+
 import CardPinnedChatBots from "../../_components/chat-with-ai/pinned-card";
 import CardRecentChatBots from "../../_components/chat-with-ai/recent-card";
 import ChatbotContainer from "../../_components/chatbot-container";
