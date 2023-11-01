@@ -2,7 +2,9 @@ import { Doc, Id } from "@/convex/_generated/dataModel";
 import { api } from "@/convex/_generated/api";
 import { useQuery } from "convex/react";
 
-import { CardMessage } from "./card-message";
+
+import { CardLiveStreaming } from "./card-live-streaming";
+import { CardMessage } from "../chat-with-group/card-message";
 
 interface Message {
   _id: Id<"messages">;
@@ -15,7 +17,7 @@ interface Message {
   isRead: boolean;
 }
 
-export default function ChatWithGroup() {
+export default function ParticipantList() {
 
   const messages = useQuery(api.messages.get) as Message[];
 
@@ -37,7 +39,7 @@ export default function ChatWithGroup() {
         // const fullname = getFullnameFromSenderId(message.senderId);
 
         return (
-          <CardMessage
+          <CardLiveStreaming
             key={message._id}
             name={message.senderId ?? " "}
             content={message.content ?? " "}
@@ -51,8 +53,3 @@ export default function ChatWithGroup() {
   );
 }
 
-// function getFullnameFromSenderId(senderId) {
-//   // Lookup senderId in contacts list 
-//   // and return the fullname
-//   return "John Doe";
-// }

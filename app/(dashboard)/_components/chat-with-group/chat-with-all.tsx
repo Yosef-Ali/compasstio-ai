@@ -2,7 +2,7 @@ import { Doc, Id } from "@/convex/_generated/dataModel";
 import { api } from "@/convex/_generated/api";
 import { useQuery } from "convex/react";
 
-import { CardMessage } from "./card-messege";
+import { CardMessage } from "./card-message";
 
 interface Message {
   _id: Id<"messages">;

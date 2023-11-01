@@ -11,17 +11,19 @@ import DoneTasks from "@/app/(dashboard)/_components/tasks/done-task";
 import { useOnCreate } from "@/app/hooks/use-on-create";
 import Wrapper from "../../_components/wrapper";
 import InprogressTasks from "@/app/(dashboard)/_components/tasks/Inprogress-tasks";
+import Image from "next/image";
+import ParticipantList from "../../_components/live-streaming/ParticipantList";
 
 const tabs = [
   {
-    name: 'Participant',
-    title: 'In progress',
-    content: <InprogressTasks />
+    name: 'Participant ',
+    title: 'Participant',
+    content: <ParticipantList />
   },
   {
-    name: 'Done',
-    title: 'Done',
-    content: <DoneTasks />
+    name: 'Setting',
+    title: 'Setting',
+    content: <ParticipantList />
   }
 ];
 
@@ -45,8 +47,8 @@ const LiveStreamPage = () => {
         <Wrapper>
           <div className="h-full flex flex-col p-6 relative">
             <div className="flex flex-col w-full">
-              <img src="/mux-meet.jpeg" className="w-full bg-cover absolute inset-0 z-0" />
-              {!isOpen && (
+              <Image src="/mux-meet.jpeg" className="w-full bg-cover absolute inset-0 z-0" alt="image" width={1920} height={1080} />
+              {/* {!isOpen && (
                 <div className="absolute inset-0 z-10 flex items-center justify-center">
                   <WelcomeMessage
                     userFullName={user?.fullName}
@@ -54,7 +56,7 @@ const LiveStreamPage = () => {
                     buttonLabel="Create a Tasks"
                   />
                 </div>
-              )}
+              )} */}
             </div>
           </div>
         </Wrapper>
