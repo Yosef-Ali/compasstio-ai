@@ -1,6 +1,5 @@
 "use client"
 
-import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { api } from "@/convex/_generated/api";
 import { useQuery } from "convex/react";
 import { ChatCard } from "../chat-with-ai/chat-card";
