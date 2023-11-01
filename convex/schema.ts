@@ -34,11 +34,11 @@ export default defineSchema({
     isPinned: v.boolean(),
   }).index("by_botId", ["botId"]),
 
-  conversations: defineTable({
+  messagesAi: defineTable({
     id: v.string(),
+    userId: v.string(),
     createdAt: v.number(),
     content: v.string(),
     role: v.union(v.literal("user"), v.literal("assistant")),
-    isPinned: v.boolean(),
   }),
 });

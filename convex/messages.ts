@@ -42,55 +42,26 @@ export const create = mutation({
     isRead: v.boolean(),
   },
   handler: async (ctx, args) => {
-    try {
-      const identity = await ctx.auth.getUserIdentity();
-      if (!identity) {
-        throw new Error("Not authenticated");
-      }
-
-      if (typeof args.messageId !== "string") {
-        throw new Error("Invalid title");
-      }
-
-      const userId = identity.subject;
-
-      const messages = await ctx.db.insert("messages", {
-        // title: args.title,
-        // userId,
-        // isArchived: false,
-        // isPublished: false,
-        messageId: args.messageId,
-        chatId: args.chatId,
-        senderId: args.senderId,
-        content: args.content,
-        avatarUrl: args.avatarUrl,
-        isRead: args.isRead,
-      });
-
-      return messages;
-    } catch (err) {
-      console.error(err);
-      throw err;
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      throw new Error("Not authenticated");
     }
+
+    if (typeof args.messageId !== "string") {
+      throw new Error("Invalid messageId");
+    }
+
+    const { subject: userId } = identity;
+
+    const messages = await ctx.db.insert("messages", {
+      messageId: args.messageId,
+      chatId: args.chatId,
+      senderId: args.senderId,
+      content: args.content,
+      avatarUrl: args.avatarUrl,
+      isRead: args.isRead,
+    });
+
+    return messages;
   },
 });
-
-// export const getSenderName = query({
-
-//   args: {
-//     senderId: v.string()
-//   },
-//   handler: async (ctx, args) => {
-//     const { senderId } = args;
-
-//     const sender = await ctx.db.query("users")
-//       .filter({ id: senderId })
-//       .first();
-
-//     if (!sender) {
-//       throw new Error("Sender not found");
-//     }
-
-//     return sender.name;
-//   }
-// })

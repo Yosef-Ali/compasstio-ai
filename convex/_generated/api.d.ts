@@ -17,6 +17,7 @@ import type {
 import type * as chatbots from "../chatbots";
 import type * as journals from "../journals";
 import type * as messages from "../messages";
+import type * as messagesAi from "../messagesAi";
 
 /**
  * A utility for referencing Convex functions in your app's API.
@@ -30,6 +31,7 @@ declare const fullApi: ApiFromModules<{
   chatbots: typeof chatbots;
   journals: typeof journals;
   messages: typeof messages;
+  messagesAi: typeof messagesAi;
 }>;
 export declare const api: FilterApi<
   typeof fullApi,

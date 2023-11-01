@@ -15,6 +15,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { ModeToggle } from "./mode-toggle";
 
 export const UserItem = () => {
   const { user } = useUser();
@@ -57,8 +58,13 @@ export const UserItem = () => {
             </div>
           </div>
         </div>
+
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild className="w-full cursor-pointer text-muted-foreground">
+          <ModeToggle />
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem asChild className="w-full cursor-pointer text-muted-foreground p-2">
           <SignOutButton>
             Log out
           </SignOutButton>
