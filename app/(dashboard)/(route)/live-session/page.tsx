@@ -14,9 +14,9 @@ import InprogressTasks from "../../_components/tasks/Inprogress-tasks";
 
 const tabs = [
   {
-    name: 'In progress',
+    name: 'Participant',
     title: 'In progress',
-    content: <InprogressTasks />
+    content: <DoneTasks />
   },
   {
     name: 'Done',
