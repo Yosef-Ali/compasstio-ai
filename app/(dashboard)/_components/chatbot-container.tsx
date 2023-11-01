@@ -6,7 +6,7 @@ import { chatInfoConfig } from "@/config/chat-info";
 import { Avatar } from "@/components/ui/avatar";
 import ChatInput from "./chat-input";
 import Wrapper from "./wrapper";
-import ChatPromptResponse from "./chat-with-ai/chat-prompt-respos";
+import ChatPromptResponse from "./chat-with-ai/chat-messages";
 
 import { api } from "@/convex/_generated/api";
 import { useChat } from 'ai/react';
@@ -81,12 +81,13 @@ const ChatbotContainer = () => {
   const saveMessagesMutation = useMutation(api.messages.create);
 
   const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    handleSubmit(); // Assuming handleSubmit is an async function
-    saveMessagesMutation.mutate({
-      role: 'user',
-      content: input
-    })
+    // event.preventDefault();
+    // handleSubmit(); // Assuming handleSubmit is an async function
+    // saveMessagesMutation.mutate({
+    //   role: 'user',
+    //   content: input
+    // })
+    { }
   };
 
 

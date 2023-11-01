@@ -1,6 +1,5 @@
 "use client"
 
-
 import CardPinnedChatBots from "../../_components/chat-with-ai/pinned-card";
 import CardRecentChatBots from "../../_components/chat-with-ai/recent-card";
 
@@ -35,7 +34,6 @@ const ChatWithAiPage = () => {
 
       <Shell>
         <Wrapper>
-          {/* <ChatbotContainer /> */}
           <ChatbotContainer />
         </Wrapper>
         <RightAside tabs={tabs} />

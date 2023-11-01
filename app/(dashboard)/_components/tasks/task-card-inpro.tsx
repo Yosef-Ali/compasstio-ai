@@ -16,7 +16,7 @@ interface ChatCardProps extends CardData {
   onClick: () => void;
 }
 
-export function TaskCard({ title, description, creationTime, onClick }: ChatCardProps) {
+export function TaskCardInProgress({ title, description, creationTime, onClick }: ChatCardProps) {
   const formatted = useFormattedTime(creationTime);
 
   return (
@@ -52,7 +52,7 @@ export function TaskCard({ title, description, creationTime, onClick }: ChatCard
   );
 }
 
-TaskCard.Skeleton = function ChatCardSkeleton() {
+TaskCardInProgress.Skeleton = function ChatCardSkeleton() {
   return (
     <div className="p-4">
       <div className="space-y-3">

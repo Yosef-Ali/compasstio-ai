@@ -7,7 +7,7 @@ import { useEffect } from "react";
 import { ChatCard } from "../chat-with-ai/chat-card";
 import { Id, Doc } from "@/convex/_generated/dataModel";
 
-import { TaskCard } from "./task-card";
+
 import { TaskCardDone } from "./task-card-done";
 
 interface Journal extends Doc<"journals"> {

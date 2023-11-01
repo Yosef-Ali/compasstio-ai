@@ -1,6 +1,6 @@
 "use client"
 
-import React from 'react'
+import React, { useEffect } from 'react'
 import TopNav from '../../_components/top-nav'
 import Shell from '../../_components/shell'
 import Wrapper from '../../_components/wrapper'
@@ -11,6 +11,10 @@ import CardChatWithGroup from '../../_components/chat-with-group/chat-with-group
 import CardChatWithAll from '../../_components/chat-with-group/chat-with-all'
 import ChatWithGroup from '../../_components/chat-with-group/chat-with-group'
 import ChatWithAll from '../../_components/chat-with-group/chat-with-all'
+import WelcomeMessage from '@/components/welcome-message'
+import { useOnCreate } from "@/app/hooks/use-on-create";
+import { useUser } from "@clerk/clerk-react";
+import ChatContainer from '../../_components/chat-container'
 
 const tabs = [
   {
@@ -27,18 +31,30 @@ const tabs = [
   }
 ];
 
-const page = () => {
+const ChatWithGroupPage = () => {
+  const { user } = useUser();
+  const isOpen = useOnCreate((state) => state.isOpen);
+  const toggleOpen = useOnCreate((state) => state.toggleOpen);
+
+  useEffect(() => {
+    useOnCreate.setState({ isOpen });
+  }, [isOpen]);
+
+  const onCreate = () => {
+    toggleOpen(!isOpen);
+  };
   return (<>
     <TopNav />
     <Shell>
       <Wrapper>
-        <h2 className="text-lg font-medium">
-          {/* Welcome to {user?.fullName}&apos;s Jotion */}
-        </h2>
-        {/* <Button onClick={onCreate}>
-          <PlusCircleIcon className="h-4 w-4 mr-2" />
-          Create a note
-        </Button> */}
+        {/* {!isOpen ?
+          <WelcomeMessage
+            userFullName={user?.fullName}
+            onCreate={onCreate}
+            buttonLabel="Chat with group"
+          />
+          : <ChatContainer />} */}
+        <ChatContainer />
       </Wrapper>
       <RightAside tabs={tabs} />
     </Shell>
@@ -46,6 +62,6 @@ const page = () => {
   )
 }
 
-export default page
+export default ChatWithGroupPage
 
 

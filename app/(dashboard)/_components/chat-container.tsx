@@ -6,7 +6,7 @@ import { chatInfoConfig } from "@/config/chat-info";
 import { Avatar } from "@/components/ui/avatar";
 import ChatInput from "./chat-input";
 import Wrapper from "./wrapper";
-import ChatPromptResponse from "./chat-with-ai/chat-prompt-respos";
+import ChatPromptResponse from "./chat-with-group/response";
 
 import { api } from "@/convex/_generated/api";
 import { useQuery } from "convex/react";
@@ -101,8 +101,10 @@ const ChatContainer = () => {
 
       {chatbots?.map(chatbot => {
         return (
+
           <ChatPromptResponse key={chatbot._id} prompt={chatbot.description ?? " "}
             response={chatbot.description ?? " "} />
+
         );
       })}
 
