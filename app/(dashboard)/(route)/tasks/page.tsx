@@ -17,7 +17,7 @@ const tabs = [
   {
     name: 'In progress',
     title: 'In progress',
-    content: <InprogressTasks />
+    content: <DoneTasks />
   },
   {
     name: 'Done',
