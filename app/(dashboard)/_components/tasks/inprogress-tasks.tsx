@@ -30,15 +30,16 @@ export default function InprogressTasks() {
         <ChatCard.Skeleton />
       </div>
     );
-  };
+  }
+
 
   return (
     <div className="grid grid-cols-1 gap-4 p-3">
-      {journals?.map(journal => (
+      {journals?.map((journal) => (
         <TaskCardInProgress
           key={journal._id}
-          title={journal.title ?? " "}
-          description={journal.description ?? " "}
+          title={journal.title || " "}
+          description={journal.description || " "}
           creationTime={journal._creationTime}
           onClick={() => { }}
         />
