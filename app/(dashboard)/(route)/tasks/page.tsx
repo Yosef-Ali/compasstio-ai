@@ -51,7 +51,7 @@ const TasksPage = () => {
             />
           )}
         </Wrapper>
-        {/* <RightAside tabs={tabs} /> */}
+        <RightAside tabs={tabs} />
       </Shell>
     </div>
   );

@@ -1,3 +1,4 @@
+"use client";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardHeader } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -35,7 +36,7 @@ export function CardLiveStreaming({ name, content, creationTime, avatarUrl, onCl
 
               <div className="ml-4">
                 <div className="text-lg font-medium">{name}</div>
-                <div className="text-gray-600">{formatted}</div>
+                <div className="text-gray-600">{content}</div>
               </div>
             </div>
           </div>

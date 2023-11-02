@@ -1,4 +1,5 @@
-import { Doc, Id } from "@/convex/_generated/dataModel";
+"use client"
+import { Id } from "@/convex/_generated/dataModel";
 import { api } from "@/convex/_generated/api";
 import { useQuery } from "convex/react";
 
@@ -34,10 +35,6 @@ export default function ParticipantList() {
   return (
     <div className="grid grid-cols-1 gap-4 p-3">
       {messages?.map(message => {
-
-        // Create fullname from senderId
-        // const fullname = getFullnameFromSenderId(message.senderId);
-
         return (
           <CardLiveStreaming
             key={message._id}
