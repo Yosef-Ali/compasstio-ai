@@ -60,7 +60,7 @@ const LiveStreamPage = () => {
             </div>
           </div>
         </Wrapper>
-        <RightAside tabs={tabs} />
+        {/* <RightAside tabs={tabs} /> */}
       </Shell>
     </div>
   );
