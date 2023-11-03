@@ -1,7 +1,7 @@
 "use client"
 import { Doc, Id } from "@/convex/_generated/dataModel";
 import { api } from "@/convex/_generated/api";
-import { useQuery } from "convex/react";
+import { useConvexAuth, useQuery } from "convex/react";
 import { ChatCard } from "../chat-with-ai/chat-card";
 
 interface Chatbot {
@@ -19,8 +19,9 @@ interface Chatbot {
 
 export default function CardPinnedChatBots() {
   const chatbots = useQuery(api.chatbots.get) as Chatbot[]
+  const { isLoading } = useConvexAuth()
 
-  if (chatbots === undefined) {
+  if (chatbots === undefined || isLoading) {
     return (
       <div className="space-y-3">
         <ChatCard.Skeleton />

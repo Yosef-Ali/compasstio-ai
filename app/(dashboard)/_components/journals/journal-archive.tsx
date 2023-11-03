@@ -2,7 +2,7 @@
 
 
 import { api } from "@/convex/_generated/api";
-import { useQuery } from "convex/react";
+import { useConvexAuth, useQuery } from "convex/react";
 import { ChatCard } from "../chat-with-ai/chat-card";
 import { Id, Doc } from "@/convex/_generated/dataModel";
 import { JournalCard } from "./journal-card";
@@ -21,8 +21,9 @@ interface Journal extends Doc<"journals"> {
 
 export default function ArchiveJournal() {
   const journals = useQuery(api.journals.get) as Journal[];
+  const { isLoading } = useConvexAuth()
 
-  if (journals === undefined) {
+  if (journals === undefined || isLoading) {
     return (
       <div className="space-y-3">
         <ChatCard.Skeleton />
@@ -31,7 +32,6 @@ export default function ArchiveJournal() {
       </div>
     );
   };
-
   return (
     <div className="grid grid-cols-1 gap-4 p-3">
       {journals?.map(journal => (

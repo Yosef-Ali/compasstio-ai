@@ -10,13 +10,14 @@ import DoneTasks from "@/app/(dashboard)/_components/tasks/done-task";
 
 import { useOnCreate } from "@/app/hooks/use-on-create";
 import Wrapper from "../../_components/wrapper";
+import InprogressTasks from "../../_components/tasks/Inprogress-tasks";
 
 
 const tabs = [
   {
     name: 'In progress',
     title: 'In progress',
-    content: <DoneTasks />
+    content: <InprogressTasks />
   },
   {
     name: 'Done',

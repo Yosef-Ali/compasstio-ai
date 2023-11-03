@@ -21,7 +21,15 @@ export default function ChatbotContainer() {
 
   useEffect(() => {
     scrollToBottom();
+
   }, [messages]);
+
+  const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    console.log(messages); // Add console log message here
+    handleSubmit(event);
+  };
+
 
   return (
     <Wrapper>
@@ -69,7 +77,7 @@ export default function ChatbotContainer() {
         <div ref={messageEndRef}></div>
 
         <form
-          onSubmit={handleSubmit}
+          onSubmit={handleFormSubmit}
           className="p-5 fixed bottom-0 w-full max-w-2xl mx-auto"
         >
           <div className="relative flex items-center">

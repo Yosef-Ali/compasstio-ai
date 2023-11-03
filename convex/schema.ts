@@ -41,4 +41,13 @@ export default defineSchema({
     content: v.string(),
     role: v.union(v.literal("user"), v.literal("assistant")),
   }),
+
+  products: defineTable({
+    color: v.string(),
+    condtion: v.union(v.literal("good"), v.literal("damaged")),
+    model: v.float64(),
+    sit: v.float64(),
+    soled: v.boolean(),
+    title: v.string(),
+  }),
 });

@@ -104,7 +104,6 @@ const ChatContainer = () => {
 
           <ChatPromptResponse key={chatbot._id} prompt={chatbot.description ?? " "}
             response={chatbot.description ?? " "} />
-
         );
       })}
 

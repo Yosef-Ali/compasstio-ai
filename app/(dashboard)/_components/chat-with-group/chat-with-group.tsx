@@ -1,6 +1,6 @@
 import { Doc, Id } from "@/convex/_generated/dataModel";
 import { api } from "@/convex/_generated/api";
-import { useQuery } from "convex/react";
+import { useConvexAuth, useQuery } from "convex/react";
 
 import { CardMessage } from "./card-message";
 
@@ -18,8 +18,9 @@ interface Message {
 export default function ChatWithGroup() {
 
   const messages = useQuery(api.messages.get) as Message[];
+  const { isLoading } = useConvexAuth()
 
-  if (messages === undefined) {
+  if (messages === undefined || isLoading) {
     return (
       <div className="space-y-3">
         <CardMessage.Skeleton />
@@ -27,15 +28,11 @@ export default function ChatWithGroup() {
         <CardMessage.Skeleton />
       </div>
     );
-  }
+  };
 
   return (
     <div className="grid grid-cols-1 gap-4 p-3">
       {messages?.map(message => {
-
-        // Create fullname from senderId
-        // const fullname = getFullnameFromSenderId(message.senderId);
-
         return (
           <CardMessage
             key={message._id}
