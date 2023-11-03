@@ -15,6 +15,7 @@ import type {
   FunctionReference,
 } from "convex/server";
 import type * as chatbots from "../chatbots";
+import type * as chats from "../chats";
 import type * as journals from "../journals";
 import type * as messages from "../messages";
 import type * as messagesAi from "../messagesAi";
@@ -30,6 +31,7 @@ import type * as product from "../product";
  */
 declare const fullApi: ApiFromModules<{
   chatbots: typeof chatbots;
+  chats: typeof chats;
   journals: typeof journals;
   messages: typeof messages;
   messagesAi: typeof messagesAi;

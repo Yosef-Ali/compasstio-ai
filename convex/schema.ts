@@ -50,4 +50,11 @@ export default defineSchema({
     soled: v.boolean(),
     title: v.string(),
   }),
+
+  chats: defineTable({
+    userId: v.string(),
+    prompt: v.string(),
+    result: v.string(),
+    isPinned: v.boolean(),
+  }),
 });
