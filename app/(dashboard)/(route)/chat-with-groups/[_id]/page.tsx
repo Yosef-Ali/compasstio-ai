@@ -17,7 +17,7 @@ const ChatWithGroupSinglePage = ({ params }: { params: { userId: string } }) => 
 
   return (
     <>
-      <ChatContainerSinglePage userId={param_Id} />
+      <ChatContainerSinglePage />
     </>
   )
 }
