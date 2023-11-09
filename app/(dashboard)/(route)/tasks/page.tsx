@@ -10,7 +10,7 @@ import DoneTasks from "@/app/(dashboard)/_components/tasks/done-task";
 
 import { useOnCreate } from "@/app/hooks/use-on-create";
 import Wrapper from "../../_components/wrapper"
-import InprogressTasks from "@/app/(dashboard)/_components/tasks/Inprogress-tasks";
+import InprogressTasks from "@/app/(dashboard)/_components/tasks/inprogress-tasks";
 
 import DataTableContainer from "../../_components/tasks/data-table-container";
 import { Button } from "@/components/ui/button";
