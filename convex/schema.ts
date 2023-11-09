@@ -42,19 +42,34 @@ export default defineSchema({
     role: v.union(v.literal("user"), v.literal("assistant")),
   }),
 
-  products: defineTable({
-    color: v.string(),
-    condtion: v.union(v.literal("good"), v.literal("damaged")),
-    model: v.float64(),
-    sit: v.float64(),
-    soled: v.boolean(),
-    title: v.string(),
-  }),
-
   chats: defineTable({
     userId: v.string(),
     prompt: v.string(),
     result: v.string(),
     isPinned: v.boolean(),
+  }),
+
+  chatMessages: defineTable({
+    _id: v.string(),
+    _creationTime: v.number(),
+    sender: v.string(),
+    receiver: v.string(),
+    content: v.string(),
+  }),
+
+  groups: defineTable({
+    _id: v.string(),
+    _creationTime: v.number(),
+    description: v.string(),
+    avatarUrl: v.string(),
+    name: v.string(),
+  }),
+
+  users: defineTable({
+    userId: v.string(),
+    name: v.string(),
+    username: v.string(),
+    avatarUrl: v.string(),
+    bio: v.string(),
   }),
 });

@@ -9,8 +9,12 @@ import WelcomeMessage from "@/components/welcome-message";
 import DoneTasks from "@/app/(dashboard)/_components/tasks/done-task";
 
 import { useOnCreate } from "@/app/hooks/use-on-create";
-import Wrapper from "../../_components/wrapper";
+import Wrapper from "../../_components/wrapper"
 import InprogressTasks from "@/app/(dashboard)/_components/tasks/Inprogress-tasks";
+
+import DataTableContainer from "../../_components/tasks/data-table-container";
+import { Button } from "@/components/ui/button";
+import { PlusCircleIcon } from "lucide-react";
 
 
 const tabs = [
@@ -44,13 +48,7 @@ const TasksPage = () => {
       <TopNav />
       <Shell>
         <Wrapper>
-          {!isOpen && (
-            <WelcomeMessage
-              userFullName={user?.fullName}
-              onCreate={onCreate}
-              buttonLabel="Create a Tasks"
-            />
-          )}
+          <DataTableContainer />
         </Wrapper>
         <RightAside tabs={tabs} />
       </Shell>

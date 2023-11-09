@@ -14,11 +14,11 @@ export function useFormattedTime(timestamp: number): string {
     let formattedTime: string;
 
     if (diff < 24) {
-      formattedTime = messageTime.fromNow();
+      formattedTime = messageTime.format("HH:mm");
     } else if (diff < 168) {
-      formattedTime = messageTime.format("ddd");
+      formattedTime = messageTime.format("ddd HH:mm");
     } else {
-      formattedTime = messageTime.format("D/M/YYYY");
+      formattedTime = messageTime.format("D/M/YYYY HH:mm");
     }
 
     return formattedTime;

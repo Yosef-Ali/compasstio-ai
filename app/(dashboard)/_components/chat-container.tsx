@@ -9,7 +9,7 @@ import Wrapper from "./wrapper";
 import ChatPromptResponse from "./chat-with-group/response";
 
 import { api } from "@/convex/_generated/api";
-import { useQuery } from "convex/react";
+import { useConvexAuth, useQuery } from "convex/react";
 import { ChatCard } from "./chat-with-ai/chat-card";
 import { Id } from "@/convex/_generated/dataModel";
 import { useCompletion } from 'ai/react';
@@ -87,7 +87,9 @@ const ChatContainer = () => {
   const chatbots = useQuery(api.chatbots.get) as Chatbot[]
 
 
-  if (chatbots === undefined) {
+  const { isLoading } = useConvexAuth()
+
+  if (chatbots === undefined || isLoading) {
     return (
       <div className="space-y-3">
         <ChatCard.Skeleton />
@@ -98,15 +100,12 @@ const ChatContainer = () => {
   };
   return (
     <Wrapper>
-
       {chatbots?.map(chatbot => {
         return (
-
           <ChatPromptResponse key={chatbot._id} prompt={chatbot.description ?? " "}
             response={chatbot.description ?? " "} />
         );
       })}
-
     </Wrapper>
   );
 };

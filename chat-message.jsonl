@@ -1,0 +1,10 @@
+{ "sender": "user1", "receiver": "user2", "content": "Hello, user2!" }
+{ "sender": "user2", "receiver": "user1", "content": "Hi, user1!" }
+{ "sender": "user3", "receiver": "user4", "content": "How are you, user4?" }
+{ "sender": "user4", "receiver": "user3", "content": "I'm doing well, thanks for asking!" }
+{ "sender": "user5", "receiver": "user6", "content": "What's up, user6?" }
+{ "sender": "user6", "receiver": "user5", "content": "Not much, just hanging out." }
+{ "sender": "user7", "receiver": "user8", "content": "Hey, user8!" }
+{ "sender": "user8", "receiver": "user7", "content": "Hey there, user7!"}
+{ "sender": "user9", "receiver": "user10", "content": "How's it going, user10?" }
+{ "sender": "user10","receiver": "user9","content": "Pretty good, thanks for asking!" }

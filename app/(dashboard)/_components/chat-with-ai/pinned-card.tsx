@@ -18,7 +18,9 @@ interface Chatbot {
 }
 
 export default function CardPinnedChatBots() {
+
   const chatbots = useQuery(api.chatbots.get) as Chatbot[]
+  
   const { isLoading } = useConvexAuth()
 
   if (chatbots === undefined || isLoading) {
@@ -47,6 +49,5 @@ export default function CardPinnedChatBots() {
         );
       })}
     </div>
-
   );
 }

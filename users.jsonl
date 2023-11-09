@@ -1,0 +1,35 @@
+{
+    "userId": "1",
+    "name": "John Doe",
+    "username": "johndoe",
+    "avatarUrl": "https://example.com/avatar.jpg",
+    "bio": "I am a software engineer."
+  },
+  {
+    "userId": "2",
+    "name": "Jane Doe",
+    "username": "janedoe",
+    "avatarUrl": "https://example.com/avatar2.jpg",
+    "bio": "I am a teacher."
+  },
+  {
+    "userId": "3",
+    "name": "Peter Jones",
+    "username": "peterjones",
+    "avatarUrl": "https://example.com/avatar3.jpg",
+    "bio": "I am a musician."
+  },
+  {
+    "userId": "4",
+    "name": "Mary Smith",
+    "username": "mary smith",
+    "avatarUrl": "https://example.com/avatar4.jpg",
+    "bio": "I am a writer."
+  },
+  {
+    "userId": "5",
+    "name": "David Brown",
+    "username": "davidbrown",
+    "avatarUrl": "https://example.com/avatar5.jpg",
+    "bio": "I am a designer."
+  }

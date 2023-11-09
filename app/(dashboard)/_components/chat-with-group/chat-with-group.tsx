@@ -3,24 +3,29 @@ import { api } from "@/convex/_generated/api";
 import { useConvexAuth, useQuery } from "convex/react";
 
 import { CardMessage } from "./card-message";
+import { CardGroup } from "./card-groups";
+import { SetStateAction, useState } from "react";
 
-interface Message {
-  _id: Id<"messages">;
+interface Group {
+  _id: Id<"groups">;
+  name: string;
+  description: string;
   _creationTime: number;
-  content?: string;
-  senderId?: string;
-  avatarUrl?: string;
-  messageId: string;
-  chatId: string;
-  isRead: boolean;
+  avatarUrl: string;
+  onClick: () => void;
 }
 
-export default function ChatWithGroup() {
 
-  const messages = useQuery(api.messages.get) as Message[];
+export default function ChatWithGroup() {
+  const [activeGroupId, setActiveGroupId] = useState<string | null>(null);
+
+  const groups = useQuery(api.groups.get) as Group[];
+
+  console.log("groups", groups)
+
   const { isLoading } = useConvexAuth()
 
-  if (messages === undefined || isLoading) {
+  if (groups === undefined || isLoading) {
     return (
       <div className="space-y-3">
         <CardMessage.Skeleton />
@@ -30,17 +35,23 @@ export default function ChatWithGroup() {
     );
   };
 
+  const handleCardClick = (group: Group) => {
+    setActiveGroupId(group._id);
+  }
+
   return (
     <div className="grid grid-cols-1 gap-4 p-3">
-      {messages?.map(message => {
+      {groups?.map(group => {
         return (
-          <CardMessage
-            key={message._id}
-            name={message.senderId ?? " "}
-            content={message.content ?? " "}
-            creationTime={message._creationTime}
-            avatarUrl={message.avatarUrl ?? " "}
-            onClick={() => { }}
+          <CardGroup
+            key={group._id}
+            _id={group._id}
+            name={group.name ?? " "}
+            description={group.description ?? " "}
+            _creationTime={group._creationTime ?? 0}
+            avatarUrl={group.avatarUrl ?? " "}
+            isActive={activeGroupId === group._id}
+            onClick={() => handleCardClick(group)}
           />
         );
       })}
@@ -48,8 +59,3 @@ export default function ChatWithGroup() {
   );
 }
 
-// function getFullnameFromSenderId(senderId) {
-//   // Lookup senderId in contacts list 
-//   // and return the fullname
-//   return "John Doe";
-// }

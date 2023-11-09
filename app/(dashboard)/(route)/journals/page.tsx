@@ -49,9 +49,6 @@ const JournalsPage = () => {
 
   };
 
-
-
-
   return (
     <>
       <TopNav />

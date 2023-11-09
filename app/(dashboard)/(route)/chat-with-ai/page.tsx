@@ -4,7 +4,7 @@ import CardPinnedChatBots from "../../_components/chat-with-ai/pinned-card";
 import CardRecentChatBots from "../../_components/chat-with-ai/recent-card";
 
 import { Footer } from "../../_components/footer";
-import ChatbotContainer from "../../_components/new-chatbot-container";
+import ChatbotContainer from "../../_components/chatbot-container";
 import RightAside from "../../_components/right-aside";
 import Shell from "../../_components/shell";
 import TopNav from "../../_components/top-nav";
@@ -23,8 +23,6 @@ const tabs = [
     content: <CardPinnedChatBots />
   }
 ];
-
-
 
 const ChatWithAiPage = () => {
 
