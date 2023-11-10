@@ -71,5 +71,6 @@ export default defineSchema({
     username: v.string(),
     avatarUrl: v.string(),
     bio: v.string(),
+    onboarded: v.boolean(),
   }),
 });

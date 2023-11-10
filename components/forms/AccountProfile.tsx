@@ -8,12 +8,15 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UserValidation } from "@/lib/validations/user";
+import { useMutation } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { usePathname, useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 interface Props {
   user: {
-    id: string;
-    objectId: string;
-    username: string;
+    userId: string;
+    username: string | null;
     name: string;
     bio: string;
     image: string;
@@ -22,6 +25,10 @@ interface Props {
 }
 
 const AccountProfile = ({ user, btnTitle }: Props) => {
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const createProfile = useMutation(api.users.create)
 
   const form = useForm<z.infer<typeof UserValidation>>({
     resolver: zodResolver(UserValidation),
@@ -32,11 +39,39 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
       bio: user?.bio ? user.bio : "",
     },
   });
+
+  console.log("user::", user);
+
+  const onSubmit = (values: z.infer<typeof UserValidation>) => {
+
+    console.log("onSubmit", values);
+
+    const promise = createProfile({
+      userId: user.userId,
+      name: values.name,
+      username: values.username,
+      bio: values.bio,
+      onboarded: true,
+      avatarUrl: ""
+    })
+
+    toast.promise(promise, {
+      loading: "Creating a new profile...",
+      success: "New profile created!",
+      error: "Failed to create a new profile."
+    });
+
+    if (pathname === "/profile/edit") {
+      router.back();
+    } else {
+      router.push("/");
+    }
+  };
   return (
     <Form {...form}>
       <form
         className='flex flex-col justify-start gap-10'
-      // onSubmit={form.handleSubmit(onSubmit)}
+        onSubmit={form.handleSubmit(onSubmit)}
       >
         <FormField
           control={form.control}

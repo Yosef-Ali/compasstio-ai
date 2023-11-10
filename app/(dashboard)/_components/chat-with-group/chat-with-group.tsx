@@ -12,7 +12,7 @@ interface Group {
   description: string;
   _creationTime: number;
   avatarUrl: string;
-  onClick: () => void;
+
 }
 
 

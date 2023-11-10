@@ -4,21 +4,16 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useFormattedTime } from "@/lib/formated-time";
 import { CheckCheckIcon } from "lucide-react";
 
-interface CardData {
+interface ChatCardProps {
   name: string;
   avatarUrl: string;
-  lastSeen: number;
-  status: string;
-}
-
-interface ChatCardProps extends CardData {
-  onClick: () => void;
+  _creationTime: number;
 }
 
 
-export function CardAllUsers({ name, lastSeen, status, avatarUrl, onClick }: ChatCardProps) {
+export function CardAllUsers({ name, avatarUrl, _creationTime }: ChatCardProps) {
 
-  const formatted = useFormattedTime(lastSeen);
+  const formatted = useFormattedTime(_creationTime);
 
   return (
     <Card >
@@ -33,20 +28,16 @@ export function CardAllUsers({ name, lastSeen, status, avatarUrl, onClick }: Cha
           <div className="ml-4">
             <div className="text-lg font-medium truncate">{name}</div>
             <div className="text-gray-600 truncate">Last seen &nbsp; {formatted}</div>
-
           </div>
-        </div>
-
-
-        <div className="flex-1"></div>
-
-        <div className="flex justify-end">
-          <div className="flex flex-col h-full justify-between">
-            <div className="flex">
-              <CheckCheckIcon className="h-5 w-5 mr-1" />
-              <p className="text-sm ">{formatted}</p>
+          <div className="flex-1"></div>
+          <div className="flex justify-end">
+            <div className="flex flex-col h-full justify-between">
+              <div className="flex">
+                <CheckCheckIcon className="h-5 w-5 mr-1" />
+                <p className="text-sm ">{formatted}</p>
+              </div>
+              <div className="text-gray-600">{"Offline"}</div>
             </div>
-            <div className="text-gray-600">{status}</div>
           </div>
         </div>
 

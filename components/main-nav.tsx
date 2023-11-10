@@ -52,7 +52,7 @@ export function MainNav({ items, children }: MainNavProps) {
           {isAuthenticated && !isLoading && (
             <>
               <Button variant="ghost" size="sm" asChild>
-                <Link href="/chat-with-ai">
+                <Link href="/onboarding">
                   Enter workspace
                 </Link>
               </Button>

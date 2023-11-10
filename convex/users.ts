@@ -1,29 +1,42 @@
-// import { v } from "convex/values";
-// import { mutation, query } from "./_generated/server";
+import { v } from "convex/values";
+import { mutation, query } from "./_generated/server";
 
-// export const get = query({
-//   handler: async (ctx) => {
-//     try {
-//       const identity = await ctx.auth.getUserIdentity();
+export const getUser = query({
+  args: {
+    userId: v.string(),
+  },
+  handler: async (ctx, args) => {
+    return await ctx.db
+      .query("users")
+      .filter((q) => q.eq(q.field("userId"), args.userId))
+      .first();
+  },
+});
 
-//       if (!identity) {
-//         throw new Error("Not authenticated");
-//       }
+export const getAll = query({
+  handler: async (ctx) => {
+    return await ctx.db.query("users").collect();
+  },
+});
 
-//       const users = await ctx.db.query("users").collect();
 
-//       return users;
-//     } catch (err) {
-//       // Log the error
-//       console.error(err);
-
-//       // Return a meaningful response to the user
-//       return {
-//         statusCode: 500,
-//         body: {
-//           message: "An error occurred while fetching the journals.",
-//         },
-//       };
-//     }
-//   },
-// });
+export const create = mutation({
+  args: {
+    userId: v.string(),
+    name: v.string(),
+    username: v.string(),
+    avatarUrl: v.string(),
+    bio: v.string(),
+    onboarded: v.boolean(),
+  },
+  handler: async (ctx, args) => {
+    return await ctx.db.insert("users", {
+      userId: args.userId,
+      name: args.name,
+      username: args.username,
+      avatarUrl: args.avatarUrl,
+      bio: args.bio,
+      onboarded: true,
+    });
+  },
+})

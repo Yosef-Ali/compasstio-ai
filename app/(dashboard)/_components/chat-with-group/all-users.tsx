@@ -12,14 +12,14 @@ interface Users {
   _id: Id<"users">;
   _creationTime: number;
   avatarUrl: string;
-  lastSeen: number;
+  // lastSeen: number;
   name: string;
-  status: string;
+  // status: string;
 }
 
 export default function AllUsers() {
 
-  const users = useQuery(api.users.get) as Users[];
+  const users = useQuery(api.users.getAll)
 
   const { isLoading, isAuthenticated } = useConvexAuth();
 
@@ -31,10 +31,10 @@ export default function AllUsers() {
           <CardAllUsers
             key={user._id}
             name={user.name ?? ""}
-            lastSeen={user.lastSeen ?? ""}
-            status={user.status ?? ""}
+            // lastSeen={user.lastSeen ?? ""}
+            // status={user.status ?? ""}
+            _creationTime={user._creationTime ?? 0}
             avatarUrl={user.avatarUrl ?? ""}
-            onClick={() => { }}
           />
         );
       })}

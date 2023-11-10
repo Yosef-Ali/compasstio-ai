@@ -35,7 +35,7 @@ export default function IndexPage() {
           {isAuthenticated && !isLoading && (
             <div className="space-x-4">
               <Link
-                href="/chat-with-ai"
+                href="/onboarding"
                 rel="noreferrer"
                 className={cn(buttonVariants({ variant: "outline", size: "lg" }))}
               >
