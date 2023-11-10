@@ -9,15 +9,14 @@ import { Spinner } from "@/components/spinner";
 
 export default function onBoardingPage() {
 
-  const { isLoading } = useConvexAuth()
 
   const { user } = useUser();
 
-
+  const userInfo = useQuery(api.users.getUser, { userId: user!.id });
+  const { isLoading } = useConvexAuth()
 
   if (!user) return null;
 
-  const userInfo = useQuery(api.users.getUser, { userId: user.id });
 
   if (userInfo?.onboarded) {
     redirect("/chat-with-ai");
