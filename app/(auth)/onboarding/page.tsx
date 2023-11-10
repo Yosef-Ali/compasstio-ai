@@ -1,4 +1,3 @@
-"use client"
 import AccountProfile from "@/components/forms/AccountProfile";
 import { api } from "@/convex/_generated/api";
 import { useUser } from "@clerk/nextjs";
@@ -11,8 +10,8 @@ export default function OnBoardingPage() {
 
 
   const { user } = useUser();
-
-  const userInfo = useQuery(api.users.getUser, { userId: user!.id });
+  {/* @ts-ignore */ }
+  const userInfo = useQuery(api.users.getUser, { userId: user?.id });
   const { isLoading } = useConvexAuth()
 
   if (!user) return null;
