@@ -9,7 +9,7 @@ import { redirect } from "next/navigation";
 export default function ProfileEditPage() {
 
   const { user } = useUser();
-  const userInfo = useQuery(api.users.getUser, { userId: user.id });
+  const userInfo = useQuery(api.users.getUser, { userId: user!.id });
 
   if (!user) return null;
 
