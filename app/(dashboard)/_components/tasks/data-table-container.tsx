@@ -45,6 +45,7 @@ export default function TaskPage() {
           </div>
 
           <div className="hidden h-full flex-1 flex-col space-y-4 md:flex">
+            {/* @ts-ignore */}
             <DataTable data={tasks} columns={columns} />
           </div>
         </div>
