@@ -1,3 +1,4 @@
+"use client"
 import AccountProfile from "@/components/forms/AccountProfile";
 import { api } from "@/convex/_generated/api";
 import { useUser } from "@clerk/nextjs";
