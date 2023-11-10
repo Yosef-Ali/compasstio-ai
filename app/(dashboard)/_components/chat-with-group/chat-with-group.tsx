@@ -51,6 +51,7 @@ export default function ChatWithGroup() {
             _creationTime={group._creationTime ?? 0}
             avatarUrl={group.avatarUrl ?? " "}
             isActive={activeGroupId === group._id}
+            {/* @ts-ignore */}
             onClick={() => handleCardClick(group)}
           />
         );
