@@ -7,7 +7,7 @@ import { redirect } from "next/navigation";
 import { Spinner } from "@/components/spinner";
 
 
-export default function onBoardingPage() {
+export default function OnBoardingPage() {
 
 
   const { user } = useUser();
