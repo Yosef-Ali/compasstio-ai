@@ -40,10 +40,11 @@ export default function ProfilePage() {
   const param = useParams();
   const { user } = useUser();
 
+  const userInfo = useQuery(api.users.getUser, { userId: param.id.toString() });
+
   if (!user) return null;
 
   // Fetch user info using useQuery
-  const userInfo = useQuery(api.users.getUser, { userId: param.id.toString() });
 
 
   if (userInfo?.userId !== param.id) {

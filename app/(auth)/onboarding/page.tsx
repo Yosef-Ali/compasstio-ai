@@ -9,7 +9,7 @@ import { Spinner } from "@/components/spinner";
 
 export default function onBoardingPage() {
 
-  const { isAuthenticated, isLoading } = useConvexAuth()
+  const { isLoading } = useConvexAuth()
 
   const { user } = useUser();
 

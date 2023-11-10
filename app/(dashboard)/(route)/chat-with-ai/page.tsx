@@ -32,7 +32,7 @@ const tabs = [
 
 const ChatWithAiPage = () => {
 
-  const { isLoading } = useConvexAuth()
+  // const { isLoading } = useConvexAuth()
 
   const { user } = useUser();
 
@@ -40,16 +40,16 @@ const ChatWithAiPage = () => {
 
   if (!user) return null;
 
-  const userInfo = useQuery(api.users.getUser, { userId: user.id });
+  // const userInfo = useQuery(api.users.getUser, { userId: user.id });
 
-  console.log('userInfoOnChatWithAi', userInfo)
+  // console.log('userInfoOnChatWithAi', userInfo)
 
 
-  if (!isLoading && userInfo?.userId !== user.id) {
-    return (<div className="w-full flex items-center justify-center">
-      <Spinner size="lg" />
-    </div>)
-  }
+  // if (!isLoading && userInfo?.userId !== user.id) {
+  //   return (<div className="w-full flex items-center justify-center">
+  //     <Spinner size="lg" />
+  //   </div>)
+  // }
 
 
   return (

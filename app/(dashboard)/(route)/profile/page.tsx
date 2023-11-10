@@ -38,18 +38,17 @@ export default function ProfilePage() {
 
 
   const { user } = useUser();
-
-  if (!user) return null;
+  const userInfo = useQuery(api.users.getUser, { userId: user!.id });
 
   // Fetch user info using useQuery
-  const userInfo = useQuery(api.users.getUser, { userId: user.id });
 
-
-  if (userInfo?.userId !== user.id) {
+  if (userInfo?.userId !== user!.id) {
     // Redirect to homepage or show an error message
     redirect("/");
     return null;
   }
+
+
 
   // Render the protected profile page
 
