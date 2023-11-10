@@ -6,7 +6,7 @@ import { useQuery } from "convex/react";
 import { redirect } from "next/navigation";
 
 
-export default function onBoardingPage() {
+export default function ProfileEditPage() {
 
   const { user } = useUser();
   if (!user) return null;

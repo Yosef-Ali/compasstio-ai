@@ -35,7 +35,7 @@ const data = [
   },
 ];
 
-export default function ProfilePage() {
+export default function ProfileEditSinglePage() {
 
   const param = useParams();
   const { user } = useUser();
