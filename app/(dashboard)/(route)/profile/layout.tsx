@@ -12,6 +12,9 @@ import { useOnCreate } from "@/app/hooks/use-on-create";
 import { useUser } from "@clerk/clerk-react";
 import ChatContainer from '../../_components/chat-container'
 import AllUsers from '../../_components/chat-with-group/all-users'
+import { useConvexAuth } from 'convex/react'
+import { Spinner } from '@/components/spinner'
+import { redirect } from 'next/navigation'
 
 interface ChatWithGroupPageProps {
   children: React.ReactNode
@@ -47,6 +50,19 @@ const ProfilePageLayout = ({
   const onCreate = () => {
     toggleOpen(!isOpen);
   };
+  const { isAuthenticated, isLoading } = useConvexAuth();
+
+  if (isLoading) {
+    return (
+      <div className="h-full flex items-center justify-center">
+        <Spinner size="lg" />
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return redirect("/");
+  }
   return (<>
     <TopNav />
     <Shell>

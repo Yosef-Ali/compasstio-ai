@@ -12,7 +12,7 @@ export default function OnBoardingPage() {
 
   const { user } = useUser();
   {/* @ts-ignore */ }
-  const userInfo = useQuery(api.users.getUser, { userId: user?.id });
+  const userInfo = useQuery(api.users.getUser, { userId: user?.id.toString() });
   const { isLoading } = useConvexAuth()
 
   if (!user) return null;
@@ -21,11 +21,11 @@ export default function OnBoardingPage() {
   if (userInfo?.onboarded) {
     redirect("/chat-with-ai");
   }
-  if (!isLoading) {
-    return (<div className="w-full flex items-center justify-center">
-      <Spinner size="lg" />
-    </div>)
-  }
+  // if (!isLoading) {
+  //   return (<div className="w-full flex items-center justify-center">
+  //     <Spinner size="lg" />
+  //   </div>)
+  // }
 
 
   const userData = {

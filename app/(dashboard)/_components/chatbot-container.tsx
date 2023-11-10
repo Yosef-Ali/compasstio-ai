@@ -84,7 +84,7 @@ const ChatbotContainer = () => {
   const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     handleSubmit(event); // Assuming handleSubmit is an async function
-    console.log('completion:::', completion)
+    console.log('completion:::', messages)
   };
 
   return (

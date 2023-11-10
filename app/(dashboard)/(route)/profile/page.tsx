@@ -38,15 +38,20 @@ export default function ProfilePage() {
 
 
   const { user } = useUser();
-  const userInfo = useQuery(api.users.getUser, { userId: user!.id });
+
+  console.log('userprofile', user)
+  const userInfo = useQuery(api.users.getUser, { userId: user!.id.toString() });
+
+  console.log('userinfoProfile', userInfo)
+
 
   // Fetch user info using useQuery
 
-  if (userInfo?.userId !== user!.id) {
-    // Redirect to homepage or show an error message
-    redirect("/");
-    return null;
-  }
+  // if (userInfo?.userId !== user!.id) {
+  //   // Redirect to homepage or show an error message
+  //   redirect("/");
+  //   return null;
+  // }
 
 
 
