@@ -37,10 +37,10 @@ export default function ArchiveJournal() {
       {journals?.map(journal => (
         <JournalCard
           key={journal._id}
+          _id={journal._id}
           title={journal.title ?? " "}
-          description={journal.description ?? " "}
+          description={journal.content ?? " "}
           creationTime={journal._creationTime}
-          onClick={() => { }}
         />
       ))}
     </div>
