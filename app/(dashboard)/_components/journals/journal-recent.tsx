@@ -39,10 +39,10 @@ export default function RecentJournal() {
       {journals?.map(journal => (
         <JournalCard
           key={journal._id}
+          _id={journal._id}
           title={journal.title ?? " "}
           description={journal.description ?? " "}
           creationTime={journal._creationTime}
-          onClick={() => { }}
         />
       ))}
     </div>

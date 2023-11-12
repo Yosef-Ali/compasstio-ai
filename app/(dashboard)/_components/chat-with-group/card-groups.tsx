@@ -16,7 +16,6 @@ interface CardData {
   name: string;
   description: string;
   avatarUrl: string;
-  isActive: boolean;
 }
 
 /**

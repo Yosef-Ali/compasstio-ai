@@ -39,7 +39,7 @@ const JournalsPage = () => {
 
   const onCreate = () => {
     const promise = create({ title: "Untitled" })
-    // .then((journalId) => router.push(`/journals/${journalId}`))
+    .then((journalId) => router.push(`/journals/${journalId}`))
 
     toast.promise(promise, {
       loading: "Creating a new note...",

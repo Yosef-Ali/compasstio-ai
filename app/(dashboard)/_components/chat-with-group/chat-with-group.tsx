@@ -12,7 +12,6 @@ interface Group {
   description: string;
   _creationTime: number;
   avatarUrl: string;
-
 }
 
 
@@ -20,8 +19,6 @@ export default function ChatWithGroup() {
   const [activeGroupId, setActiveGroupId] = useState<string | null>(null);
 
   const groups = useQuery(api.groups.get) as Group[];
-
-  console.log("groups", groups)
 
   const { isLoading } = useConvexAuth()
 
@@ -35,9 +32,9 @@ export default function ChatWithGroup() {
     );
   };
 
-  const handleCardClick = (group: Group) => {
-    setActiveGroupId(group._id);
-  }
+  // const handleCardClick = (group: Group) => {
+  //   setActiveGroupId(group._id);
+  // }
 
   return (
     <div className="grid grid-cols-1 gap-4 p-3">
@@ -50,9 +47,6 @@ export default function ChatWithGroup() {
             description={group.description ?? " "}
             _creationTime={group._creationTime ?? 0}
             avatarUrl={group.avatarUrl ?? " "}
-            isActive={activeGroupId === group._id}
-            // @ts-ignore 
-            onClick={() => handleCardClick(group)}
           />
         );
       })}

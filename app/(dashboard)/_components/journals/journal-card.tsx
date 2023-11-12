@@ -1,36 +1,56 @@
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useFormattedTime } from "@/lib/formated-time";
+import { Id } from "@/convex/_generated/dataModel";
+import Link from "next/link";
+import { useParams } from "next/navigation";
+import "@blocknote/core/style.css";
+
+
+
 
 interface CardData {
+  _id: Id<"journals">;
   title: string;
-  description: string;
+  description: any;
   creationTime: number;
 }
 
-interface ChatCardProps extends CardData {
-  onClick: () => void;
-}
+export function JournalCard({ _id, title, description, creationTime }: CardData) {
 
-export function JournalCard({ title, description, creationTime, onClick }: ChatCardProps) {
+  const isActive = _id === useParams().journalId
+
+
   const formatted = useFormattedTime(creationTime);
 
-  return (
-    <Card>
-      <CardHeader>
-        <div className="flex justify-between">
-          <CardTitle className="text-lg">{title}</CardTitle>
-          <button className="text-gray-500" onClick={onClick}>
-            {/* button code */}
-          </button>
-        </div>
-        <CardDescription>{description}</CardDescription>
-        <CardDescription>
+  console.log('description', description[0].content?.[0].text)
 
-          {formatted}
-        </CardDescription>
-      </CardHeader>
-    </Card>
+  // const getFirstNonEmptyText = (description) => {
+  //   return description.find(item => item.type === "text" && item.text !== "");
+  // };
+
+  // const firstNonEmptyText = getFirstNonEmptyText(description);
+
+  // console.log(firstNonEmptyText.text);
+
+
+  return (
+    <Link href={`/journals/${_id}`} >
+      <Card className={`cursor-pointer ${isActive ? 'bg-muted' : ''}`}>
+        <CardHeader>
+          <div className="flex justify-between">
+            <CardTitle className="text-lg">{title}</CardTitle>
+            <button className="text-gray-500" onClick={() => { }}>
+              {/* button code */}
+            </button>
+          </div>
+          <CardDescription>{description}</CardDescription>
+          <CardDescription>
+            {formatted}
+          </CardDescription>
+        </CardHeader>
+      </Card>
+    </Link>
   );
 }
 

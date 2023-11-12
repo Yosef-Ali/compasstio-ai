@@ -1,78 +1,98 @@
-"use client"
+"use client";
 
+import React from 'react';
+
+import Editor from '@/components/editor';
 import { useRouter } from "next/navigation"
 import { useUser } from "@clerk/clerk-react";
-
-import { useMutation } from "convex/react"
+import { Id } from "@/convex/_generated/dataModel";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Toolbar } from "@/components/toolbar";
+import { useMutation, useQuery } from "convex/react"
 
 import { Button } from "@/components/ui/button"
 import { PlusCircleIcon, Tablets } from "lucide-react"
 import { toast } from "sonner"
 import { api } from "@/convex/_generated/api"
+import dynamic from "next/dynamic";
+import { useMemo } from "react";
 
-import CardRecentJournal from "@/app/(dashboard)/_components/journals/journal-recent";
-import CardArchiveJournal from "@/app/(dashboard)/_components/journals/journal-archive";
-import Shell from "@/app/(dashboard)/_components/shell";
-import TopNav from "@/app/(dashboard)/_components/top-nav";
-import Wrapper from "@/app/(dashboard)/_components/wrapper";
-import RightAside from "@/app/(dashboard)/_components/right-aside";
-
-
-const tabs = [
-  {
-    name: 'Recent',
-    title: 'Recent',
-    content: <CardRecentJournal />
-  },
-  {
-    name: 'Archive',
-    title: 'Archive',
-    content: <CardArchiveJournal />
-  }
-];
-
-
-const JournalsSinglePage = () => {
-  const router = useRouter();
-  const { user } = useUser();
-
-  const create = useMutation(api.journals.create);
-  console.log('user', user?.fullName)
-
-  const onCreate = () => {
-    const promise = create({ title: "Untitled" })
-    // .then((journalId) => router.push(`/journals/${journalId}`))
-
-    toast.promise(promise, {
-      loading: "Creating a new note...",
-      success: "New note created!",
-      error: "Failed to create a new note."
-    });
-
+interface JournalIdPageProps {
+  params: {
+    journalId: Id<"journals">;
   };
+};
 
 
-
-
-  return (
-    <>
-      <TopNav />
-      <Shell>
-        <Wrapper>
-          <div className="max-w-xl mx-auto flex flex-col p-12 space-y-3">
-            <h2 className="text-lg font-medium">
-              Welcome to {user?.fullName}&apos;s eternalvirtueai.com
-            </h2>
-            <Button onClick={onCreate} className="flex">
-              <PlusCircleIcon className="h-4 w-4 mr-2" />
-              Create a Journal
-            </Button>
-          </div>
-        </Wrapper>
-        <RightAside tabs={tabs} />
-      </Shell>
-    </>
-  )
+interface InitialData {
+  _id: Id<"journals">;
+  _creationTime: number;
+  content?: string | undefined;
+  coverImage?: string | undefined;
+  icon?: string | undefined;
+  title: string;
+  userId: string;
+  isArchived: boolean;
+  isPublished: boolean;
 }
 
-export default JournalsSinglePage
+interface JournalsSinglePageProps {
+  initialData: InitialData;
+  onChange: (content: string) => void;
+  initialContent: string;
+  editable?: boolean;
+}
+
+const JournalsSinglePage = ({
+  params }: JournalIdPageProps) => {
+
+  const Editor = useMemo(() => dynamic(() => import("@/components/editor"), { ssr: false }), []);
+
+  const journal = useQuery(api.journals.getById, {
+    journalId: params.journalId
+  });
+
+  const update = useMutation(api.journals.update);
+
+  const onChange = (content: string) => {
+    update({
+      id: params.journalId,
+      content
+    });
+  };
+
+  if (journal === undefined) {
+    return (
+      <div>
+        <div className="md:max-w-3xl lg:max-w-4xl mx-auto mt-10">
+          <div className="space-y-4 pl-8 pt-4">
+            <Skeleton className="h-14 w-[50%]" />
+            <Skeleton className="h-4 w-[80%]" />
+            <Skeleton className="h-4 w-[40%]" />
+            <Skeleton className="h-4 w-[60%]" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (journal === null) {
+    return <div>Not found</div>
+  }
+
+  // Component logic
+
+  return (
+    <div className="max-w-3xl flex flex-col p-12 space-y-3">
+      <Toolbar initialData={journal} />
+      <Editor
+        onChange={onChange}
+        initialContent={journal.content}
+        editable
+      />
+
+    </div>
+  );
+};
+
+export default JournalsSinglePage;

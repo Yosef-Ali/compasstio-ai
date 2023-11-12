@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@blocknote/core": "^0.9.6",
+    "@blocknote/react": "^0.9.6",
     "@clerk/nextjs": "^4.25.6",
     "@hookform/resolvers": "^3.3.2",
     "@huggingface/inference": "^2.6.4",
@@ -34,6 +36,7 @@
     "convex": "^1.5.1",
     "date-fns": "^2.30.0",
     "dayjs": "^1.11.10",
+    "emoji-picker-react": "^4.5.15",
     "fs": "^0.0.1-security",
     "lucide-react": "^0.284.0",
     "moment": "^2.29.4",
