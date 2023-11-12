@@ -20,8 +20,7 @@ import TopNav from "@/app/(dashboard)/_components/top-nav";
 import Wrapper from "@/app/(dashboard)/_components/wrapper";
 import RightAside from "@/app/(dashboard)/_components/right-aside";
 import { Id } from "@/convex/_generated/dataModel";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Toolbar } from "@/components/toolbar";
+
 
 
 interface JournalIdPageProps {

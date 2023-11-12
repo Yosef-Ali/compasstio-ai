@@ -1,9 +1,16 @@
 import { Button } from '@/components/ui/button'
+import { useRouter, usePathname } from 'next/navigation'
 import { PlusCircle } from 'lucide-react'
 import React from 'react'
 import ItemButton from './item-button'
 
 const TopNav = () => {
+
+  const pathname = usePathname()
+  //const pathWithoutId = asPath.replace(`/${query.id}`, '')
+  console.log('pathname', pathname.split("/").slice(0, 2).join("/"))
+  const Pathname = pathname.split("/").slice(0, 2).join("/")
+
   return (
     <div className="sticky top-0 z-40 bg-background ">
       <div className="w-full">
@@ -17,14 +24,21 @@ const TopNav = () => {
           {/* <div className="flex justify-end space-x-2">
             <Button className='flex bg-purple-500'>NewProject</Button>
           </div> */}
-          <div className="flex shrink-0">
+          {Pathname === '/journals' ? (
+            <div className="flex shrink-0">
+              <ItemButton
+                onClick={() => { }}
+                label="New Journal"
+                icon={PlusCircle}
+              />
+            </div>) : <div className='flex shrink-0'>
             <ItemButton
               onClick={() => { }}
-              label="New Page"
+              label="New Project"
               icon={PlusCircle}
             />
           </div>
-
+          }
         </div>
       </div>
     </div>

@@ -41,7 +41,7 @@ export default function RecentJournal() {
           key={journal._id}
           _id={journal._id}
           title={journal.title ?? " "}
-          description={journal.description ?? " "}
+          description={journal.content ?? " "}
           creationTime={journal._creationTime}
         />
       ))}

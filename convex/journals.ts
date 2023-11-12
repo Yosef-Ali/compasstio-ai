@@ -155,3 +155,5 @@ export const removeIcon = mutation({
     return journal;
   },
 });
+
+

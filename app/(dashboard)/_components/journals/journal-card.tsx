@@ -1,3 +1,5 @@
+"use client"
+import React, { useState } from "react";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useFormattedTime } from "@/lib/formated-time";
@@ -16,35 +18,32 @@ interface CardData {
   creationTime: number;
 }
 
+const regex = new RegExp('"text": "([^"]*)"');
+
 export function JournalCard({ _id, title, description, creationTime }: CardData) {
 
-  const isActive = _id === useParams().journalId
+  const isActive = _id === useParams().journalId;
 
+  //const regex = /regex-pattern/;
+  const match = description.match(regex);
+  const Description = match ? match[1] : "No match found";
+
+
+  console.log('description', description[0]?.content?.[0]?.text);
 
   const formatted = useFormattedTime(creationTime);
-
-  console.log('description', description[0].content?.[0].text)
-
-  // const getFirstNonEmptyText = (description) => {
-  //   return description.find(item => item.type === "text" && item.text !== "");
-  // };
-
-  // const firstNonEmptyText = getFirstNonEmptyText(description);
-
-  // console.log(firstNonEmptyText.text);
-
 
   return (
     <Link href={`/journals/${_id}`} >
       <Card className={`cursor-pointer ${isActive ? 'bg-muted' : ''}`}>
         <CardHeader>
           <div className="flex justify-between">
-            <CardTitle className="text-lg">{title}</CardTitle>
+            <CardTitle className="text-lg truncate">{title}</CardTitle>
             <button className="text-gray-500" onClick={() => { }}>
               {/* button code */}
             </button>
           </div>
-          <CardDescription>{description}</CardDescription>
+          <CardDescription className="line-clamp-2">{Description}</CardDescription>
           <CardDescription>
             {formatted}
           </CardDescription>
