@@ -35,7 +35,7 @@ export const dashboardConfig: DashboardConfig = {
     },
     {
       title: "Live Session",
-      href: "/live-session",
+      href: "/live-sessions",
       icon: "video",
     },
   ],

@@ -4,7 +4,6 @@ import React from 'react';
 
 import Editor from '@/components/editor';
 import { useRouter } from "next/navigation"
-
 import { useUser } from "@clerk/clerk-react";
 import { Id } from "@/convex/_generated/dataModel";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -65,7 +64,7 @@ const JournalsSinglePage = ({
   if (journal === undefined) {
     return (
       <div>
-        <div className="md:max-w-3xl lg:max-w-4xl mx-auto mt-10">
+        <div className="md:max-w-3xl lg:max-w-4xl mx-auto p-12">
           <div className="space-y-4 pl-8 pt-4">
             <Skeleton className="h-14 w-[50%]" />
             <Skeleton className="h-4 w-[80%]" />
@@ -84,6 +83,7 @@ const JournalsSinglePage = ({
   // Component logic
 
   return (
+
     <div className="max-w-3xl flex flex-col p-12 space-y-3">
       <Toolbar initialData={journal} />
       <Editor
@@ -91,7 +91,6 @@ const JournalsSinglePage = ({
         initialContent={journal.content}
         editable
       />
-
     </div>
   );
 };

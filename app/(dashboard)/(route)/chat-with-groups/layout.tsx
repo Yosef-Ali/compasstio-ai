@@ -47,23 +47,24 @@ const ChatWithGroupPage = ({
   const onCreate = () => {
     toggleOpen(!isOpen);
   };
-  return (<>
-    <TopNav />
-    <Shell>
-      <Wrapper>
-        {/* {!isOpen ?
+  return (
+    <>
+      <TopNav page="chat" />
+      <Shell>
+        <Wrapper>
+          {/* {!isOpen ?
           <WelcomeMessage
             userFullName={user?.fullName}
             onCreate={onCreate}
             buttonLabel="Chat with group"
           />
           : <ChatContainer />} */}
-        {/* <ChatContainer /> */}
-        {children}
-      </Wrapper>
-      <RightAside tabs={tabs} />
-    </Shell>
-  </>
+          {/* <ChatContainer /> */}
+          {children}
+        </Wrapper>
+        <RightAside tabs={tabs} />
+      </Shell>
+    </>
   )
 }
 

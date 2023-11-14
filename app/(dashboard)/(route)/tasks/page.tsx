@@ -15,6 +15,7 @@ import InprogressTasks from "@/app/(dashboard)/_components/tasks/inprogress-task
 import DataTableContainer from "../../_components/tasks/data-table-container";
 import { Button } from "@/components/ui/button";
 import { PlusCircleIcon } from "lucide-react";
+import NewTask from "../../_components/tasks/components/new-task";
 
 
 const tabs = [
@@ -48,7 +49,8 @@ const TasksPage = () => {
       <TopNav />
       <Shell>
         <Wrapper>
-          <DataTableContainer />
+          <NewTask />
+          {/* <DataTableContainer /> */}
         </Wrapper>
         <RightAside tabs={tabs} />
       </Shell>

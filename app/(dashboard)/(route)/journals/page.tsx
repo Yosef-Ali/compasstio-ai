@@ -15,6 +15,10 @@ import CardArchiveJournal from "../../_components/journals/journal-archive";
 import TopNav from "../../_components/top-nav";
 import RightAside from "../../_components/right-aside";
 
+interface Props {
+  page?: 'journals' | 'chat' | 'tasks'
+}
+
 
 const tabs = [
   {
@@ -39,7 +43,7 @@ const JournalsPage = () => {
 
   const onCreate = () => {
     const promise = create({ title: "Untitled" })
-    .then((journalId) => router.push(`/journals/${journalId}`))
+      .then((journalId) => router.push(`/journals/${journalId}`))
 
     toast.promise(promise, {
       loading: "Creating a new note...",
@@ -51,7 +55,7 @@ const JournalsPage = () => {
 
   return (
     <>
-      <TopNav />
+      <TopNav page="journals" />
       <Shell>
         <Wrapper>
           <div className="max-w-xl mx-auto flex flex-col p-12 space-y-3">

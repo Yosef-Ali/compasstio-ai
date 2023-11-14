@@ -14,9 +14,12 @@ const ChatWithGroupSinglePage = ({ params }: { params: { userId: string } }) => 
 
   const param_Id = params.userId
 
+  console.log("I am a single page")
+
 
   return (
     <>
+
       <ChatContainerSinglePage />
     </>
   )

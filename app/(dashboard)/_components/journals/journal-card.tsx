@@ -29,8 +29,6 @@ export function JournalCard({ _id, title, description, creationTime }: CardData)
   const Description = match ? match[1] : "No match found";
 
 
-  console.log('description', description[0]?.content?.[0]?.text);
-
   const formatted = useFormattedTime(creationTime);
 
   return (
