@@ -3,15 +3,15 @@ import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 
 interface TitleProps {
-  journalId: Id<"journals">;
+  taskId: Id<"tasks">;
 }
 
-const TitleTasks = ({ journalId }: TitleProps) => {
+const TitleTasks = ({ taskId }: TitleProps) => {
 
-  const journal = useQuery(api.journals.getById, { journalId });
+  const task = useQuery(api.tasks.getById, { taskId });
 
   return (
-    <h1>{journal?.title}</h1>
+    <h1>{task?.title}</h1>
   );
 
 };

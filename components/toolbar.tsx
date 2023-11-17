@@ -110,7 +110,7 @@ export const Toolbar = ({
               </Button>
             </IconPicker>
           )}
-          {/* {!initialData.coverImage && !preview && (
+          {!initialData.coverImage && !preview && (
             <Button
               onClick={() => { }}
               className="text-muted-foreground text-xs"
@@ -120,7 +120,7 @@ export const Toolbar = ({
               <ImageIcon className="h-4 w-4 mr-2" />
               Add cover
             </Button>
-          )} */}
+          )}
         </div>
         <div className="flex">
           {isEditing && !preview ? (

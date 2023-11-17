@@ -22,6 +22,7 @@ import type * as journals from "../journals";
 import type * as messages from "../messages";
 import type * as messagesAi from "../messagesAi";
 import type * as product from "../product";
+import type * as tasks from "../tasks";
 import type * as users from "../users";
 
 /**
@@ -41,6 +42,7 @@ declare const fullApi: ApiFromModules<{
   messages: typeof messages;
   messagesAi: typeof messagesAi;
   product: typeof product;
+  tasks: typeof tasks;
   users: typeof users;
 }>;
 export declare const api: FilterApi<

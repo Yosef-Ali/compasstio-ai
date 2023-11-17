@@ -73,4 +73,14 @@ export default defineSchema({
     bio: v.string(),
     onboarded: v.boolean(),
   }),
+
+  tasks: defineTable({
+    _id: v.string(),
+    _creationTime: v.number(),
+    title: v.string(),
+    userId: v.string(),
+    description: v.union(v.string(), v.null()),
+    dueDate: v.union(v.number(), v.null()),
+    status: v.union(v.string(), v.null()),
+  }).index("by_user", ["userId"]),
 });

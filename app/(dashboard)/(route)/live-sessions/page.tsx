@@ -41,7 +41,7 @@ const LiveStreamPage = () => {
   };
 
   return (
-    <div>
+    <>
       <TopNav />
       <Shell>
         <Wrapper>
@@ -62,7 +62,7 @@ const LiveStreamPage = () => {
         </Wrapper>
         <RightAside tabs={tabs} />
       </Shell>
-    </div>
+    </>
   );
 };
 

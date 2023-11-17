@@ -1,5 +1,5 @@
-
-import { useRouter, usePathname, useParams, redirect } from 'next/navigation'
+"use client"
+import { useRouter, usePathname, useParams } from 'next/navigation'
 import { useMutation } from "convex/react"
 import { toast } from "sonner"
 import { api } from "@/convex/_generated/api"
@@ -9,6 +9,7 @@ import ItemButton from './item-button'
 import { useUser } from "@clerk/clerk-react";
 import { Id } from '@/convex/_generated/dataModel'
 import TitleJournal from './top-nav/title-journals'
+import TitleTasks from './top-nav/title-tasks'
 
 interface Props {
   page?: "chat-with-ai" | "chat-with-groups" | "journals" | "tasks" | "live-sessions"
@@ -16,13 +17,16 @@ interface Props {
 
 const TopNav: FC<Props> = ({ page }) => {
   const router = useRouter();
-
-  const { journalId } = useParams<{ journalId: Id<"journals"> }>();
-
   const pathname = usePathname()
 
+  const Pathname = pathname.split("/").slice(0, 2).join("/")
+
+  const { journalId } = useParams<{ journalId: Id<"journals"> }>();
+  const { taskId } = useParams<{ taskId: Id<"tasks"> }>();
   const createJournal = useMutation(api.journals.create);
-  const handleCreate = () => {
+  const createTask = useMutation(api.tasks.create);
+
+  const handleCreateJournal = () => {
     const promise = createJournal({ title: "Untitled" }).then((journalId) => {
       router.push(`/journals/${journalId}`)
     })
@@ -34,10 +38,17 @@ const TopNav: FC<Props> = ({ page }) => {
     });
   };
 
-  //const pathWithoutId = asPath.replace(`/${query.id}`, '')
-  console.log('pathname', pathname.split("/").slice(0, 2).join("/"))
-  const Pathname = pathname.split("/").slice(0, 2).join("/")
-  console.log('page:', page)
+  const handleCreateTask = () => {
+    const promise = createTask({ title: "Untitled" }).then((taskId) => {
+      router.push(`/tasks/${taskId}`)
+    })
+
+    toast.promise(promise, {
+      loading: "Creating a new Task...",
+      success: "New Task created!",
+      error: "Failed to create a new task."
+    });
+  };
 
   return (
     <div className="sticky top-0 z-40 bg-background ">
@@ -45,27 +56,22 @@ const TopNav: FC<Props> = ({ page }) => {
         <div className=" pl-5 pr-5 py-3 md:pr-8 border-b  flex-1 flex  w-full">
           <div className="flex items-center w-full p-1">
             <div className="flex text-xl line-clamp-1">
-              {/* <span className="flex flex-1 outline-none max-w-fit rounded-md border-none focus:ring-0 text-h1 cursor-pointer p-2 line-clamp-1">Untitle</span>
-              <input type="text" className="flex flex-1 px-2 w-full overflow-ellipsis whitespace-nowrap outline-none max-w-fit rounded-md border-none focus:ring-0 !p-0 !m-0 text-h1 cursor-pointer" /> */}
-              {/* {!journalId ? "Untitled" : <Title journalId={journalId} />} */}
+
               {
                 page === 'chat-with-ai' ? (`!journalId ? "Untitled" : <TitleChatWithAI journalId={journalId} />`) :
                   page === 'chat-with-groups' ? (`!journalId ? "Untitled" : <TitleChatWithGroups journalId={journalId} />`) :
                     page === 'journals' ? (!journalId ? "Untitled" : <TitleJournal journalId={journalId} />) :
-                      page === 'tasks' ? (`!taskId ? "Untitled" : <TitleTasks taskId={taskId} />`) :
+                      page === 'tasks' ? (!taskId ? "Untitled" : <TitleTasks taskId={taskId} />) :
                         page === 'live-sessions' ? (`!liveSessionId ? "Untitled" : <TitleLiveSections liveSessionId={liveSessionId} />`)
                           : "Untitled"
               }
-
             </div>
           </div>
-          {/* <div className="flex justify-end space-x-2">
-            <Button className='flex bg-purple-500'>NewProject</Button>
-          </div> */}
+
           {Pathname === '/journals' ? (
             <div className="flex shrink-0">
               <ItemButton
-                onClick={handleCreate}
+                onClick={handleCreateJournal}
                 label="New Journal"
                 icon={PlusCircle}
               />
@@ -73,7 +79,7 @@ const TopNav: FC<Props> = ({ page }) => {
             Pathname === '/tasks' ? (
               <div className='flex shrink-0'>
                 <ItemButton
-                  onClick={() => { }}
+                  onClick={handleCreateTask}
                   label="New Task"
                   icon={PlusCircle}
                 />

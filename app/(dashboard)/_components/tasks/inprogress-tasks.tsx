@@ -6,23 +6,22 @@ import { Id, Doc } from "@/convex/_generated/dataModel";
 
 import { TaskCardInProgress } from "./task-card-inpro";
 
-interface Journal extends Doc<"journals"> {
-  _id: Id<"journals">;
-  description?: string;
-  coverImage?: string;
-  icon?: string;
-  title: string;
-  userId: string;
-  isArchived: boolean;
-  isPublished: boolean;
+interface Task extends Doc<"tasks"> {
+  _id: Id<"tasks">
+  _creationTime: number
+  content?: string | undefined
+  title: string
+  userId: string
+  isArchived: boolean
+  isPublished: boolean
 }
 
 
 export default function InprogressTasks() {
-  const journals = useQuery(api.journals.get) as Journal[];
+  const tasks = useQuery(api.tasks.get) as Task[] | undefined;
   const { isLoading } = useConvexAuth()
 
-  if (journals === undefined || isLoading) {
+  if (tasks === undefined || isLoading) {
     return (
       <div className="space-y-3">
         <ChatCard.Skeleton />
@@ -31,16 +30,19 @@ export default function InprogressTasks() {
       </div>
     );
   };
-
+  console.log('tasks', tasks)
 
   return (
     <div className="grid grid-cols-1 gap-4 p-3">
-      {journals?.map((journal) => (
+      {tasks?.map((task) => (
         <TaskCardInProgress
-          key={journal._id}
-          title={journal.title || " "}
-          description={journal.description || " "}
-          creationTime={journal._creationTime}
+          key={task._id}
+          _id={task._id}
+          title={task.title || " "}
+          description={task.description || " "}
+          status={task.status || " "}
+          dueDate={task.dueDate || 0}
+          creationTime={task._creationTime}
           onClick={() => { }}
         />
       ))}

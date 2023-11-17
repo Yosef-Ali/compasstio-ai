@@ -1,6 +1,5 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
-import { Doc, Id } from "./_generated/dataModel";
 
 export const get = query({
   handler: async (ctx) => {
@@ -11,27 +10,18 @@ export const get = query({
         throw new Error("Not authenticated");
       }
 
-      const journals = await ctx.db
-        .query("journals")
+      const tasks = await ctx.db
+        .query("tasks")
         .filter((q) => q.eq(q.field("userId"), identity.subject))
         .order("desc")
         .take(100);
-      if (!journals) {
-        throw new Error("No journals found");
+      if (!tasks) {
+        throw new Error("No tasks found");
       }
-
-      return journals;
+      return tasks;
     } catch (error) {
       // Log the error
       console.error(error);
-
-      // Return a meaningful response to the user
-      return {
-        statusCode: 500,
-        body: {
-          message: "An error occurred while fetching the journals.",
-        },
-      };
     }
   },
 });
@@ -53,14 +43,15 @@ export const create = mutation({
 
       const userId = identity.subject;
 
-      const journal = await ctx.db.insert("journals", {
+      const task = await ctx.db.insert("tasks", {
         title: args.title,
         userId,
-        isArchived: false,
-        isPublished: false,
+        status: null,
+        description: "",
+        dueDate: 0,
       });
 
-      return journal;
+      return task;
     } catch (err) {
       console.error(err);
       throw err;
@@ -69,38 +60,37 @@ export const create = mutation({
 });
 
 export const getById = query({
-  args: { journalId: v.id("journals") },
+  args: {
+    taskId: v.id("tasks"),
+  },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
 
-    const journal = await ctx.db.get(args.journalId);
+    const task = await ctx.db.get(args.taskId);
 
-    if (!journal) {
+    if (!task) {
       throw new Error("Not found");
     }
 
     if (!identity) {
       throw new Error("Not authenticated");
     }
-
     const userId = identity.subject;
 
-    if (journal.userId !== userId) {
-      throw new Error("Unauthorized");
+    if (task.userId !== userId) {
+      throw new Error("Not authorized");
     }
-
-    return journal;
+    return task;
   },
 });
 
 export const update = mutation({
   args: {
-    id: v.id("journals"),
+    id: v.id("tasks"),
     title: v.optional(v.string()),
-    content: v.optional(v.string()),
-    coverImage: v.optional(v.string()),
-    icon: v.optional(v.string()),
-    isArchived: v.optional(v.boolean()),
+    description: v.optional(v.string()),
+    dueDate: v.optional(v.number()),
+    status: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
@@ -123,39 +113,10 @@ export const update = mutation({
       throw new Error("Unauthorized");
     }
 
-    const journal = await ctx.db.patch(args.id, {
+    const task = await ctx.db.patch(args.id, {
       ...rest,
     });
 
-    return journal;
-  },
-});
-
-export const removeIcon = mutation({
-  args: { id: v.id("journals") },
-  handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity();
-
-    if (!identity) {
-      throw new Error("Unauthenticated");
-    }
-
-    const userId = identity.subject;
-
-    const existingJournal = await ctx.db.get(args.id);
-
-    if (!existingJournal) {
-      throw new Error("Not found");
-    }
-
-    if (existingJournal.userId !== userId) {
-      throw new Error("Unauthorized");
-    }
-
-    const journal = await ctx.db.patch(args.id, {
-      icon: undefined,
-    });
-
-    return journal;
+    return task;
   },
 });

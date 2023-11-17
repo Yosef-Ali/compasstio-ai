@@ -16,7 +16,14 @@ import DataTableContainer from "../../_components/tasks/data-table-container";
 import { Button } from "@/components/ui/button";
 import { PlusCircleIcon } from "lucide-react";
 import NewTask from "../../_components/tasks/components/new-task";
+import { useRouter } from "next/navigation";
+import { useMutation } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { toast } from "sonner";
 
+interface Props {
+  page?: 'chat-with-ai' | 'chat-with-groups' | 'journals' | 'tasks' | 'live-sessions'
+}
 
 const tabs = [
   {
@@ -32,29 +39,55 @@ const tabs = [
 ];
 
 const TasksPage = () => {
+  const router = useRouter();
   const { user } = useUser();
   const isOpen = useOnCreate((state) => state.isOpen);
   const toggleOpen = useOnCreate((state) => state.toggleOpen);
 
-  useEffect(() => {
-    useOnCreate.setState({ isOpen });
-  }, [isOpen]);
+  const create = useMutation(api.tasks.create);
 
   const onCreate = () => {
-    toggleOpen(!isOpen);
+    const promise = create({ title: "Untitled" })
+      .then((taskId) => router.push(`/tasks/${taskId}`))
+
+    toast.promise(promise, {
+      loading: "Creating a new note...",
+      success: "New note created!",
+      error: "Failed to create a new note."
+    });
+
   };
 
+
+  // useEffect(() => {
+  //   useOnCreate.setState({ isOpen });
+  // }, [isOpen]);
+
+  // const onCreate = () => {
+  //   toggleOpen(!isOpen);
+  // };
+
   return (
-    <div>
-      <TopNav />
+    <>
+      <TopNav page="tasks" />
       <Shell>
         <Wrapper>
-          <NewTask />
+          <div className="max-w-xl mx-auto flex flex-col p-12 space-y-3">
+
+            <h2 className="text-lg font-medium">
+              Welcome to {user?.fullName}&apos;s eternalvirtueai.com
+            </h2>
+            <Button onClick={onCreate} className="flex">
+              <PlusCircleIcon className="h-4 w-4 mr-2" />
+              Create a Task
+            </Button>
+          </div>
+          {/* <NewTask /> */}
           {/* <DataTableContainer /> */}
         </Wrapper>
         <RightAside tabs={tabs} />
       </Shell>
-    </div>
+    </>
   );
 };
 
