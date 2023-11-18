@@ -7,6 +7,7 @@ import { Id } from "@/convex/_generated/dataModel";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import "@blocknote/core/style.css";
+import { OperationsMenu } from "@/components/oprations-menu";
 
 
 
@@ -36,10 +37,8 @@ export function JournalCard({ _id, title, description, creationTime }: CardData)
       <Card className={`cursor-pointer ${isActive ? 'bg-muted' : ''}`}>
         <CardHeader>
           <div className="flex justify-between">
-            <CardTitle className="text-lg truncate">{title}</CardTitle>
-            <button className="text-gray-500" onClick={() => { }}>
-              {/* button code */}
-            </button>
+            <CardTitle className="text-lg">{title}</CardTitle>
+            <OperationsMenu id={_id} identity="journal" />
           </div>
           <CardDescription className="line-clamp-2">{Description}</CardDescription>
           <CardDescription>

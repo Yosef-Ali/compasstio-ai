@@ -35,8 +35,7 @@ const MainLayout = ({
 
     <div className="flex">
       <SideMenu />
-      <main className="flex flex-col h-screen w-full self-center" >{children}</main>
-      {/* <main className="min-h-screen flex flex-col h-screen" >{children}</main> */}
+      <main className="flex flex-col h-screen w-full self-center">{children}</main>
     </div>
 
   )

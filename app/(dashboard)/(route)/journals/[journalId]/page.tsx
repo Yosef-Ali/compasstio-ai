@@ -32,8 +32,7 @@ interface InitialData {
   icon?: string | undefined;
   title: string;
   userId: string;
-  isArchived: boolean;
-  isPublished: boolean;
+
 }
 
 interface JournalsSinglePageProps {

@@ -14,8 +14,8 @@ interface Task extends Doc<"tasks"> {
   content?: string | undefined
   title: string
   userId: string
-  isArchived: boolean
-  isPublished: boolean
+  status: string
+  dueDate?: number
 }
 
 
@@ -41,7 +41,9 @@ export default function CurrentTasks() {
           _id={task._id}
           title={task.title ?? " "}
           description={task.description ?? " "}
+          status={task.status ?? " "}
           creationTime={task._creationTime}
+          dueDate={task.dueDate ?? 0}
           onClick={() => { }}
         />
       ))}

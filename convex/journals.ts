@@ -159,3 +159,28 @@ export const removeIcon = mutation({
     return journal;
   },
 });
+
+export const remove = mutation({
+  args: { id: v.id("journals") },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+
+    if (!identity) {
+      throw new Error("Unauthenticated");
+    }
+
+    const userId = identity.subject;
+
+    const existingJournal = await ctx.db.get(args.id);
+
+    if (!existingJournal) {
+      throw new Error("Not found");
+    }
+
+    if (existingJournal.userId !== userId) {
+      throw new Error("Unauthorized");
+    }
+
+    await ctx.db.delete(args.id);
+  },
+});

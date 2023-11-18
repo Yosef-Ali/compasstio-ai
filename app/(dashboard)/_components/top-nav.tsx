@@ -61,9 +61,9 @@ const TopNav: FC<Props> = ({ page }) => {
                 page === 'chat-with-ai' ? (`!journalId ? "Untitled" : <TitleChatWithAI journalId={journalId} />`) :
                   page === 'chat-with-groups' ? (`!journalId ? "Untitled" : <TitleChatWithGroups journalId={journalId} />`) :
                     page === 'journals' ? (!journalId ? "Untitled" : <TitleJournal journalId={journalId} />) :
-                      page === 'tasks' ? (!taskId ? "Untitled" : <TitleTasks taskId={taskId} />) :
-                        page === 'live-sessions' ? (`!liveSessionId ? "Untitled" : <TitleLiveSections liveSessionId={liveSessionId} />`)
-                          : "Untitled"
+                      // page === 'tasks' ? (!taskId ? "Untitled" : <TitleTasks taskId={taskId} />) :
+                      page === 'live-sessions' ? (`!liveSessionId ? "Untitled" : <TitleLiveSections liveSessionId={liveSessionId} />`)
+                        : "Untitled"
               }
             </div>
           </div>

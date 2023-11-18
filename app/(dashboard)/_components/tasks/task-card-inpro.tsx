@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge"
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { Id } from "@/convex/_generated/dataModel";
+import { OperationsMenu } from "@/components/oprations-menu";
 
 
 interface CardData {
@@ -36,13 +37,11 @@ export function TaskCardInProgress({ _id, title, description, status, creationTi
 
   return (
     <Link href={`/tasks/${_id}`} >
-      <Card className={`cursor-pointer ${isActive ? 'bg-muted' : ''}`}>
+      <Card className={`cursor-pointer  ${isActive ? 'bg-muted' : ''}`}>
         <CardHeader>
           <div className="flex justify-between">
-            <CardTitle className="text-lg">{title}</CardTitle>
-            <button className="text-gray-500" onClick={onClick}>
-              {/* button code */}
-            </button>
+            <CardTitle className="text-lg truncated">{title}</CardTitle>
+            <OperationsMenu id={_id} identity="task" />
           </div>
           <CardDescription className="line-clamp-2">{Description}</CardDescription>
           <CardDescription>
@@ -51,15 +50,17 @@ export function TaskCardInProgress({ _id, title, description, status, creationTi
         <CardFooter className="flex justify-between">
           <div className="flex space-x-4 text-sm text-muted-foreground w-full ">
             <div className="flex items-center">
-              {status === 'in progress' ? (
-                <Badge className="py-1 bg-blue-100 text-muted-foreground hover:bg-blue-200">
-                  <TimerIcon className="mr-1 h-4 w-4 text-muted-foreground" />
-                  In progress
-                </Badge>
-              ) : (
+              {status === 'done' ? (
                 <Badge className="py-1 bg-green-100 text-muted-foreground hover:bg-green-200">
                   <TimerIcon className="mr-1 h-4 w-4 text-muted-foreground" />
                   Done
+                </Badge>
+
+              ) : (
+
+                <Badge className="py-1 bg-blue-100 text-muted-foreground hover:bg-blue-200">
+                  <TimerIcon className="mr-1 h-4 w-4 text-muted-foreground" />
+                  In progress
                 </Badge>
               )}
             </div>

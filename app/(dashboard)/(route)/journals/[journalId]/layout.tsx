@@ -56,14 +56,7 @@ const JournalsSinglePageLayout = ({
       <TopNav page="journals" />
       <Shell>
         <Wrapper>
-          {/* <div className="max-w-3xl flex flex-col p-12 space-y-3">
-            <Toolbar initialData={journal} />
-            <Editor
-              onChange={onChange}
-              initialContent={journal.content}
-              editable
-            />
-          </div> */}
+          
           {children}
         </Wrapper>
         <RightAside tabs={tabs} />

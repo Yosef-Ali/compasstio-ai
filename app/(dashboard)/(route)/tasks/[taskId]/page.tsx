@@ -44,12 +44,11 @@ interface TaskSinglePageProps {
 
 const TaskSinglePage = ({
   params }: TaskIdPageProps) => {
+  const router = useRouter();
 
   const Editor = useMemo(() => dynamic(() => import("@/components/editor"), { ssr: false }), []);
 
-  const task = useQuery(api.tasks.getById, {
-    taskId: params.taskId
-  });
+  const task = params.taskId ? useQuery(api.tasks.getById, { taskId: params.taskId }) : null;
 
   const update = useMutation(api.tasks.update);
 
@@ -87,7 +86,7 @@ const TaskSinglePage = ({
       <ToolbarTasks initialData={task} />
       <Editor
         onChange={onChange}
-        initialContent={task.description}
+        initialContent={task.description || ""}
         editable
       />
     </div>
