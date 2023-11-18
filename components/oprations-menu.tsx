@@ -32,15 +32,15 @@ export function OperationsMenu({ id, identity }: PostProps) {
   const { deleteTask } = useDeleteTasks(id as Id<"tasks">);
 
 
-  const handleClick = () => {
-    if (identity === "task") {
-      deleteTask();
-    }
+  // const handleClick = () => {
+  //   if (identity === "task") {
+  //     deleteTask();
+  //   }
 
-    if (identity === "journal") {
-      deleteJournal();
-    }
-  }
+  //   if (identity === "journal") {
+  //     deleteJournal();
+  //   }
+  // }
 
 
   return (
@@ -59,7 +59,13 @@ export function OperationsMenu({ id, identity }: PostProps) {
           <DropdownMenuSeparator />
           <DropdownMenuItem
             className="flex cursor-pointer items-center text-destructive focus:text-destructive"
-            onSelect={handleClick}
+            onSelect={() => {
+              if (identity === 'journal') {
+                deleteJournal();
+              } else {
+                deleteTask();
+              }
+            }}
           >
             Delete
           </DropdownMenuItem>

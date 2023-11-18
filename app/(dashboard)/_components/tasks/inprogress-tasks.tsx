@@ -30,7 +30,6 @@ export default function InprogressTasks() {
       </div>
     );
   };
-  console.log('tasks', tasks)
 
   return (
     <div className="grid grid-cols-1 gap-4 p-3">
