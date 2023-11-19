@@ -25,6 +25,7 @@ interface PostProps {
 
 
 function JournalOperationsMenu({ id }: PostProps) {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const { deleteJournal } = useDeleteJournal(id as Id<"journals">);
   const handleDelete = () => {
     deleteJournal();
@@ -46,6 +47,7 @@ function JournalOperationsMenu({ id }: PostProps) {
 }
 
 function TaskOperationsMenu({ id }: PostProps) {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const { deleteTask } = useDeleteTasks(id as Id<"tasks">);
   const handleDelete = () => {
     deleteTask();
@@ -67,10 +69,7 @@ function TaskOperationsMenu({ id }: PostProps) {
 }
 
 export function OperationsMenu({ id, identity }: PostProps) {
-  const router = useRouter();
-  const params = useParams();
-  const [journalHook, setJournalHook] = React.useState(null);
-  const [taskHook, setTaskHook] = React.useState(null);
+
 
   return (
     <>
