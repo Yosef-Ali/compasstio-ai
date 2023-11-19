@@ -16,7 +16,7 @@ interface CardData {
   description: string;
   status: string;
   dueDate: number;
-  creationTime: number;
+  creationTime: number
 }
 
 interface ChatCardProps extends CardData {
@@ -25,7 +25,7 @@ interface ChatCardProps extends CardData {
 
 const regex = new RegExp('"text": "([^"]*)"');
 
-export function TaskCardDone({ _id, title, description, status, creationTime, dueDate, onClick }: ChatCardProps) {
+export function TaskCardDone({ _id, title, description, status, creationTime, dueDate }: ChatCardProps) {
   const formatted = useFormattedTime(creationTime);
   const isActive = _id === useParams().taskId;
 
@@ -40,9 +40,9 @@ export function TaskCardDone({ _id, title, description, status, creationTime, du
         <CardHeader>
           <div className="flex justify-between">
             <CardTitle className="text-lg">{title}</CardTitle>
-            <button className="text-gray-500" onClick={onClick}>
-              <OperationsMenu id={_id} identity={"task"} />
-            </button>
+
+            <OperationsMenu id={_id} identity={"task"} />
+
           </div>
           <CardDescription>{Description}</CardDescription>
           <CardDescription>

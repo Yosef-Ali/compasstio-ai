@@ -14,9 +14,10 @@ interface Task extends Doc<"tasks"> {
   content?: string | undefined
   title: string
   userId: string
-  status: string
-  dueDate?: number
+  isArchived: boolean
+  isPublished: boolean
 }
+
 
 
 export default function CurrentTasks() {
