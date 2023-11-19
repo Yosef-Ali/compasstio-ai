@@ -29,6 +29,21 @@ export const get = query({
   },
 });
 
+export const getById = query({
+  args: { groupId: v.id("groups") },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+
+    const group = await ctx.db.get(args.groupId);
+
+    if (!group) {
+      throw new Error("Not found");
+    }
+
+    return group;
+  },
+});
+
 export const create = mutation({
   args: {
     description: v.string(),
