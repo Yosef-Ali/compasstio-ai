@@ -41,7 +41,7 @@ export function TaskCardDone({ _id, title, description, status, creationTime, du
           <div className="flex justify-between">
             <CardTitle className="text-lg">{title}</CardTitle>
             <button className="text-gray-500" onClick={onClick}>
-              <OperationsMenu id={_id} />
+              <OperationsMenu id={_id} identity={"task"} />
             </button>
           </div>
           <CardDescription>{Description}</CardDescription>
