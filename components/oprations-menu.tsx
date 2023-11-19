@@ -27,18 +27,13 @@ interface PostProps {
 export function OperationsMenu({ id, identity }: PostProps) {
   const router = useRouter();
   const params = useParams();
+  const [journalHook, setJournalHook] = React.useState(null);
+  const [taskHook, setTaskHook] = React.useState(null);
 
   const { deleteJournal } = useDeleteJournal(id as Id<"journals">);
   const { deleteTask } = useDeleteTasks(id as Id<"tasks">);
 
-  // if (identity === 'journal') {
-  //   deleteJournal();
-  // } else {
-  //   deleteTask();
-  // }
-
-
-  const handleDelete = (identity) => {
+  const handleDelete = (identity: string) => {
     if (identity === 'journal') {
       deleteJournal();
     } else {
@@ -60,24 +55,12 @@ export function OperationsMenu({ id, identity }: PostProps) {
             </Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          {identity === 'journal' ? (
-            <DropdownMenuItem
-              className="flex cursor-pointer items-center text-destructive focus:text-destructive"
-              onSelect={() => handleDelete('journal')}
-            >
-              Delete
-            </DropdownMenuItem>
-
-          ) :
-            (
-              <DropdownMenuItem
-                className="flex cursor-pointer items-center text-destructive focus:text-destructive"
-                onSelect={() => handleDelete('task')}
-              >
-                Delete
-              </DropdownMenuItem>
-            )
-            }
+          <DropdownMenuItem
+            className="flex cursor-pointer items-center text-destructive focus:text-destructive"
+            onSelect={() => handleDelete(identity)}
+          >
+            Delete
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </>
