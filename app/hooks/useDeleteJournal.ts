@@ -10,7 +10,7 @@ export default function useDeleteJournal(id: Id<"journals">) {
 
   const handleDelete = () => {
     const promise = deleteJournal({ id }).then(() => {
-      router.back();
+      router.push("/journals");
     });
 
     toast.promise(promise, {

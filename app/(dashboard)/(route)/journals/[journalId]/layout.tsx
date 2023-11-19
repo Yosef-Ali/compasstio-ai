@@ -56,7 +56,7 @@ const JournalsSinglePageLayout = ({
       <TopNav page="journals" />
       <Shell>
         <Wrapper>
-          
+
           {children}
         </Wrapper>
         <RightAside tabs={tabs} />

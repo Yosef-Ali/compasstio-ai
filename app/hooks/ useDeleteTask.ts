@@ -10,6 +10,8 @@ export default function useDeleteTasks(id: Id<"tasks">) {
 
   const handleDelete = () => {
     const promise = deleteTask({ id }).then(() => {
+      //router.push("/tasks");
+      //router.refresh();
       router.back();
     });
 

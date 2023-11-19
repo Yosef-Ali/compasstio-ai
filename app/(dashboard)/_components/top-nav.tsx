@@ -21,6 +21,8 @@ const TopNav: FC<Props> = ({ page }) => {
 
   const Pathname = pathname.split("/").slice(0, 2).join("/")
 
+  console.log(Pathname);
+
   const { journalId } = useParams<{ journalId: Id<"journals"> }>();
   const { taskId } = useParams<{ taskId: Id<"tasks"> }>();
   const createJournal = useMutation(api.journals.create);
@@ -61,9 +63,9 @@ const TopNav: FC<Props> = ({ page }) => {
                 page === 'chat-with-ai' ? (`!journalId ? "Untitled" : <TitleChatWithAI journalId={journalId} />`) :
                   page === 'chat-with-groups' ? (`!journalId ? "Untitled" : <TitleChatWithGroups journalId={journalId} />`) :
                     page === 'journals' ? (!journalId ? "Untitled" : <TitleJournal journalId={journalId} />) :
-                      // page === 'tasks' ? (!taskId ? "Untitled" : <TitleTasks taskId={taskId} />) :
-                      page === 'live-sessions' ? (`!liveSessionId ? "Untitled" : <TitleLiveSections liveSessionId={liveSessionId} />`)
-                        : "Untitled"
+                      page === 'tasks' ? (!taskId ? "Untitled" : <TitleTasks taskId={taskId} />) :
+                        page === 'live-sessions' ? (`!liveSessionId ? "Untitled" : <TitleLiveSections liveSessionId={liveSessionId} />`)
+                          : "Untitled"
               }
             </div>
           </div>

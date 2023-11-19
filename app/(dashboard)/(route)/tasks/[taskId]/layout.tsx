@@ -30,6 +30,8 @@ const TasksSinglePageLayout = ({
   children: React.ReactNode;
 }) => {
 
+  // const dynamic = 'force-dynamic'
+
   return (
     <>
       <TopNav page="tasks" />
