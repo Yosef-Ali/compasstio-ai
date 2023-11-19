@@ -24,7 +24,7 @@ interface PostProps {
 }
 
 
-export function JournalOperationsMenu({ id }: PostProps) {
+function JournalOperationsMenu({ id }: PostProps) {
   const { deleteJournal } = useDeleteJournal(id as Id<"journals">);
   const handleDelete = () => {
     deleteJournal();
@@ -45,7 +45,7 @@ export function JournalOperationsMenu({ id }: PostProps) {
   )
 }
 
-export function TaskOperationsMenu({ id }: PostProps) {
+function TaskOperationsMenu({ id }: PostProps) {
   const { deleteTask } = useDeleteTasks(id as Id<"tasks">);
   const handleDelete = () => {
     deleteTask();
@@ -87,9 +87,9 @@ export function OperationsMenu({ id, identity }: PostProps) {
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           {identity === 'journal' ? (
-            <JournalOperationsMenu id={id} />
+            <JournalOperationsMenu id={id as Id<"journals">} identity={""} />
           ) : (
-            <TaskOperationsMenu id={id} />
+            <TaskOperationsMenu id={id as Id<"tasks">} identity={""} />
           )}
         </DropdownMenuContent>
       </DropdownMenu>
