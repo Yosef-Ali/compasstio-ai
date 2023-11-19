@@ -7,7 +7,7 @@ import {
   Circle,
   HelpCircle,
   LucideIcon,
-  LucideIcon,
+
   XCircle,
 } from "lucide-react"
 
@@ -31,7 +31,7 @@ import { statuses } from "@/config/popoversConfige"
 type Status = {
   value: string
   label: string
-  icon: LucideIcon;
+  icon: React.ElementType<any>;
 }
 
 
@@ -79,6 +79,7 @@ export function ComboboxPopover() {
                     }}
                   >
                     <status.icon
+
                       className={cn(
                         "mr-2 h-4 w-4",
                         status.value === selectedStatus?.value
