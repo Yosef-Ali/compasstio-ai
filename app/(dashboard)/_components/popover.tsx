@@ -7,6 +7,7 @@ import {
   Circle,
   HelpCircle,
   LucideIcon,
+  LucideIcon,
   XCircle,
 } from "lucide-react"
 
@@ -30,36 +31,10 @@ import { statuses } from "@/config/popoversConfige"
 type Status = {
   value: string
   label: string
-  icon: ElementType<any>;
+  icon: LucideIcon;
 }
 
-// const statuses: Status[] = [
-//   {
-//     value: "backlog",
-//     label: "Backlog",
-//     icon: HelpCircle,
-//   },
-//   {
-//     value: "todo",
-//     label: "Todo",
-//     icon: Circle,
-//   },
-//   {
-//     value: "in progress",
-//     label: "In Progress",
-//     icon: ArrowUpCircle,
-//   },
-//   {
-//     value: "done",
-//     label: "Done",
-//     icon: CheckCircle2,
-//   },
-//   {
-//     value: "canceled",
-//     label: "Canceled",
-//     icon: XCircle,
-//   },
-// ]
+
 
 export function ComboboxPopover() {
   const [open, setOpen] = React.useState(false)
