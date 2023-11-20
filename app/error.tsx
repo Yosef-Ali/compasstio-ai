@@ -4,11 +4,15 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
+import { usePathname, useRouter } from "next/navigation";
 
 const Error = () => {
+  const path = usePathname();
+  const router = useRouter();
+
   return (
     <div className="h-full flex flex-col items-center justify-center space-y-4">
-      <Image
+      {/* <Image
         src="/error.png"
         height="300"
         width="300"
@@ -21,14 +25,12 @@ const Error = () => {
         width="300"
         alt="Error"
         className="hidden dark:block"
-      />
-      <h2 className="text-xl font-medium">
+      /> */}
+      <h2 className="text-xl font-medium mt-10">
         Something went wrong!
       </h2>
-      <Button asChild>
-        <Link href="/journals">
-          Go back
-        </Link>
+      <Button onClick={() => router.back()}>
+        Go back
       </Button>
     </div>
   );

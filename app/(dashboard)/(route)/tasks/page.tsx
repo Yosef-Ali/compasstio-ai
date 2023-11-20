@@ -73,7 +73,7 @@ const TasksPage = () => {
 
   return (
     <>
-      <TopNav page="tasks" />
+      <TopNav />
       <Shell>
         <Wrapper>
           <div className="max-w-xl mx-auto flex flex-col p-12 space-y-3">

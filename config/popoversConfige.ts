@@ -57,3 +57,21 @@ export const taskStatus: Status[] = [
     icon: XCircle,
   },
 ];
+
+export const messageAction: Status[] = [
+  {
+    value: "add",
+    label: "Add New Friends",
+    icon: CheckCircle2,
+  },
+  {
+    value: "backlog",
+    label: "Backlog",
+    icon: HelpCircle,
+  },
+  {
+    value: "canceled",
+    label: "Canceled",
+    icon: XCircle,
+  },
+];

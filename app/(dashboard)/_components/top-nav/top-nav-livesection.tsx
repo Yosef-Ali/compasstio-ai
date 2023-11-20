@@ -6,15 +6,15 @@ interface TitleProps {
   journalId: Id<"journals">;
 }
 
-const TitleChatWithAI = ({ journalId }: TitleProps) => {
+const TopNavLiveSections = () => {
 
-  const journal = useQuery(api.journals.getById, { journalId });
+
 
   return (
-    <h1>{journal?.title}</h1>
+    <h1>"Untitled"</h1>
   );
 
 };
 
-export default TitleChatWithAI
+export default TopNavLiveSections
 

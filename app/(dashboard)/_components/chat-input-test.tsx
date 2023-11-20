@@ -53,7 +53,7 @@ export function ChatInputForm() {
             <FormItem>
               <FormControl>
                 <div className="flex w-full  items-center space-x-2 p-4 bg-muted rounded-lg">
-                  <Input placeholder="shadcn" {...field} className="focus:ring-purple-500" />
+                  <Input placeholder="Send a message" {...field} className="focus:ring-purple-500" />
                   <Button type="submit" className="bg-purple-500">
                     <SendHorizonalIcon />
                   </Button>

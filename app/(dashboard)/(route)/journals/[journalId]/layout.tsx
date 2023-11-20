@@ -53,7 +53,7 @@ const JournalsSinglePageLayout = ({
 
   return (
     <>
-      <TopNav page="journals" />
+      <TopNav />
       <Shell>
         <Wrapper>
 
