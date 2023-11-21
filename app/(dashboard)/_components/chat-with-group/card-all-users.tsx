@@ -2,6 +2,7 @@ import { OperationsMenu } from "@/components/operations-menu-users";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardHeader } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Id } from "@/convex/_generated/dataModel";
 import { useFormatOnlyTime, useFormattedTime } from "@/lib/formated-time";
 import { CheckCheckIcon } from "lucide-react";
 
@@ -39,7 +40,7 @@ export function CardAllUsers({ _id, name, avatarUrl, _creationTime }: ChatCardPr
           <div className="flex justify-end">
             <div className="flex flex-col h-full justify-between">
               <div className="flex">
-                <OperationsMenu id={_id}  />
+                <OperationsMenu id={_id} />
               </div>
 
             </div>
