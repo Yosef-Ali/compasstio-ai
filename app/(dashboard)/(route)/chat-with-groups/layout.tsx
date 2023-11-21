@@ -49,7 +49,7 @@ const ChatWithGroupPage = ({
   };
   return (
     <>
-      <TopNav page="chat-with-groups" />
+      <TopNav />
       <Shell>
         <Wrapper>
           {/* {!isOpen ?
