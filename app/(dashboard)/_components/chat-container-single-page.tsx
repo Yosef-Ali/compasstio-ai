@@ -12,27 +12,34 @@ import { api } from "@/convex/_generated/api";
 import { useConvexAuth, useQuery } from "convex/react";
 import { ChatCard } from "./chat-with-ai/chat-card";
 import { Id } from "@/convex/_generated/dataModel";
-import { useCompletion } from 'ai/react';
 import { useUser } from "@clerk/clerk-react";
 import { useParams } from "next/navigation";
-
-
+import { useChat, useCompletion } from 'ai/react';
+import { Input } from "@/components/ui/input";
+import { Button } from "react-day-picker";
 
 
 const ChatContainerSinglePage = () => {
   // const chatbots = useQuery(api.chatbots.get) as Chatbot[]
 
-  const sender = useUser()
-  const receiver = useParams()._id
+  //const sender = useUser()
+  //const receiver = useParams().userId
 
-  console.log("sender:", sender)
-  console.log("receiver:", receiver)
+  //console.log("sender:", sender)
+  //console.log("receiver:", receiver)
 
   // const saveMessages = useMutation(app.chatMessages.create){
 
 
   // }
+  // const { messages, input, handleInputChange, handleSubmit } = useChat();
+  // const { completion } = useCompletion();
 
+  // const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  //   event.preventDefault();
+  //   handleSubmit(event); // Assuming handleSubmit is an async function
+  //   console.log('completion:::', messages)
+  // };
 
 
 
@@ -49,12 +56,17 @@ const ChatContainerSinglePage = () => {
   // };
   return (
     <Wrapper>
-      {/* {chatbots?.map(chatbot => {
-        return (
-          <ChatPromptResponse key={chatbot._id} prompt={chatbot.description ?? " "}
-            response={chatbot.description ?? " "} />
-        );
-      })} */}
+      <div className="mx-auto w-full max-w-lg py-24 flex flex-col stretch space-y-10  ">
+        {/* {messages.map(m => (
+          <ChatPromptResponse key={m.id} role={m.role} content={m.content} />
+        ))} */}
+        <form onSubmit={() => { }} >
+          <div className="flex w-full max-w-md items-center space-x-2 fixed bottom-6 ">
+            {/* <Input type="text" placeholder="Say something..." value={input} onChange={handleInputChange} className=" ring-offset-purple-300 focus-visible:ring-purple-400 " />*/}
+            <Button type="submit" className="bg-purple-400">Send</Button>
+          </div>
+        </form>
+      </div>
     </Wrapper>
   );
 };

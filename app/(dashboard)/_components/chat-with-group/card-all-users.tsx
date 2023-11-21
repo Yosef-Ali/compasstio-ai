@@ -1,19 +1,21 @@
+import { OperationsMenu } from "@/components/operations-menu-users";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardHeader } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useFormattedTime } from "@/lib/formated-time";
+import { useFormatOnlyTime, useFormattedTime } from "@/lib/formated-time";
 import { CheckCheckIcon } from "lucide-react";
 
 interface ChatCardProps {
+  _id: Id<"users">;
   name: string;
   avatarUrl: string;
   _creationTime: number;
 }
 
 
-export function CardAllUsers({ name, avatarUrl, _creationTime }: ChatCardProps) {
+export function CardAllUsers({ _id, name, avatarUrl, _creationTime }: ChatCardProps) {
 
-  const formatted = useFormattedTime(_creationTime);
+  const formatted = useFormatOnlyTime(_creationTime);
 
   return (
     <Card >
@@ -27,16 +29,19 @@ export function CardAllUsers({ name, avatarUrl, _creationTime }: ChatCardProps) 
 
           <div className="ml-4">
             <div className="text-lg font-medium truncate">{name}</div>
-            <div className="text-gray-600 truncate">Last seen &nbsp; {formatted}</div>
+            <div className="flex items-center space-x-4">
+              <div className="text-gray-600 truncate">Last seen &nbsp; {formatted}</div>
+              <div className="text-gray-600">{"Offline"}</div>
+            </div>
+
           </div>
           <div className="flex-1"></div>
           <div className="flex justify-end">
             <div className="flex flex-col h-full justify-between">
               <div className="flex">
-                <CheckCheckIcon className="h-5 w-5 mr-1" />
-                <p className="text-sm ">{formatted}</p>
+                <OperationsMenu id={_id}  />
               </div>
-              <div className="text-gray-600">{"Offline"}</div>
+
             </div>
           </div>
         </div>

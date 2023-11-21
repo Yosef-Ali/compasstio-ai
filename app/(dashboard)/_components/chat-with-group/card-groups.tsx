@@ -4,7 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardHeader } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Id } from "@/convex/_generated/dataModel";
-import { useFormattedTime } from "@/lib/formated-time";
+import { useFormatOnlyTime, useFormattedMonthYear, useFormattedTime } from "@/lib/formated-time";
 import { CheckCheckIcon } from "lucide-react";
 import { useOnGroupSelect } from "@/app/hooks/use-on-group-select";
 import Link from "next/link";
@@ -18,21 +18,14 @@ interface CardData {
   avatarUrl: string;
 }
 
-/**
- * Renders a group card component.
- * 
- * @param _id - The ID of the group.
- * @param name - The name of the group.
- * @param description - The description of the group.
- * @param _creationTime - The creation time of the group.
- * @param avatarUrl - The URL of the group's avatar image.
- */
+
 export function CardGroup({ _id, name, description, _creationTime, avatarUrl }: CardData) {
   // Hook to format the creation time
-  const formatted = useFormattedTime(_creationTime);
+  const formatted = useFormatOnlyTime(_creationTime);
+  const formattedMonth = useFormattedMonthYear(_creationTime);
 
   // Check if the group is active based on the URL parameter
-  const isActive = _id === useParams()._id;
+  const isActive = _id === useParams().groupId;
 
   return (
     // Link to the chat page for the group
@@ -51,6 +44,7 @@ export function CardGroup({ _id, name, description, _creationTime, avatarUrl }: 
                 <div className="ml-4 flex-shrink-0">
                   <div className="text-lg font-medium">{name}</div>
                   <div className="text-gray-600">{description}</div>
+
                 </div>
               </div>
             </div>
@@ -67,6 +61,9 @@ export function CardGroup({ _id, name, description, _creationTime, avatarUrl }: 
               </div>
             </div>
           </div>
+          {formattedMonth ? (
+            <div className="text-center text-sm text-muted-foreground ">{description}</div>
+          ) : null}
         </CardHeader>
       </Card>
     </Link>

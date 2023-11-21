@@ -30,6 +30,7 @@ export default function AllUsers() {
         return (
           <CardAllUsers
             key={user._id}
+            _id={user._id}
             name={user.name ?? ""}
             // lastSeen={user.lastSeen ?? ""}
             // status={user.status ?? ""}

@@ -20,3 +20,24 @@ export const chatInfoConfig: ChatConfig = [
     icon: "PenLineIcon",
   },
 ];
+
+export const messageInfoConfig: ChatConfig = [
+  {
+    title: "Get started",
+    description:
+      "Get started by writing a task and Chat can do the rest. Not sure where to start? Check out the Prompt Library for inspiration.",
+    icon: "search",
+  },
+  {
+    title: "Invite your friends",
+    description:
+      "Invite your friends and family to join Messaging and start chatting with them today!",
+    icon: "fileTextIcon",
+  },
+  {
+    title: "Simply share",
+    description:
+      " To invite someone, simply share your unique invite link with them. Once they join, you'll be able to send and receive messages from each other.",
+    icon: "PenLineIcon",
+  },
+];

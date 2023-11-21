@@ -1,17 +1,17 @@
 "use client"
 
 import React, { useEffect } from 'react'
-import TopNav from '../../_components/top-nav'
-import Shell from '../../_components/shell'
-import Wrapper from '../../_components/wrapper'
+import TopNav from '../../../_components/top-nav'
+import Shell from '../../../_components/shell'
+import Wrapper from '../../../_components/wrapper'
 import { Button } from '@/components/ui/button'
 import { PlusCircleIcon } from 'lucide-react'
-import RightAside from '../../_components/right-aside'
-import ChatWithGroup from '../../_components/chat-with-group/chat-with-group'
+import RightAside from '../../../_components/right-aside'
+import ChatWithGroup from '../../../_components/chat-with-group/chat-with-group'
 import { useOnCreate } from "@/app/hooks/use-on-create";
 import { useUser } from "@clerk/clerk-react";
-import ChatContainer from '../../_components/chat-container'
-import AllUsers from '../../_components/chat-with-group/all-users'
+import ChatContainer from '../../../_components/chat-container'
+import AllUsers from '../../../_components/chat-with-group/all-users'
 
 interface ChatWithGroupPageProps {
   children: React.ReactNode
@@ -49,7 +49,7 @@ const ChatWithGroupPage = ({
   };
   return (
     <>
-      <TopNav />
+      {/* <TopNav /> */}
       <Shell>
         <Wrapper>
           {/* {!isOpen ?

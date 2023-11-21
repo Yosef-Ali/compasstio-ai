@@ -1,35 +1,141 @@
 
+// import { ChatInfo } from "@/types";
+// import { Icons } from "@/components/icons";
+// import { CardContent } from "@/components/ui/card";
+// import { chatInfoConfig } from "@/config/chat-info";
+// import { Avatar } from "@/components/ui/avatar";
+// import ChatInput from "./chat-input";
+// import Wrapper from "./wrapper";
+// import ChatPromptResponse from "./chat-with-group/response";
+
+// import { api } from "@/convex/_generated/api";
+// import { useConvexAuth, useQuery } from "convex/react";
+// import { ChatCard } from "./chat-with-ai/chat-card";
+// import { Id } from "@/convex/_generated/dataModel";
+// import { useCompletion } from 'ai/react';
+
+// interface InfoListProps {
+//   items: ChatInfo[];
+// }
+
+// interface Chatbot {
+//   _id: Id<"chatbots">;
+//   _creationTime: number;
+//   avatarUrl?: string;
+//   name?: string;
+//   description?: string;
+//   intents?: string;
+//   responses?: string;
+//   context?: string;
+//   botId: string;
+//   isPinned: boolean;
+// }
+
+// const InfoList = ({ items }: InfoListProps) => {
+//   if (!items?.length) {
+//     return null;
+//   }
+
+//   return (
+//     <div className="grid items-start ">
+//       {items.map((item, index) => {
+//         console.log('item.icon', item.icon)
+//         const Icon = Icons[item.icon || "arrowRight"];
+//         return (
+//           item.title && (
+//             <CardContent className="grid ">
+//               <div className=" flex items-center space-x-4 rounded-md  p-4">
+//                 <Avatar className="bg-purple-100 flex justify-center items-center">
+//                   <Icon className="h-6 w-6 text-purple-500" />
+//                 </Avatar>
+//                 <div className="flex-1 space-y-1">
+//                   <h3 className="font-bold">{item.title}</h3>
+//                   <p className="text-sm text-muted-foreground">
+//                     {item.description}
+//                   </p>
+//                 </div>
+//               </div>
+//             </CardContent>
+//           )
+//         );
+//       })}
+//     </div>
+//   );
+// };
+
+// const Intro = () => {
+//   return (
+
+//     <div className="mx-auto flex flex-col items-center px-4 max-w-3xl">
+//       <div className="flex flex-col items-center space-y-4">
+//         <div className="flex flex-col items-start space-y-4 md:items-center">
+//           <h1 className="text-3xl font-bold text-purple-500">
+//             Welcome to Chat with AI
+//           </h1>
+//           <p className="text-sm text-purple-800 md:text-md md:w-[380px] md:text-center">
+//             Get started by writing a task and Chat can do the rest. Not sure where to start? Check out the Prompt Library for inspiration.
+//           </p>
+//         </div>
+//         <InfoList items={chatInfoConfig} />
+//       </div>
+//     </div>
+//   );
+// };
+
+
+// const ChatContainer = () => {
+//   const chatbots = useQuery(api.chatbots.get) as Chatbot[]
+
+
+//   const { isLoading } = useConvexAuth()
+
+//   if (chatbots === undefined || isLoading) {
+//     return (
+//       <div className="space-y-3">
+//         <ChatCard.Skeleton />
+//         <ChatCard.Skeleton />
+//         <ChatCard.Skeleton />
+//       </div>
+//     );
+//   };
+//   return (
+//     <Wrapper>
+//       {chatbots?.map(chatbot => {
+//         return (
+//           <ChatPromptResponse key={chatbot._id} prompt={chatbot.description ?? " "}
+//             response={chatbot.description ?? " "} />
+//         );
+//       })}
+//     </Wrapper>
+//   );
+// };
+
+// export default ChatContainer;
+
+"use client"
+import { useRef, useState } from "react";
 import { ChatInfo } from "@/types";
 import { Icons } from "@/components/icons";
 import { CardContent } from "@/components/ui/card";
-import { chatInfoConfig } from "@/config/chat-info";
+import { chatInfoConfig, messageInfoConfig } from "@/config/chat-info";
 import { Avatar } from "@/components/ui/avatar";
 import ChatInput from "./chat-input";
 import Wrapper from "./wrapper";
-import ChatPromptResponse from "./chat-with-group/response";
+import ChatPromptResponse from "./chat-with-ai/chat-messages";
 
 import { api } from "@/convex/_generated/api";
-import { useConvexAuth, useQuery } from "convex/react";
+import { useChat, useCompletion } from 'ai/react';
+import { useMutation, useQuery } from "convex/react";
 import { ChatCard } from "./chat-with-ai/chat-card";
 import { Id } from "@/convex/_generated/dataModel";
-import { useCompletion } from 'ai/react';
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 interface InfoListProps {
   items: ChatInfo[];
 }
 
-interface Chatbot {
-  _id: Id<"chatbots">;
-  _creationTime: number;
-  avatarUrl?: string;
-  name?: string;
-  description?: string;
-  intents?: string;
-  responses?: string;
-  context?: string;
-  botId: string;
-  isPinned: boolean;
-}
+
 
 const InfoList = ({ items }: InfoListProps) => {
   if (!items?.length) {
@@ -63,6 +169,8 @@ const InfoList = ({ items }: InfoListProps) => {
   );
 };
 
+
+
 const Intro = () => {
   return (
 
@@ -70,45 +178,46 @@ const Intro = () => {
       <div className="flex flex-col items-center space-y-4">
         <div className="flex flex-col items-start space-y-4 md:items-center">
           <h1 className="text-3xl font-bold text-purple-500">
-            Welcome to Chat with AI
+            Welcome to Messaging
           </h1>
-          <p className="text-sm text-purple-800 md:text-md md:w-[380px] md:text-center">
-            Get started by writing a task and Chat can do the rest. Not sure where to start? Check out the Prompt Library for inspiration.
-          </p>
         </div>
-        <InfoList items={chatInfoConfig} />
+        <InfoList items={messageInfoConfig} />
       </div>
     </div>
   );
 };
 
 
+
 const ChatContainer = () => {
-  const chatbots = useQuery(api.chatbots.get) as Chatbot[]
 
+  const { messages, input, handleInputChange, handleSubmit } = useChat();
+  const { completion } = useCompletion();
 
-  const { isLoading } = useConvexAuth()
-
-  if (chatbots === undefined || isLoading) {
-    return (
-      <div className="space-y-3">
-        <ChatCard.Skeleton />
-        <ChatCard.Skeleton />
-        <ChatCard.Skeleton />
-      </div>
-    );
+  const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    handleSubmit(event); // Assuming handleSubmit is an async function
+    console.log('completion:::', messages)
   };
+
   return (
     <Wrapper>
-      {chatbots?.map(chatbot => {
-        return (
-          <ChatPromptResponse key={chatbot._id} prompt={chatbot.description ?? " "}
-            response={chatbot.description ?? " "} />
-        );
-      })}
+      {/* <div className="mx-auto w-full max-w-lg py-24 flex flex-col stretch space-y-10  ">
+        {messages.map(m => (
+          <ChatPromptResponse key={m.id} role={m.role} content={m.content} />
+        ))}
+        <form onSubmit={handleFormSubmit} >
+          <div className="flex w-full max-w-md items-center space-x-2 fixed bottom-6 ">
+            <Input type="text" placeholder="Say something..." value={input} onChange={handleInputChange} className=" ring-offset-purple-300 focus-visible:ring-purple-400 " />
+            <Button type="submit" className="bg-purple-400">Send</Button>
+          </div>
+        </form>
+      </div> */}
+      <Intro />
     </Wrapper>
   );
 };
+
 
 export default ChatContainer;
 
