@@ -1,6 +1,7 @@
-"use client"
+// "use client"
 
 import ChatContainerSinglePage from "@/app/(dashboard)/_components/chat-container-single-page"
+
 
 
 const ChatWithGroupSinglePage = () => {
@@ -14,5 +15,7 @@ const ChatWithGroupSinglePage = () => {
 }
 
 export default ChatWithGroupSinglePage
+
+
 
 
