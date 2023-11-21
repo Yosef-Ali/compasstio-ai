@@ -40,7 +40,7 @@ export function CardAllUsers({ _id, name, avatarUrl, _creationTime }: ChatCardPr
           <div className="flex justify-end">
             <div className="flex flex-col h-full justify-between">
               <div className="flex">
-                <OperationsMenu id={_id} />
+                <OperationsMenu />
               </div>
 
             </div>
