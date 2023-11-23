@@ -20,7 +20,7 @@ interface Message {
 
 export default function ParticipantList() {
 
-  const messages = useQuery(api.messages.get) as Message[];
+  const messages = [] as Message[];
 
   if (messages === undefined) {
     return (

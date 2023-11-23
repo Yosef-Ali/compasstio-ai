@@ -15,10 +15,11 @@ interface Group {
 }
 
 
+
 export default function ChatWithGroup() {
   const [activeGroupId, setActiveGroupId] = useState<string | null>(null);
 
-  const groups = useQuery(api.groups.get) as Group[];
+  const groups = useQuery(api.groups.get) as Group[] | undefined;
 
   const { isLoading } = useConvexAuth()
 

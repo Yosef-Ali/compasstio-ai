@@ -11,24 +11,46 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import { Icons } from "@/components/icons";
+import { api } from "@/convex/_generated/api";
+import { useMutation } from "convex/react";
+import { useUser } from "@clerk/nextjs";
+import { Id } from "@/convex/_generated/dataModel";
+import useDeleteFromGroups from "@/app/hooks/useDeleteFromGroups";
 
-interface PostProps {
-  id: string;
-  identity: string;
+// interface PostProps {
+//   id: Id<"users">;
+//   identity: string;
+// }
+
+interface OperationsMenuProps {
+  _id: Id<"users">;
+  userId: string;
+
 }
 
-export function OperationsMenu() {
+
+export function OperationsMenu({ _id, userId }: OperationsMenuProps) {
   const router = useRouter();
-  const { id } = useParams();
+  //const { id } = useParams();
+  const { user } = useUser();
+  const addToGroup = useMutation(api.groups.create);
+  const deleteFromGroup = useMutation(api.groups.deleteGroup);
 
-  const handleAddToGroup = async () => {
-    // Implement logic to add the post to a group
-    console.log("Adding post to group");
-  };
 
-  const handleBlock = async () => {
+
+  const handleAddToGroup = () => {
+    addToGroup({
+      userId
+    })
+  }
+
+  const handleBlock = () => {
     // Implement logic to block the user
-    console.log("Blocking user");
+    //useDeleteFromGroups(_id);
+
+    deleteFromGroup({
+      _id
+    })
   };
 
   return (

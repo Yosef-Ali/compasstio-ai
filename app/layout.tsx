@@ -10,12 +10,13 @@ import { ConvexClientProvider } from "@/components/providers/convex-provider"
 
 
 
+// Improve code readability by using descriptive variable names for fonts
 const fontSans = FontSans({
   subsets: ["latin"],
-  variable: "--font-sans",
+  variable: "--font-sans-regular", // Change variable name to reflect font weight
 })
 
-// Font files can be colocated inside of `pages`
+
 const fontHeading = localFont({
   src: "../assets/fonts/CalSans-SemiBold.woff2",
   variable: "--font-heading",

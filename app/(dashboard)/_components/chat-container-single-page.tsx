@@ -27,7 +27,7 @@ const ChatContainerSinglePage = () => {
   //const chatbots = useQuery(api.chatbots.get)
 
   //const sender = useUser()
-  const receiver = useParams().userId
+  const receiver = useParams().groupId
 
   //console.log("sender:", sender)
   console.log("receiver:", receiver)

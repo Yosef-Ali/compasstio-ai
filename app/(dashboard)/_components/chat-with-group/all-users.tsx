@@ -7,10 +7,12 @@ import { CardMessage } from "./card-message";
 import { ChatCard } from "../chat-with-ai/chat-card";
 import { group } from "console";
 import { CardAllUsers } from "./card-all-users";
+import { useUser } from "@clerk/nextjs";
 
 interface Users {
   _id: Id<"users">;
   _creationTime: number;
+  userId: string;
   avatarUrl: string;
   // lastSeen: number;
   name: string;
@@ -19,24 +21,32 @@ interface Users {
 
 export default function AllUsers() {
 
-  const users = useQuery(api.users.getAll)
+  const users = useQuery(api.users.get)
+  const currentUser = useUser().user?.id
 
   const { isLoading, isAuthenticated } = useConvexAuth();
+
+  console.log("users:", users)
+  console.log("users:", currentUser)
 
 
   return isLoading || isAuthenticated ? (
     <div className="grid grid-cols-1 gap-4 p-3">
       {users?.map(user => {
+        console.log("user:", user.userId)
         return (
-          <CardAllUsers
-            key={user._id}
-            _id={user._id}
-            name={user.name ?? ""}
-            // lastSeen={user.lastSeen ?? ""}
-            // status={user.status ?? ""}
-            _creationTime={user._creationTime ?? 0}
-            avatarUrl={user.avatarUrl ?? ""}
-          />
+          user.userId !== currentUser ? (
+            <CardAllUsers
+              key={user._id}
+              _id={user._id}
+              userId={user.userId ?? ""}
+              name={user.name ?? ""}
+              // lastSeen={user.lastSeen ?? ""}
+              // status={user.status ?? ""}
+              _creationTime={user._creationTime ?? 0}
+              avatarUrl={user.avatarUrl ?? ""}
+            />
+          ) : null
         );
       })}
     </div>

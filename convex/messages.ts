@@ -34,12 +34,11 @@ export const get = query({
 
 export const create = mutation({
   args: {
-    messageId: v.string(),
-    chatId: v.string(),
-    senderId: v.string(),
-    content: v.string(),
-    avatarUrl: v.string(),
-    isRead: v.boolean(),
+    message_content: v.string(),
+    recipient_id: v.string(),
+    seen_at: v.union(v.null(), v.string()),
+    sender_id: v.string(),
+    sent_at: v.string(),
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
@@ -47,19 +46,14 @@ export const create = mutation({
       throw new Error("Not authenticated");
     }
 
-    if (typeof args.messageId !== "string") {
-      throw new Error("Invalid messageId");
-    }
-
     const { subject: userId } = identity;
 
     const messages = await ctx.db.insert("messages", {
-      messageId: args.messageId,
-      chatId: args.chatId,
-      senderId: args.senderId,
-      content: args.content,
-      avatarUrl: args.avatarUrl,
-      isRead: args.isRead,
+      message_content: args.message_content,
+      recipient_id: args.recipient_id,
+      seen_at: args.seen_at,
+      sender_id: args.sender_id,
+      sent_at: args.sent_at,
     });
 
     return messages;

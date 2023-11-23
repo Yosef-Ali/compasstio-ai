@@ -8,13 +8,14 @@ import { CheckCheckIcon } from "lucide-react";
 
 interface ChatCardProps {
   _id: Id<"users">;
+  userId: string;
   name: string;
   avatarUrl: string;
   _creationTime: number;
 }
 
 
-export function CardAllUsers({ _id, name, avatarUrl, _creationTime }: ChatCardProps) {
+export function CardAllUsers({ _id, userId, name, avatarUrl, _creationTime }: ChatCardProps) {
 
   const formatted = useFormatOnlyTime(_creationTime);
 
@@ -40,7 +41,7 @@ export function CardAllUsers({ _id, name, avatarUrl, _creationTime }: ChatCardPr
           <div className="flex justify-end">
             <div className="flex flex-col h-full justify-between">
               <div className="flex">
-                <OperationsMenu />
+                <OperationsMenu userId={userId} _id={_id} />
               </div>
 
             </div>
