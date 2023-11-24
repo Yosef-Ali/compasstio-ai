@@ -149,7 +149,7 @@ const InfoList = ({ items }: InfoListProps) => {
         const Icon = Icons[item.icon || "arrowRight"];
         return (
           item.title && (
-            <CardContent className="grid ">
+            <CardContent className="grid" key={index} >
               <div className=" flex items-center space-x-4 rounded-md  p-4">
                 <Avatar className="bg-purple-100 flex justify-center items-center">
                   <Icon className="h-6 w-6 text-purple-500" />
@@ -168,8 +168,6 @@ const InfoList = ({ items }: InfoListProps) => {
     </div>
   );
 };
-
-
 
 const Intro = () => {
   return (
@@ -191,28 +189,9 @@ const Intro = () => {
 
 const ChatContainer = () => {
 
-  const { messages, input, handleInputChange, handleSubmit } = useChat();
-  const { completion } = useCompletion();
-
-  const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    handleSubmit(event); // Assuming handleSubmit is an async function
-    console.log('completion:::', messages)
-  };
 
   return (
     <Wrapper>
-      {/* <div className="mx-auto w-full max-w-lg py-24 flex flex-col stretch space-y-10  ">
-        {messages.map(m => (
-          <ChatPromptResponse key={m.id} role={m.role} content={m.content} />
-        ))}
-        <form onSubmit={handleFormSubmit} >
-          <div className="flex w-full max-w-md items-center space-x-2 fixed bottom-6 ">
-            <Input type="text" placeholder="Say something..." value={input} onChange={handleInputChange} className=" ring-offset-purple-300 focus-visible:ring-purple-400 " />
-            <Button type="submit" className="bg-purple-400">Send</Button>
-          </div>
-        </form>
-      </div> */}
       <Intro />
     </Wrapper>
   );

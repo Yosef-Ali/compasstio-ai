@@ -17,6 +17,7 @@ import type {
 import type * as chatMesseges from "../chatMesseges";
 import type * as chatbots from "../chatbots";
 import type * as chats from "../chats";
+import type * as groupMessages from "../groupMessages";
 import type * as groups from "../groups";
 import type * as journals from "../journals";
 import type * as messages from "../messages";
@@ -36,6 +37,7 @@ declare const fullApi: ApiFromModules<{
   chatMesseges: typeof chatMesseges;
   chatbots: typeof chatbots;
   chats: typeof chats;
+  groupMessages: typeof groupMessages;
   groups: typeof groups;
   journals: typeof journals;
   messages: typeof messages;

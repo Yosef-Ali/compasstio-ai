@@ -21,6 +21,7 @@ export default function ChatWithGroup() {
 
   const groups = useQuery(api.groups.get) as Group[] | undefined;
 
+
   const { isLoading } = useConvexAuth()
 
   if (groups === undefined || isLoading) {
@@ -37,6 +38,7 @@ export default function ChatWithGroup() {
   //   setActiveGroupId(group._id);
   // }
 
+
   return (
     <div className="grid grid-cols-1 gap-4 p-3">
       {groups?.map(group => {
@@ -45,7 +47,6 @@ export default function ChatWithGroup() {
             key={group._id}
             _id={group._id}
             name={group.name ?? " "}
-            description={group.description ?? " "}
             _creationTime={group._creationTime ?? 0}
             avatarUrl={group.avatarUrl ?? " "}
           />

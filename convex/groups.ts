@@ -64,14 +64,14 @@ export const create = mutation({
       .filter((q) => q.eq(q.field("userId"), args.userId))
       .first();
 
-    const existingGroup = await ctx.db
-      .query("groups")
-      .filter((q) => q.eq(q.field("userId"), userId))
-      .first();
+    // const existingGroup = await ctx.db
+    //   .query("groups")
+    //   .filter((q) => q.eq(q.field("userId"), userId))
+    //   .first();
 
-    if (existingGroup) {
-      throw new Error("Group already exists");
-    }
+    // if (existingGroup) {
+    //   throw new Error("Group already exists");
+    // }
 
     const group = await ctx.db.insert("groups", {
       userId,
