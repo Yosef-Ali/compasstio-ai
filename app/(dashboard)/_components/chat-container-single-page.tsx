@@ -91,7 +91,7 @@ const ChatContainerSinglePage = () => {
             <GroupMessages key={m._id} recipient_id={m.recipient_id} sender_id={m.sender_id} message={m.message_content} />
           )
         })
-          : (<p className="text-center"> "No messages" </p>)
+          : (<p className="text-center">No messages</p>)
         }
 
         <form onSubmit={handleFormSubmit}>
