@@ -20,14 +20,23 @@ interface CardData {
 }
 
 export function CardGroup({ _id, name, _creationTime, avatarUrl }: CardData) {
+  const [message, setMessage] = useState("");
   const formatted = useFormatOnlyTime(_creationTime);
   const formattedMonth = useFormattedMonthYear(_creationTime);
 
+
+
   const isActive = _id === useParams().groupId;
 
+  const messageLast = _id && useQuery(api.groupMessages.getLastMessage, { id: _id })
 
-  const messageLast = _id && useQuery(api.groupMessages.getLastMessage, { id: _id });
-  const message = messageLast && messageLast[0].message_content
+  useEffect(() => {
+    if (messageLast) {
+      setMessage(
+        messageLast[0]?.message_content
+      )
+    }
+  }, [messageLast])
 
   return (
     <Link href={`/chat-with-groups/${_id}`}>
