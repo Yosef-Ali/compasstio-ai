@@ -37,32 +37,12 @@ const tabs = [
 
 
 const ChatWithGroupSinglePage = () => {
-  const { user } = useUser();
-  const isOpen = useOnCreate((state) => state.isOpen);
-  const toggleOpen = useOnCreate((state) => state.toggleOpen);
-
-  useEffect(() => {
-    useOnCreate.setState({ isOpen });
-  }, [isOpen]);
-
-  const onCreate = () => {
-    toggleOpen(!isOpen);
-  };
-
 
   return (
     <>
       <TopNav />
       <Shell>
         <Wrapper>
-          {/* {!isOpen ?
-          <WelcomeMessage
-            userFullName={user?.fullName}
-            onCreate={onCreate}
-            buttonLabel="Chat with group"
-          />
-          : <ChatContainer />} */}
-          {/* <ChatContainer /> */}
           <ChatContainer />
         </Wrapper>
         <RightAside tabs={tabs} />

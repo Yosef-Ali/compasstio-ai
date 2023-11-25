@@ -8,6 +8,8 @@ import { ChatCard } from "../chat-with-ai/chat-card";
 import { group } from "console";
 import { CardAllUsers } from "./card-all-users";
 import { useUser } from "@clerk/nextjs";
+import { CardGroup } from "./card-groups";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface Users {
   _id: Id<"users">;
@@ -19,18 +21,16 @@ interface Users {
   // status: string;
 }
 
+
+
+
+
 export default function AllUsers() {
 
   const users = useQuery(api.users.get)
   const currentUser = useUser().user?.id
 
-  const { isLoading, isAuthenticated } = useConvexAuth();
-
-  console.log("users:", users)
-  console.log("users:", currentUser)
-
-
-  return isLoading || isAuthenticated ? (
+  return (
     <div className="grid grid-cols-1 gap-4 p-3">
       {users?.map(user => {
         console.log("user:", user.userId)
@@ -50,12 +50,20 @@ export default function AllUsers() {
         );
       })}
     </div>
-  ) : (
-    <div className="space-y-3">
-      <CardMessage.Skeleton />
-      <CardMessage.Skeleton />
-      <CardMessage.Skeleton />
+  )
+}
+
+CardGroup.Skeleton = function CardMessageSkeleton() {
+  return (
+    <div className="p-4">
+      <div className="flex items-center space-x-4">
+        <Skeleton className="h-12 w-12 rounded-full" />
+        <div className="space-y-2">
+          <Skeleton className="h-4 w-[250px]" />
+          <Skeleton className="h-4 w-[200px]" />
+        </div>
+      </div>
     </div>
-  );
+  )
 }
 

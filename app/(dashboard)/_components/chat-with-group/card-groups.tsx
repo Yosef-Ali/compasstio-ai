@@ -9,7 +9,7 @@ import { CheckCheckIcon } from "lucide-react";
 import { useOnGroupSelect } from "@/app/hooks/use-on-group-select";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { useQuery } from "convex/react";
+import { useConvexAuth, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 
 interface CardData {
@@ -27,6 +27,7 @@ export function CardGroup({ _id, name, _creationTime, avatarUrl }: CardData) {
 
 
   const isActive = _id === useParams().groupId;
+  //const { isLoading, isAuthenticated } = useConvexAuth();
 
   const messageLast = _id && useQuery(api.groupMessages.getLastMessage, { id: _id })
 

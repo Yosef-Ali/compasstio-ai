@@ -19,6 +19,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import GroupMessages from "./chat-with-group/groupe-messages";
+import { Skeleton } from "@/components/ui/skeleton";
 
 
 interface Messages {
@@ -30,25 +31,6 @@ interface Messages {
   sender_id: string,
   sent_at: string,
 }
-
-
-// const Messages = [
-//   {
-//     id: "1",
-//     role: "system",
-//     content: "You are a helpful assistant."
-//   },
-//   {
-//     id: "2",
-//     role: "user",
-//     content: "Hello, who are you?"
-//   },
-//   {
-//     id: "3",
-//     role: "assistant",
-//     content: "I am an AI created by OpenAI. How can I help you today?"
-//   }
-// ]
 
 const ChatContainerSinglePage = () => {
   const groupId = useParams().groupId as string
@@ -80,6 +62,33 @@ const ChatContainerSinglePage = () => {
     setInputValue(""); // Clear input value after submission
   };
 
+  if (messages === undefined) {
+    return (
+      <div>
+        <div className="mx-auto w-full max-w-lg py-24 ">
+          <div className="space-y-10  pl-8 pt-4">
+            <div className="flex items-center gap-4">
+              <Skeleton className="h-12 w-12 rounded-full" />
+              <Skeleton className="h-12 w-[50%]" />
+            </div>
+            <div className="flex items-center gap-4">
+              <Skeleton className="h-12 w-12 rounded-full" />
+              <Skeleton className="h-12 w-[50%]" />
+            </div>
+            <div className="flex items-center gap-4">
+              <Skeleton className="h-12 w-12 rounded-full" />
+              <Skeleton className="h-12 w-[50%]" />
+            </div>
+            <Skeleton className="h-12 w-[80%]" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (messages === null) {
+    return <div>Not found</div>
+  }
 
 
   return (
