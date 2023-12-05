@@ -126,7 +126,7 @@ import ChatPromptResponse from "./chat-with-ai/chat-messages";
 import { api } from "@/convex/_generated/api";
 import { useChat, useCompletion } from 'ai/react';
 import { useMutation, useQuery } from "convex/react";
-import { ChatCard } from "./chat-with-ai/chat-card";
+import { ChatCard } from "./chat-with-ai/card-recent-chat";
 import { Id } from "@/convex/_generated/dataModel";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";

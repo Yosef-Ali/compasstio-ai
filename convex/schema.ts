@@ -27,9 +27,12 @@ export default defineSchema({
   chats: defineTable({
     userId: v.string(),
     prompt: v.string(),
-    result: v.string(),
+    result:  v.string(),
     isPinned: v.boolean(),
-  }),
+    conversationId: v.optional(v.string()),
+  })
+    .index("by_user", ["userId"])
+    .index("by_conversationId", ["conversationId"]),
 
   chatMessages: defineTable({
     _id: v.string(),

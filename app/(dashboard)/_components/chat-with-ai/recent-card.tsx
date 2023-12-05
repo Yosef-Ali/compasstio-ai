@@ -1,36 +1,27 @@
 "use client"
-
 import { Doc, Id } from "@/convex/_generated/dataModel";
 import { api } from "@/convex/_generated/api";
 import { useConvexAuth, useQuery } from "convex/react";
-import { ChatCard } from "../chat-with-ai/chat-card";
+import { CardRecentChat } from "./card-recent-chat";
 
 
+export default function CardRecentChatBots(){
 
-interface Chatbot {
-  _id: Id<"chatbots">;
-  _creationTime: number;
-  avatarUrl?: string;
-  name?: string;
-  description?: string;
-  intents?: string;
-  responses?: string;
-  context?: string;
-  botId: string;
-  isPinned: boolean;
-}
-
-export default function CardRecentChatBots() {
-
-  const chatbots = useQuery(api.chatbots.get) as Chatbot[];
   const { isLoading } = useConvexAuth()
+  const chats = useQuery(api.chats.getChats);
 
-  if (chatbots === undefined || isLoading) {
+  if (!chats) {
+    return null;
+  }
+
+
+
+  if (chats === undefined || isLoading) {
     return (
       <div className="space-y-3">
-        <ChatCard.Skeleton />
-        <ChatCard.Skeleton />
-        <ChatCard.Skeleton />
+        <CardRecentChat.Skeleton />
+        <CardRecentChat.Skeleton />
+        <CardRecentChat.Skeleton />
       </div>
     );
   };
@@ -38,15 +29,14 @@ export default function CardRecentChatBots() {
   return (
 
     <div className="grid grid-cols-1 gap-4 p-3">
-      {chatbots?.map(chatbot => {
+      {chats?.map(chat => {
         return (
-          <ChatCard
-            key={chatbot._id}
-            botId={chatbot.botId}
-            name={chatbot.name ?? ''}
-            description={chatbot.description ?? ''}
-            creationTime={chatbot._creationTime}
-            onClick={() => { }}
+          <CardRecentChat 
+            key={chat._id}
+            id={chat._id}
+            prompt={chat.prompt ?? ''}
+            result={chat.result ?? ''}
+            creationTime={chat._creationTime}
           />
         );
       })}

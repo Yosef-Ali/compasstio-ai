@@ -17,6 +17,7 @@ import { Icons } from "@/components/icons"
 import { Id } from "@/convex/_generated/dataModel"
 import useDeleteJournal from "@/app/hooks/useDeleteJournal"
 import useDeleteTasks from "@/app/hooks/ useDeleteTask"
+import useDeleteChat from "@/app/hooks/useDeleteChat"
 
 interface PostProps {
   id: string;
@@ -46,6 +47,8 @@ function JournalOperationsMenu({ id }: PostProps) {
   )
 }
 
+
+
 function TaskOperationsMenu({ id }: PostProps) {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const { deleteTask } = useDeleteTasks(id as Id<"tasks">);
@@ -68,6 +71,30 @@ function TaskOperationsMenu({ id }: PostProps) {
   )
 }
 
+function ChatOptionsMenu({ id }: PostProps) {
+
+  const { deleteChat } = useDeleteChat(id as Id<"chats">);
+
+  const handleDelete = () => {
+    deleteChat();
+  }
+
+  return (
+    <>
+    <DropdownMenu>
+        {/* Dropdown menu content */}
+        <DropdownMenuItem
+          className="flex cursor-pointer items-center text-destructive focus:text-destructive"
+          onSelect={handleDelete}
+        >
+          Delete
+        </DropdownMenuItem>
+      </DropdownMenu>
+ 
+    </>
+  )
+}
+
 export function OperationsMenu({ id, identity }: PostProps) {
 
 
@@ -86,9 +113,11 @@ export function OperationsMenu({ id, identity }: PostProps) {
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           {identity === 'journal' ? (
-            <JournalOperationsMenu id={id as Id<"journals">} identity={""} />
+            <JournalOperationsMenu id={id as Id<"journals">} identity={identity} />
+          ) : identity === 'tasks' ? (
+            <TaskOperationsMenu id={id as Id<"tasks">} identity={identity} />
           ) : (
-            <TaskOperationsMenu id={id as Id<"tasks">} identity={""} />
+            <ChatOptionsMenu id={id as Id<"chats">} identity={identity} />
           )}
         </DropdownMenuContent>
       </DropdownMenu>

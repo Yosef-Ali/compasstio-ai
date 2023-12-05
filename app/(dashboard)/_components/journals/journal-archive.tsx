@@ -3,7 +3,7 @@
 
 import { api } from "@/convex/_generated/api";
 import { useConvexAuth, useQuery } from "convex/react";
-import { ChatCard } from "../chat-with-ai/chat-card";
+import { ChatCard } from "../chat-with-ai/card-recent-chat";
 import { Id, Doc } from "@/convex/_generated/dataModel";
 import { JournalCard } from "./journal-card";
 

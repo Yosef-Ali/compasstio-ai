@@ -10,7 +10,7 @@ import ChatPromptResponse from "./chat-with-ai/chat-messages";
 
 import { api } from "@/convex/_generated/api";
 import { useConvexAuth, useMutation, useQuery } from "convex/react";
-import { ChatCard } from "./chat-with-ai/chat-card";
+import { ChatCard } from "./chat-with-ai/card-recent-chat";
 import { Id } from "@/convex/_generated/dataModel";
 import { useUser } from "@clerk/clerk-react";
 import { useParams } from "next/navigation";
