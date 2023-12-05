@@ -4,7 +4,7 @@ import { useConvexAuth, useQuery } from "convex/react";
 
 import { CardMessage } from "./card-message";
 
-import { ChatCard } from "../chat-with-ai/card-recent-chat";
+
 import { group } from "console";
 import { CardAllUsers } from "./card-all-users";
 import { useUser } from "@clerk/nextjs";
