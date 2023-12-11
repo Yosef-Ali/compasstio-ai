@@ -18,9 +18,11 @@ export default function OnBoardingPage() {
   if (!user) return null;
 
 
-  if (userInfo?.onboarded) {
-    redirect("/chat-with-ai");
-  }
+  // if (userInfo?.onboarded) {
+  //   redirect("/chat-with-ai");
+  // }
+
+
   // if (!isLoading) {
   //   return (<div className="w-full flex items-center justify-center">
   //     <Spinner size="lg" />

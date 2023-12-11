@@ -17,9 +17,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ModeToggle } from "./mode-toggle";
 import Link from "next/link";
+import { api } from "@/convex/_generated/api";
+import { useQuery } from "convex/react";
 
 export const UserItem = () => {
   const { user } = useUser();
+  const userInfo = useQuery(api.users.getUser, { userId: user!.id.toString() });
 
   return (
     <DropdownMenu>
@@ -27,7 +30,7 @@ export const UserItem = () => {
         <div role="button" className="flex items-center text-sm p-3 w-full hover:bg-primary/5">
           <div className="gap-x-2 flex items-center max-w-[150px]">
             <Avatar className="h-5 w-5">
-              <AvatarImage src={user?.imageUrl} />
+              <AvatarImage src={userInfo ? userInfo?.avatarUrl : user?.imageUrl} />
             </Avatar>
             <span className="text-start font-medium line-clamp-1">
               {user?.fullName}&apos;s ev.com

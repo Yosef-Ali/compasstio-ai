@@ -27,7 +27,7 @@ export default defineSchema({
   chats: defineTable({
     userId: v.string(),
     prompt: v.string(),
-    result:  v.string(),
+    result: v.string(),
     isPinned: v.boolean(),
     conversationId: v.optional(v.string()),
   })
@@ -60,6 +60,7 @@ export default defineSchema({
     avatarUrl: v.string(),
     bio: v.string(),
     onboarded: v.boolean(),
+    storageId: v.optional(v.string()),
   }).index("by_userId", ["userId"]),
 
   tasks: defineTable({
@@ -113,4 +114,16 @@ export default defineSchema({
   })
     .index("by_user", ["userId"])
     .index("by_connection", ["connectionId"]),
+
+
+  // Storage
+  Storage: defineTable({
+    _id: v.string(),
+    _creationTime: v.number(),
+    storageId: v.string(),
+    author: v.string(),
+    imageUrl: v.optional(v.string()),
+  })
 });
+
+

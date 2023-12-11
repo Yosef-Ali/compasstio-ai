@@ -1,19 +1,22 @@
 "use client"
-import { CardGroup } from "@/app/(dashboard)/_components/chat-with-group/card-groups";
-import Shell from "@/app/(dashboard)/_components/shell";
-import TopNav from "@/app/(dashboard)/_components/top-nav";
-import Wrapper from "@/app/(dashboard)/_components/wrapper";
+import React, { useState, useRef, useCallback, useEffect } from 'react';
+
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import UploadButtonComponent from "@/components/upload-button";
+
 import { api } from "@/convex/_generated/api";
 import { useUser } from "@clerk/nextjs";
-import { useQuery } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
 import Image from "next/image";
 import { redirect } from "next/navigation";
+import { useUploadFiles } from "@xixixao/uploadstuff/react";
+import { Id } from '@/convex/_generated/dataModel';
+import { Upload } from 'lucide-react';
 
-
+type AvatarRef = React.RefObject<HTMLDivElement>;
 
 
 const data = [
@@ -36,38 +39,76 @@ const data = [
 
 export default function ProfilePage() {
 
+  const fileInput = useRef<HTMLInputElement>(null);
+
 
   const { user } = useUser();
 
-  console.log('userprofile', user)
+  const generateUploadUrl = useMutation(api.users.generateUploadUrl);
+  const updateAvatar = useMutation(api.users.updateAvatar);
   const userInfo = useQuery(api.users.getUser, { userId: user!.id.toString() });
+  const [loading, setLoading] = useState(false);
 
-  console.log('userinfoProfile', userInfo)
 
+  async function handleUploadImage() {
+    setLoading(true);
+    // Get the file object from the file input element
+    const file = fileInput.current?.files?.[0];
+    if (!file) {
+      console.log('No file selected');
+      return; // Early return if the file is null
+    }
 
-  // Fetch user info using useQuery
+    // Step 1: Get a short-lived upload URL
+    const postUrl = await generateUploadUrl();
+    // Step 2: POST the file to the URL
+    const result = await fetch(postUrl, {
+      method: "POST",
+      body: file,
+    });
 
-  // if (userInfo?.userId !== user!.id) {
-  //   // Redirect to homepage or show an error message
-  //   redirect("/");
-  //   return null;
-  // }
+    const { storageId } = await result.json();
 
+    updateAvatar({
+      id: userInfo?._id as Id<"users">,
+      storageId: storageId,
+    });
+  }
+  // Define a function to handle the avatar click
+  const handleAvatarClick = useCallback(() => {
+    // Trigger the file input click
+    fileInput.current?.click();
+  }, []);
 
 
   // Render the protected profile page
+
 
 
   return (
     <div className="">
       <div className="flex flex-col items-center w-full p-10 gap-4">
         <div className="flex flex-col items-center">
-          <Avatar className="w-24 h-24">
-            <AvatarImage src={userInfo?.avatarUrl} alt={userInfo?.name} />
-            <AvatarFallback>CN</AvatarFallback>
-          </Avatar>
+          <input
+            type="file"
+            ref={fileInput}
+            accept="image/*"
+            onChange={handleUploadImage}
+            style={{ display: 'none' }} // Hide the file input element
+          />
+
+          <div className="relative w-24 h-24 cursor-pointer" onClick={handleAvatarClick}>
+
+            <Avatar className="w-full h-full cursor-pointer" >
+              <AvatarImage src={userInfo?.avatarUrl} alt={userInfo?.name} />
+              <AvatarFallback>CN</AvatarFallback>
+            </Avatar>
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-0 hover:opacity-100 bg-gray-300/50 w-full h-full rounded-full justify-center items-center flex">
+              <Upload className="w-8 h-8 text-gray-600" />
+            </div>
+          </div>
           <h2 className="text-center mt-4">
-            {userInfo?.name}<span className="text-blue-500">✔</span>
+            {userInfo?.name}
           </h2>
           <p className="text-center text-gray-600">
             4,189 followers · 4,389 posts
@@ -85,6 +126,7 @@ export default function ProfilePage() {
             <Button variant="secondary" className="w-full">
               More
             </Button>
+            {/* <UploadButtonComponent /> */}
           </div>
         </div>
         <div className="profile-content">
@@ -120,6 +162,7 @@ export default function ProfilePage() {
           {/* Add more tab panels here */}
         </div>
       </div>
-    </div>
+    </div >
   );
 }
+

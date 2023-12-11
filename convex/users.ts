@@ -1,5 +1,7 @@
 import { v } from "convex/values";
-import { mutation, query } from "./_generated/server";
+import { action, internalMutation, mutation, query } from "./_generated/server";
+import { Id } from "./_generated/dataModel";
+import { internal } from "./_generated/api";
 
 export const getUser = query({
   args: {
@@ -43,3 +45,97 @@ export const create = mutation({
     });
   },
 });
+
+export const generateUploadUrl = mutation({
+  args: {},
+  handler: async (ctx, args) => {
+    // use `args` and/or `ctx.auth` to authorize the user
+    const identity = await ctx.auth.getUserIdentity();
+
+    if (!identity) {
+      throw new Error("Not authenticated");
+    }
+
+    const uploadUrl = await ctx.storage.generateUploadUrl();
+    console.log("uploadUrl:", uploadUrl);
+
+    if (!uploadUrl) {
+      throw new Error("Upload URL generation failed");
+    }
+
+    // update the user with the upload URL
+
+
+    return uploadUrl;
+  },
+});
+
+
+export const updateAvatar = mutation({
+  args: {
+    id: v.id("users"),
+    storageId: v.id("_storage"),
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+
+    if (!identity) {
+      throw new Error("Unauthenticated");
+    }
+
+    const userId = identity.subject;
+
+    const { id } = args;
+
+    const existingUser = await ctx.db.get(id);
+
+    if (!existingUser) {
+      throw new Error("Not found");
+    }
+
+    if (existingUser.userId !== userId) {
+      throw new Error("Unauthorized");
+    }
+
+    const url = await ctx.storage.getUrl(args.storageId);
+    
+
+    console.log("URL:", url);
+
+    if (!url) {
+      throw new Error("Upload URL generation failed");
+    }
+
+
+    const user = await ctx.db.patch(id, {
+      avatarUrl: url,
+    });
+
+
+    console.log("user from server:", user);
+
+    return user;
+  },
+});
+
+
+// export const generateAndStore = action({
+//   args: { prompt: v.string() },
+//   handler: async (ctx, args) => {
+//     // Not shown: generate imageUrl from `prompt`
+//     const imageUrl = "https://....";
+
+//     // Download the image
+//     const response = await fetch(imageUrl);
+//     const image = await response.blob();
+
+//     // Store the image in Convex
+//     const storageId: Id<"_storage"> = await ctx.storage.store(image);
+
+//     // Write `storageId` to a document
+//     await ctx.runMutation(internal.users.storeResult{
+//       storageId,
+//       prompt: args.prompt,
+//     });
+//   },
+// });

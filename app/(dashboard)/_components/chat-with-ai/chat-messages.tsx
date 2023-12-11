@@ -1,7 +1,9 @@
 "use client";
 import React, { useEffect, useRef } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { UserButton } from "@clerk/clerk-react";
+import { useUser } from "@clerk/clerk-react";
+import { useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
 
 
 interface Props {
@@ -12,6 +14,9 @@ interface Props {
 export default function ChatPromptResponse({ role, content }: Props) {
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const { user } = useUser();
+  const userInfo = useQuery(api.users.getUser, { userId: user!.id.toString() });
 
   // Scroll to the bottom of the chat when new content is added
   const scrollToBottom = () => {
@@ -25,9 +30,11 @@ export default function ChatPromptResponse({ role, content }: Props) {
       {role === "user" ? (
         <div className="flex items-end  mb-4 w-full ">
           <div className="flex items-start">
-            <UserButton />
+            <Avatar>
+              <AvatarImage src={userInfo ? userInfo?.avatarUrl : user?.imageUrl} />
+              <AvatarFallback>YA</AvatarFallback>
+            </Avatar>
             <div
-
               className="px-3 py-2 ml-3 rounded-lg rounded-l-none inline-block bg-muted"
             >
               {content}
@@ -37,7 +44,7 @@ export default function ChatPromptResponse({ role, content }: Props) {
       ) : (
         <div className="flex items-start">
           <Avatar>
-            <AvatarImage src="https://github.com/shadcn.png" />
+            <AvatarImage src="/avatarAi.svg" />
             <AvatarFallback>YA</AvatarFallback>
           </Avatar>
           <div className="flex flex-col items-start ml-3 ">

@@ -24,8 +24,8 @@ export function CardRecentChat({ id, prompt, result, creationTime }: ChatCardPro
   const Pinned = useMutation(api.chats.pinned);
 
   const handleClick = () => {
-    Pinned( {
-       id: id as Id<"chats">,
+    Pinned({
+      id: id as Id<"chats">,
     });
   }
 
@@ -36,9 +36,9 @@ export function CardRecentChat({ id, prompt, result, creationTime }: ChatCardPro
           <CardTitle className="text-lg truncate">
             {prompt}
           </CardTitle>
-          <Button  variant="outline" size="icon" onClick={handleClick}>
+          <Button variant="outline" size="icon" onClick={handleClick}>
             {/* button code */}
-            <PinIcon className="w-4 h-4 text-gray-900" />
+            <PinIcon className="w-4 h-4 text-foreground" />
           </Button>
         </div>
         <CardDescription className="line-clamp-2">{result}</CardDescription>

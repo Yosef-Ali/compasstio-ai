@@ -1,9 +1,7 @@
 "use client"
 import * as z from "zod";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Plus, SendHorizonalIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { SendHorizonalIcon } from "lucide-react";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useCompletion } from 'ai/react';
@@ -23,7 +21,6 @@ const ChatInput = ({ apiUrl, query, name, type }: ChatInputProps) => {
 
   const {
     input,
-    stop,
     isLoading,
     handleInputChange,
     handleSubmit,
@@ -31,61 +28,9 @@ const ChatInput = ({ apiUrl, query, name, type }: ChatInputProps) => {
     api: '/api/completion',
   });
 
-  // const form = useForm({
-  //   resolver: zodResolver(formSchema),
-  //   defaultValues: {
-  //     content: "",
-  //   }
-  // });
-
-  // const isLoading = form.formState.isSubmitting;
-
-  // const onSubmit = async (values: z.infer<typeof formSchema>) => {
-  //   console.log(values);
-  //   form.reset();
-  // }
-
   return (
-    // <Form {...form}>
-    //   <div className="relative p-2 ">
-
-    //     <FormField
-    //       name="content"
-    //       control={form.control}
-    //       render={({ field }) => (
-    //         <FormItem>
-    //           <FormControl>
-    //             <Input
-    //               disabled={isLoading}
-    //               className="px-14 py-7 bg-muted dark:bg-zinc-700/75 border-none border-0 rounded-lg focus-visible:ring-0 focus-visible:ring-offset-0 text-zinc-600 dark:text-zinc-200 "
-    //               placeholder={`Message ${type === "conversation" ? name : "#" + name}`}
-    //               {...field}
-
-    //             />
-    //           </FormControl>
-    //         </FormItem>
-    //       )}
-    //     />
-
-    //     <button
-    //       type="button"
-    //       className="absolute top-6 left-8 h-[24px] w-[24px] bg-purple-400 dark:bg-zinc-400 hover:bg-zinc-600 dark:hover:bg-zinc-300 transition rounded-full p-1 flex items-center justify-center"
-    //     >
-    //       <Plus className="text-white dark:text-[#313338]" />
-    //     </button>
-
-    //     <button
-    //       type="submit"
-    //       className="absolute top-6 right-8 center"
-    //     >
-    //       <SendHorizonalIcon className="text-purple-400 dark:text-purple-500" />
-    //     </button>
-
-    //   </div>
-    // </Form>
     <div className="mx-auto w-full max-w-md py-24 flex flex-col stretch">
       <form onSubmit={handleSubmit}>
-
         <input
           className="fixed w-full max-w-md bottom-0 border border-gray-300 rounded mb-8 shadow-xl p-2"
           value={input}
@@ -93,17 +38,13 @@ const ChatInput = ({ apiUrl, query, name, type }: ChatInputProps) => {
           placeholder="Type something..."
         />
 
-        {/* <output>Completion result: {completion}</output> */}
-        <button type="button" onClick={stop}>
-          Stop
-        </button>
         <button disabled={isLoading} type="submit">
-          Send
+          <SendHorizonalIcon className="text-purple-400 dark:text-purple-500" />
         </button>
       </form>
     </div>
   );
-
 };
 
 export default ChatInput;
+

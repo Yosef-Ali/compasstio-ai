@@ -62,7 +62,6 @@ export function ChatInputForm() {
             </FormItem>
           )}
         />
-
       </form>
     </Form>
   )

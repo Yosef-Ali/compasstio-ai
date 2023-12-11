@@ -12,6 +12,7 @@ import { useUser } from "@clerk/nextjs";
 import { useQuery } from "convex/react";
 import Image from "next/image";
 import { redirect, useParams } from "next/navigation";
+import { useState } from "react";
 //import { useRouter } from "next/router";
 
 
@@ -37,10 +38,15 @@ const data = [
 
 export default function ProfileEditSinglePage() {
 
+
   const param = useParams();
   const { user } = useUser();
 
   const userInfo = useQuery(api.users.getUser, { userId: param.id.toString() });
+  const [imageSrc, setImageSrc] = useState(userInfo?.avatarUrl);
+  const [loading, setLoading] = useState(false);
+
+
 
   if (!user) return null;
 
@@ -56,6 +62,7 @@ export default function ProfileEditSinglePage() {
   // Render the protected profile page
 
 
+
   return (
     <div className="">
 
@@ -64,7 +71,20 @@ export default function ProfileEditSinglePage() {
 
         <div className="flex flex-col items-center">
           <Avatar className="w-24 h-24">
-            <AvatarImage src={userInfo?.avatarUrl} alt={userInfo?.name} />
+            <input
+              type="file"
+              accept="image/*"
+              onChange={() => { }}
+              disabled={loading}
+            />
+
+            {loading && "< Loader />..."}
+
+            <AvatarImage
+              src={imageSrc}
+              alt={userInfo?.name}
+            />
+
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
           <h2 className="text-center mt-4">
