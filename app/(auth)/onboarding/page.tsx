@@ -16,6 +16,12 @@ export default function OnBoardingPage() {
   const userInfo = useQuery(api.users.getUser, { userId: user!.id.toString() });
   const { isLoading } = useConvexAuth()
 
+  if (!isLoading) {
+    return (<div className="w-full flex items-center justify-center">
+      <Spinner size="lg" />
+    </div>)
+  }
+
   if (!user) return null;
 
 
@@ -24,15 +30,11 @@ export default function OnBoardingPage() {
   }
 
 
-  // if (!isLoading) {
-  //   return (<div className="w-full flex items-center justify-center">
-  //     <Spinner size="lg" />
-  //   </div>)
-  // }
+
 
 
   const userData = {
-    id: userInfo?._id as Id<"users">,
+    id: userInfo?._id as string,
     userId: user.id,
     username: userInfo ? userInfo?.username : user.username,
     name: userInfo ? userInfo?.name : user.firstName ?? "",

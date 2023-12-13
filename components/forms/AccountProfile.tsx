@@ -18,7 +18,6 @@ import { Upload } from "lucide-react";
 
 interface Props {
   user: {
-    id: Id<"users">;
     userId: string;
     username: string | null;
     name: string;
