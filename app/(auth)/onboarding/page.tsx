@@ -30,7 +30,6 @@ export default function OnBoardingPage() {
   }
 
   const userData = {
-    id: user.id,
     userId: user.id,
     username: userInfo ? userInfo?.username : user.username,
     name: userInfo ? userInfo?.name : user.firstName ?? "",

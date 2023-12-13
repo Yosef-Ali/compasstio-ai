@@ -14,11 +14,10 @@ import { usePathname, useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { useRef } from "react";
 import { Id } from "@/convex/_generated/dataModel";
-import { Upload } from "lucide-react";
 
 interface Props {
   user: {
-    id: string;
+    _id: Id<"users">;
     userId: string;
     username: string | null;
     name: string;
@@ -95,7 +94,7 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
 
         // Step 4: Update the profile photo in the database
         updateAvatar({
-          id: user.id as Id<"users">,
+          id: user._id as Id<"users">,
           storageId: storageId,
         });
       } else {
