@@ -29,12 +29,8 @@ export default function OnBoardingPage() {
     redirect("/chat-with-ai");
   }
 
-
-
-
-
   const userData = {
-    id: userInfo?._id as Id<"users">,
+    id: user.id,
     userId: user.id,
     username: userInfo ? userInfo?.username : user.username,
     name: userInfo ? userInfo?.name : user.firstName ?? "",
