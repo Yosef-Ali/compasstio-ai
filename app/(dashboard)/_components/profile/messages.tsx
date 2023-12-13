@@ -1,9 +1,8 @@
 import { Doc, Id } from "@/convex/_generated/dataModel";
 import { api } from "@/convex/_generated/api";
 import { useConvexAuth, useQuery } from "convex/react";
+import { CardProfileMessage } from "./card-profile-messages";
 
-import { CardMessage } from "./card-message";
-import { CardGroup } from "./card-groups";
 import { SetStateAction, useState } from "react";
 
 interface Group {
@@ -15,8 +14,7 @@ interface Group {
 }
 
 
-export default function ChatWithGroup() {
-  const [activeGroupId, setActiveGroupId] = useState<string | null>(null);
+export default function Messages() {
 
   const groups = useQuery(api.groups.get) as Group[] | undefined;
 
@@ -26,9 +24,9 @@ export default function ChatWithGroup() {
   if (groups === undefined || isLoading) {
     return (
       <div className="space-y-3">
-        <CardMessage.Skeleton />
-        <CardMessage.Skeleton />
-        <CardMessage.Skeleton />
+        <CardProfileMessage.Skeleton />
+        <CardProfileMessage.Skeleton />
+        <CardProfileMessage.Skeleton />
       </div>
     );
   };
@@ -37,11 +35,11 @@ export default function ChatWithGroup() {
     <div className="grid grid-cols-1 gap-4 p-3">
       {groups?.map(group => {
         return (
-          <CardGroup
+          <CardProfileMessage
             key={group._id}
-            _id={group._id}
             name={group.name ?? " "}
-            _creationTime={group._creationTime ?? 0}
+            content = {group.description ?? " "}
+            creationTime={group._creationTime ?? 0}
             avatarUrl={group.avatarUrl ?? " "}
           />
         );

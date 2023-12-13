@@ -2,40 +2,20 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import UploadButtonComponent from "@/components/upload-button";
-
 import { api } from "@/convex/_generated/api";
 import { useUser } from "@clerk/nextjs";
-import { useMutation, useQuery } from "convex/react";
-import Image from "next/image";
-import { redirect } from "next/navigation";
-import { useUploadFiles } from "@xixixao/uploadstuff/react";
+import { useConvexAuth, useMutation, useQuery } from "convex/react";
 import { Id } from '@/convex/_generated/dataModel';
 import { Upload } from 'lucide-react';
+import { Spinner } from '@/components/spinner';
+import Messages from '../../_components/profile/messages';
+import Tasks from '../../_components/profile/tasks';
+import { ButtonGroup } from '../../_components/profile/buttons';
+import { useActiveMenu } from '@/app/hooks/useActiveProfileMenu';
+import Journals from '../../_components/profile/journals';
 
-type AvatarRef = React.RefObject<HTMLDivElement>;
 
-
-const data = [
-  {
-    imageUrl: '/example.avif',
-    title: 'Title 1',
-    description: 'Description 1',
-  },
-  {
-    imageUrl: '/example.avif',
-    title: 'Title 2',
-    description: 'Description 2',
-  },
-  {
-    imageUrl: '/example.avif',
-    title: 'Title 3',
-    description: 'Description 3',
-  },
-];
 
 export default function ProfilePage() {
 
@@ -47,11 +27,14 @@ export default function ProfilePage() {
   const generateUploadUrl = useMutation(api.users.generateUploadUrl);
   const updateAvatar = useMutation(api.users.updateAvatar);
   const userInfo = useQuery(api.users.getUser, { userId: user!.id.toString() });
-  const [loading, setLoading] = useState(false);
+  const totalJournal = useQuery(api.journals.getTotal)
+  const totalGroup = useQuery(api.groups.getTotal)
+  const { activeItem } = useActiveMenu();
+  const { isLoading } = useConvexAuth()
 
 
   async function handleUploadImage() {
-    setLoading(true);
+
     // Get the file object from the file input element
     const file = fileInput.current?.files?.[0];
     if (!file) {
@@ -80,11 +63,6 @@ export default function ProfilePage() {
     fileInput.current?.click();
   }, []);
 
-
-  // Render the protected profile page
-
-
-
   return (
     <div className="">
       <div className="flex flex-col items-center w-full p-10 gap-4">
@@ -99,6 +77,8 @@ export default function ProfilePage() {
 
           <div className="relative w-24 h-24 cursor-pointer" onClick={handleAvatarClick}>
 
+            {isLoading && <Spinner />}
+
             <Avatar className="w-full h-full cursor-pointer" >
               <AvatarImage src={userInfo?.avatarUrl} alt={userInfo?.name} />
               <AvatarFallback>CN</AvatarFallback>
@@ -111,23 +91,9 @@ export default function ProfilePage() {
             {userInfo?.name}
           </h2>
           <p className="text-center text-gray-600">
-            4,189 followers · 4,389 posts
+            {totalGroup} followers · {totalJournal} posts
           </p>
-          <div className="grid gap-3 grid-cols-4 my-4">
-            <Button className="w-full">
-              Message
-            </Button>
-            <Button variant="secondary" className="w-full">
-              Call
-            </Button>
-            <Button variant="secondary" className="w-full">
-              Video
-            </Button>
-            <Button variant="secondary" className="w-full">
-              More
-            </Button>
-            {/* <UploadButtonComponent /> */}
-          </div>
+          <ButtonGroup />
         </div>
         <div className="profile-content">
           <Tabs defaultValue="Media" className="w-[400px] flex flex-col items-center">
@@ -138,24 +104,12 @@ export default function ProfilePage() {
               <TabsTrigger value="Groups" className="flex-1">Groups</TabsTrigger>
             </TabsList>
             <TabsContent value="Media">
-              <div className="flex flex-col gap-4 w-[400px]">
-                {data.map((item) => (
-                  <Card key={item.title} className=" p-2" >
-                    <div className="flex ">
-                      <div className="flex-1">
-                        <img
-                          src={item.imageUrl}
-                          alt={item.title}
-                          className="w-full h-auto"
-                        />
-                      </div>
-                      <div className="flex-1 p-4">
-                        <h2 className="text-xl font-bold">{item.title}</h2>
-                        <p>{item.description}</p>
-                      </div>
-                    </div>
-                  </Card>
-                ))}
+              <div className="flex flex-col gap-4 w-[450px]">
+                <div className="flex flex-col gap-4 w-[450px]">
+                  {activeItem === "Messages" && <Messages />}
+                  {activeItem === "Journals" && <Journals />}
+                  {activeItem === "Tasks" && <Tasks />}
+                </div>
               </div>
             </TabsContent>
           </Tabs>

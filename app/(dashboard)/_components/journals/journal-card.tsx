@@ -9,9 +9,6 @@ import { useParams } from "next/navigation";
 import "@blocknote/core/style.css";
 import { OperationsMenu } from "@/components/oprations-menu";
 
-
-
-
 interface CardData {
   _id: Id<"journals">;
   title: string;

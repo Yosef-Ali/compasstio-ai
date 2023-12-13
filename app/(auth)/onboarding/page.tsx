@@ -2,25 +2,26 @@
 import AccountProfile from "@/components/forms/AccountProfile";
 import { api } from "@/convex/_generated/api";
 import { useUser } from "@clerk/nextjs";
-import { useConvexAuth, useQuery } from "convex/react";
+import { useConvexAuth, useMutation, useQuery } from "convex/react";
 import { redirect } from "next/navigation";
 import { Spinner } from "@/components/spinner";
+import { Id } from "@/convex/_generated/dataModel";
 
 
 export default function OnBoardingPage() {
 
 
   const { user } = useUser();
-  {/* @ts-ignore */ }
-  const userInfo = useQuery(api.users.getUser, { userId: user?.id.toString() });
+
+  const userInfo = useQuery(api.users.getUser, { userId: user!.id.toString() });
   const { isLoading } = useConvexAuth()
 
   if (!user) return null;
 
 
-  // if (userInfo?.onboarded) {
-  //   redirect("/chat-with-ai");
-  // }
+  if (userInfo?.onboarded) {
+    redirect("/chat-with-ai");
+  }
 
 
   // if (!isLoading) {
@@ -31,6 +32,7 @@ export default function OnBoardingPage() {
 
 
   const userData = {
+    id: userInfo?._id as Id<"users">,
     userId: user.id,
     username: userInfo ? userInfo?.username : user.username,
     name: userInfo ? userInfo?.name : user.firstName ?? "",

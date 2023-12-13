@@ -115,3 +115,28 @@ export const deleteGroup = mutation({
     await ctx.db.delete(group._id);
   },
 });
+
+export const getTotal = query({
+  handler: async (ctx) => {
+    try {
+      const identity = await ctx.auth.getUserIdentity();
+
+      if (!identity) {
+        throw new Error("Not authenticated");
+      }
+
+      const groups = await ctx.db
+        .query("groups")
+        .filter((q) => q.eq(q.field("userId"), identity.subject))
+        .collect();
+
+      return groups.length;
+    } catch (error) {
+      // Log the error
+      console.error(error);
+    }
+
+    return 0;
+  },
+
+})

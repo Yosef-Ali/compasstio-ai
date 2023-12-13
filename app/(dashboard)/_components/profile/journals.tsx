@@ -1,12 +1,9 @@
-"use client"
 
-import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { api } from "@/convex/_generated/api";
 import { useConvexAuth, useQuery } from "convex/react";
-import { useEffect } from "react";
-//import { ChatCard } from "../chat-with-ai/card-recent-chat";
 import { Id, Doc } from "@/convex/_generated/dataModel";
-import { JournalCard } from "./journal-card";
+import { JournalCard } from "./card-profile-journals";
+
 
 interface Journal extends Doc<"journals"> {
   _id: Id<"journals">;
@@ -20,11 +17,12 @@ interface Journal extends Doc<"journals"> {
 }
 
 
-export default function RecentJournal() {
+export default function Journals() {
   const journals = useQuery(api.journals.get) as Journal[];
   const { isLoading } = useConvexAuth()
-  console.log("Journals", journals)
+
   if (journals === undefined || isLoading) {
+    console.log("journals", journals)
     return (
       <div className="space-y-3">
         <JournalCard.Skeleton />
@@ -39,7 +37,6 @@ export default function RecentJournal() {
       {journals?.map(journal => (
         <JournalCard
           key={journal._id}
-          _id={journal._id}
           title={journal.title ?? " "}
           description={journal.content ?? " "}
           creationTime={journal._creationTime}

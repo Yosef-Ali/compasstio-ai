@@ -14,7 +14,6 @@ interface ChatCardProps {
   _creationTime: number;
 }
 
-
 export function CardAllUsers({ _id, userId, name, avatarUrl, _creationTime }: ChatCardProps) {
 
   const formatted = useFormatOnlyTime(_creationTime);
@@ -22,20 +21,17 @@ export function CardAllUsers({ _id, userId, name, avatarUrl, _creationTime }: Ch
   return (
     <Card >
       <CardHeader>
-
         <div className="flex items-center">
           <Avatar className="w-12 h-12">
             <AvatarImage src={avatarUrl} />
             <AvatarFallback>YA</AvatarFallback>
           </Avatar>
-
           <div className="ml-4">
             <div className="text-lg font-medium truncate">{name}</div>
             <div className="flex items-center space-x-4">
               <div className="text-gray-600 truncate">Last seen &nbsp; {formatted}</div>
               <div className="text-gray-600">{"Offline"}</div>
             </div>
-
           </div>
           <div className="flex-1"></div>
           <div className="flex justify-end">
@@ -43,11 +39,9 @@ export function CardAllUsers({ _id, userId, name, avatarUrl, _creationTime }: Ch
               <div className="flex">
                 <OperationsMenu userId={userId} _id={_id} />
               </div>
-
             </div>
           </div>
         </div>
-
       </CardHeader>
     </Card>
   );

@@ -36,6 +36,31 @@ export const get = query({
   },
 });
 
+export const getTotal = query({
+  handler: async (ctx) => {
+    try {
+      const identity = await ctx.auth.getUserIdentity();
+
+      if (!identity) {
+        throw new Error("Not authenticated");
+      }
+
+      const journals = await ctx.db
+        .query("journals")
+        .filter((q) => q.eq(q.field("userId"), identity.subject))
+        .collect();
+
+      return journals.length;
+    } catch (error) {
+      // Log the error
+      console.error(error);
+    }
+
+    return 0;
+  },
+
+})
+
 export const create = mutation({
   args: {
     title: v.string(),

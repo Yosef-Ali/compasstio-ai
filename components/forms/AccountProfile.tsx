@@ -8,13 +8,17 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UserValidation } from "@/lib/validations/user";
-import { useMutation } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { usePathname, useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { useRef } from "react";
+import { Id } from "@/convex/_generated/dataModel";
+import { Upload } from "lucide-react";
 
 interface Props {
   user: {
+    id: Id<"users">;
     userId: string;
     username: string | null;
     name: string;
@@ -28,7 +32,10 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
   const router = useRouter();
   const pathname = usePathname();
 
+
   const createProfile = useMutation(api.users.create)
+  const generateUploadUrl = useMutation(api.users.generateUploadUrl);
+  const updateAvatar = useMutation(api.users.updateAvatar);
 
   const form = useForm<z.infer<typeof UserValidation>>({
     resolver: zodResolver(UserValidation),
@@ -67,6 +74,38 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
       router.push("/");
     }
   };
+
+  async function handleImage(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+
+    console.log("file", file)
+
+    if (file) {
+      // Step 1: Generate a URL for uploading
+      const postUrl = await generateUploadUrl();
+
+      // Step 2: Upload the file to the generated URL
+      const result = await fetch(postUrl, {
+        method: "POST",
+        body: file,
+      });
+
+      if (result.ok) {
+        // Step 3: Update the profile photo URL in the form
+        const { storageId } = await result.json();
+
+        // Step 4: Update the profile photo in the database
+        updateAvatar({
+          id: user.id,
+          storageId: storageId,
+        });
+      } else {
+        // Handle upload error
+        console.error('Failed to upload image');
+      }
+    }
+  }
+
   return (
     <Form {...form}>
       <form
@@ -78,10 +117,10 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
           name='profile_photo'
           render={({ field }) => (
             <FormItem className='flex items-center gap-4'>
-              <FormLabel className='account-form_image-label'>
-                {field.value ? (
+              <FormLabel className='account-form_image-label cursor-pointer'>
+                {user.image ? (
                   <Image
-                    src={field.value}
+                    src={user.image}
                     alt='profile_icon'
                     width={96}
                     height={96}
@@ -97,14 +136,15 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
                     className='object-contain'
                   />
                 )}
+
               </FormLabel>
-              <FormControl className='flex-1 text-base-semibold text-gray-200'>
+              <FormControl className='flex-1 text-base-semibold text-gray-400 cursor-pointer'>
                 <Input
                   type='file'
                   accept='image/*'
                   placeholder='Add profile photo'
                   className='cursor-pointer border-none bg-transparent outline-none file:text-blue'
-                // onChange={(e) => handleImage(e, field.onChange)}
+                  onChange={(e) => handleImage(e)}
                 />
               </FormControl>
             </FormItem>
