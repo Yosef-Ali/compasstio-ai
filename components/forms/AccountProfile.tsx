@@ -18,6 +18,7 @@ import { Upload } from "lucide-react";
 
 interface Props {
   user: {
+    id: string;
     userId: string;
     username: string | null;
     name: string;
@@ -30,7 +31,6 @@ interface Props {
 const AccountProfile = ({ user, btnTitle }: Props) => {
   const router = useRouter();
   const pathname = usePathname();
-
 
   const createProfile = useMutation(api.users.create)
   const generateUploadUrl = useMutation(api.users.generateUploadUrl);
@@ -95,7 +95,7 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
 
         // Step 4: Update the profile photo in the database
         updateAvatar({
-          id: user.id,
+          id: user.id as Id<"users">,
           storageId: storageId,
         });
       } else {

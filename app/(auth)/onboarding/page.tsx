@@ -34,7 +34,7 @@ export default function OnBoardingPage() {
 
 
   const userData = {
-    id: userInfo?._id as string,
+    id: userInfo?._id as Id<"users">,
     userId: user.id,
     username: userInfo ? userInfo?.username : user.username,
     name: userInfo ? userInfo?.name : user.firstName ?? "",
