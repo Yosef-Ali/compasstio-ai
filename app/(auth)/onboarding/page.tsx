@@ -26,9 +26,9 @@ export default function OnBoardingPage() {
   if (!user) return null;
 
 
-  // if (userInfo?.onboarded) {
-  //   redirect("/chat-with-ai");
-  // }
+  if (userInfo?.onboarded) {
+    redirect("/chat-with-ai");
+  }
 
   const userData = {
     _id: userInfo?._id as Id<"users">,
