@@ -9,25 +9,26 @@ import { Id } from "@/convex/_generated/dataModel";
 
 
 export default function OnBoardingPage() {
-
-
-  const { user } = useUser();
-
-  const userInfo = useQuery(api.users.getUser, { userId: user!.id.toString() });
   const { isLoading } = useConvexAuth()
 
-  if (!isLoading) {
+  if (isLoading) {
     return (<div className="w-full flex items-center justify-center">
       <Spinner size="lg" />
     </div>)
   }
 
+
+  const { user } = useUser();
+
+  const userInfo = useQuery(api.users.getUser, { userId: user!.id.toString() });
+
+
   if (!user) return null;
 
 
-  if (userInfo?.onboarded) {
-    redirect("/chat-with-ai");
-  }
+  // if (userInfo?.onboarded) {
+  //   redirect("/chat-with-ai");
+  // }
 
   const userData = {
     _id: userInfo?._id as Id<"users">,
@@ -48,7 +49,7 @@ export default function OnBoardingPage() {
           </span>
         </p>
 
-        <section className='mt-9 p-10 shadow-lg rounded-xl border bg-card text-card-foreground '>
+        <section className='mt-9 p-10 shadow-lg rounded-xl border bg-card text-card-foreground'>
           <AccountProfile user={userData} btnTitle='Continue' />
         </section>
       </main>

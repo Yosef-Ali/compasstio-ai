@@ -15,11 +15,7 @@ export const getUser = query({
   },
 });
 
-// export const getAll = query({
-//   handler: async (ctx) => {
-//     return await ctx.db.query("users").collect();
-//   },
-// });
+
 
 export const get = query(async ({ db }) => {
   return await db.query("users").order("desc").collect();

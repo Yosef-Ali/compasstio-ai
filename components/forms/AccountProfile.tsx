@@ -94,7 +94,7 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
 
         // Step 4: Update the profile photo in the database
         updateAvatar({
-          id: user?._id as Id<"users">,
+          id: user.userId as Id<"users">,
           storageId: storageId,
         });
       } else {
