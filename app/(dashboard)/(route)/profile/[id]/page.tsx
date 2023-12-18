@@ -1,5 +1,5 @@
 "use client"
-import { CardGroup } from "@/app/(dashboard)/_components/chat-with-group/card-groupsX";
+
 import Shell from "@/app/(dashboard)/_components/shell";
 import TopNav from "@/app/(dashboard)/_components/top-nav";
 import Wrapper from "@/app/(dashboard)/_components/wrapper";
@@ -42,7 +42,7 @@ export default function ProfileEditSinglePage() {
   const param = useParams();
   const { user } = useUser();
 
-  const userInfo = useQuery(api.users.getUser, { userId: param.id.toString() });
+  const userInfo = useQuery(api.users.getUser, { id: param.id as string });
   const [imageSrc, setImageSrc] = useState(userInfo?.avatarUrl);
   const [loading, setLoading] = useState(false);
 
