@@ -6,10 +6,10 @@ import { toast } from "sonner";
 
 export default function useDeleteFromGroups(id: Id<"users">) {
   const router = useRouter();
-  const useDelete = useMutation(api.groups.deleteGroup);
+  const useDelete = useMutation(api.friends.isBlocked);
 
   const handleDelete = async () => {
-    await useDelete({ _id: id });
+    await useDelete({ friendId: id });
 
     toast.promise(Promise.resolve(), {
       loading: "Deleting journal...",

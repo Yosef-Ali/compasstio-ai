@@ -26,7 +26,7 @@ export default function ProfilePage() {
 
   const generateUploadUrl = useMutation(api.users.generateUploadUrl);
   const updateAvatar = useMutation(api.users.updateAvatar);
-  const userInfo = useQuery(api.users.getUser, { userId: user!.id.toString() });
+  const userInfo = useQuery(api.users.getUser, { id: user!.id.toString() });
   const totalJournal = useQuery(api.journals.getTotal)
   //const totalGroup = useQuery(api.groups.getTotal)
   const { activeItem } = useActiveMenu();

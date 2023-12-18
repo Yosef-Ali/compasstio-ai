@@ -1,22 +1,28 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardHeader } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { useFormattedTime } from "@/lib/formated-time";
+import { useQuery } from "convex/react";
 import { CheckCheckIcon } from "lucide-react";
 
 interface CardProfileMessageProps {
-  name: string;
-  content: string;
-  creationTime: number;
-  avatarUrl: string;
+  _id: Id<"friends">;
+  friends_Id: Id<"users">
+  _creationTime: number;
+  isBlocked: boolean;
 }
 
 
 
-export function CardProfileMessage({ name, content, creationTime, avatarUrl }: CardProfileMessageProps) {
+export function CardProfileMessage({ friends_Id, _creationTime, isBlocked }: CardProfileMessageProps) {
 
-  const formatted = useFormattedTime(creationTime);
+  const friendInfo = useQuery(api.users.getFriend, { id: friends_Id })
+  const messageLast = useQuery(api.messages.getMessages, { receiver_id: friends_Id })
+
+
+  const formatted = useFormattedTime(_creationTime);
 
   return (
     <Card >
@@ -25,12 +31,12 @@ export function CardProfileMessage({ name, content, creationTime, avatarUrl }: C
           <div className="flex items-center space-x-4">
             <div className="flex items-center">
               <Avatar>
-                <AvatarImage src={avatarUrl} />
+                <AvatarImage src={friendInfo?.avatarUrl} />
                 <AvatarFallback>YA</AvatarFallback>
               </Avatar>
               <div className="ml-4">
-                <p className="text-sm font-medium leading-none">{name}</p>
-                <p className="text-sm text-muted-foreground truncate line-clamp-3">{content}</p>
+                <p className="text-sm font-medium leading-none">{friendInfo?.name}</p>
+                <p className="text-sm text-muted-foreground truncate line-clamp-3">{messageLast && messageLast[0].content}</p>
               </div>
             </div>
           </div>

@@ -5,23 +5,22 @@ import { CardProfileMessage } from "./card-profile-messages";
 
 import { SetStateAction, useState } from "react";
 
-interface Group {
-  _id: Id<"groups">;
-  name: string;
-  description: string;
+interface FriendsProps {
+  _id: Id<"friends">;
+  friends_Id: Id<"users">
   _creationTime: number;
-  avatarUrl: string;
+  isBlocked: boolean;
 }
 
 
 export default function Messages() {
 
-  const groups = useQuery(api.groups.get) as Group[] | undefined;
+  const friends = useQuery(api.friends.listFriends)
 
 
   const { isLoading } = useConvexAuth()
 
-  if (groups === undefined || isLoading) {
+  if (friends === undefined || isLoading) {
     return (
       <div className="space-y-3">
         <CardProfileMessage.Skeleton />
@@ -33,14 +32,14 @@ export default function Messages() {
 
   return (
     <div className="grid grid-cols-1 gap-4 p-3">
-      {groups?.map(group => {
+      {friends?.map(friend => {
         return (
           <CardProfileMessage
-            key={group._id}
-            name={group.name ?? " "}
-            content = {group.description ?? " "}
-            creationTime={group._creationTime ?? 0}
-            avatarUrl={group.avatarUrl ?? " "}
+            _id={friend._id}
+            key={friend._id}
+            friends_Id={friend.friend_Id}
+            _creationTime={friend._creationTime ?? 0}
+            isBlocked={friend.isBlocked}
           />
         );
       })}
