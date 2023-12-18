@@ -1,4 +1,4 @@
-// "use client"
+"use client"
 
 import ChatContainerSinglePage from "@/app/(dashboard)/_components/chat-container-single-page"
 

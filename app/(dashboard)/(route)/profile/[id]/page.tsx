@@ -1,5 +1,5 @@
 "use client"
-import { CardGroup } from "@/app/(dashboard)/_components/chat-with-group/card-groups";
+import { CardGroup } from "@/app/(dashboard)/_components/chat-with-group/card-groupsX";
 import Shell from "@/app/(dashboard)/_components/shell";
 import TopNav from "@/app/(dashboard)/_components/top-nav";
 import Wrapper from "@/app/(dashboard)/_components/wrapper";

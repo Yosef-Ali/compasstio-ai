@@ -7,10 +7,7 @@ import { useParams } from "next/navigation";
 import { PlusCircle } from "lucide-react";
 import SearchBar from "@/components/search";
 
-interface TitleProps {
-  groupId: Id<"groups">;
 
-}
 
 const TopNavChatWithAi = () => {
 

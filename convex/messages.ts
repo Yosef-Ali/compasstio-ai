@@ -32,13 +32,38 @@ export const get = query({
   },
 });
 
+export const getMessages = query({
+  args: {
+    receiver_id: v.id("users"),
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+
+    if (!identity) {
+      throw new Error("Not authenticated");
+    }
+
+    const senderId = identity.subject as string;
+
+    const allMessages = await ctx.db.query("messages")
+      .filter((q) =>
+        q.or(
+          q.eq(q.field("sender_id"), senderId),
+          q.eq(q.field("receiver_id"), args.receiver_id)
+        )
+      )
+      .collect();
+
+    return allMessages;
+  }
+})
+
+
+
 export const create = mutation({
   args: {
-    message_content: v.string(),
-    recipient_id: v.string(),
-    seen_at: v.union(v.null(), v.string()),
-    sender_id: v.string(),
-    sent_at: v.string(),
+    content: v.string(),
+    receiver_id: v.id("users"),
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
@@ -46,16 +71,17 @@ export const create = mutation({
       throw new Error("Not authenticated");
     }
 
-    const { subject: userId } = identity;
+    const senderId = identity.subject as string;
 
     const messages = await ctx.db.insert("messages", {
-      message_content: args.message_content,
-      recipient_id: args.recipient_id,
-      seen_at: args.seen_at,
-      sender_id: args.sender_id,
-      sent_at: args.sent_at,
+      content: args.content,
+      sender_id: senderId,
+      receiver_id: args.receiver_id,
+      read: false,
     });
 
     return messages;
   },
 });
+
+

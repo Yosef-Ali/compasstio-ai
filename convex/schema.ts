@@ -1,6 +1,5 @@
 import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
-import { useId } from "react";
 
 export default defineSchema({
   journals: defineTable({
@@ -42,26 +41,33 @@ export default defineSchema({
     content: v.string(),
   }),
 
-  groups: defineTable({
-    _id: v.string(),
-    _creationTime: v.number(),
-    userId: v.string(),
-    name: v.string(),
-    description: v.string(),
-    avatarUrl: v.string(),
-  }).index("by_user", ["userId"]),
+  // groups: defineTable({
+  //   _id: v.string(),
+  //   _creationTime: v.number(),
+  //   userId: v.string(),
+  //   name: v.string(),
+  //   description: v.string(),
+  //   avatarUrl: v.string(),
+  //   isBlocked: v.boolean(),
+  // }).index("by_user", ["userId"]),
+
+  friends: defineTable({
+    user_Id: v.string(),
+    friend_Id: v.id("users"),
+    isBlocked: v.boolean(),
+  })
+    .index("by_userId", ["user_Id"])
+    .index("by_friendId", ["friend_Id"]),
 
   users: defineTable({
-    _id: v.string(),
-    _creationTime: v.number(),
-    userId: v.string(),
-    name: v.string(),
-    username: v.string(),
     avatarUrl: v.string(),
     bio: v.string(),
+    name: v.string(),
     onboarded: v.boolean(),
-    storageId: v.optional(v.string()),
-  }).index("by_userId", ["userId"]),
+    userId: v.string(),
+    username: v.string(),
+  }).index("by_username", ["username"]),
+
 
   tasks: defineTable({
     _id: v.string(),
@@ -74,56 +80,15 @@ export default defineSchema({
   }).index("by_user", ["userId"]),
 
   messages: defineTable({
-    message_content: v.string(),
-    recipient_id: v.string(),
-    seen_at: v.union(v.null(), v.string()),
-    sender_id: v.string(),
-    sent_at: v.string(),
-  })
-    .index("by_sender", ["sender_id"])
-    .index("by_recipient", ["recipient_id"]),
-
-  // Messages
-  Messages: defineTable({
-    _id: v.string(),
-    _creationTime: v.number(),
-    senderId: v.string(),
-    receiverId: v.string(),
     content: v.string(),
+    sender_id: v.string(),
+    receiver_id: v.id("users"),
+    read: v.boolean(),
   })
-    .index("by_sender", ["senderId"])
-    .index("by_receiver", ["receiverId"]),
+    .index("by_sender_id", ["sender_id"])
+    .index("by_receiver_id", ["receiver_id"]),
 
-  // Invitations
-  Invitations: defineTable({
-    _id: v.string(),
-    _creationTime: v.number(),
-    senderId: v.string(),
-    receiverId: v.string(),
-    status: v.union(v.string(), v.null()),
-  })
-    .index("by_sender", ["senderId"])
-    .index("by_receiver", ["receiverId"]),
-
-  // Connections
-  Connections: defineTable({
-    _id: v.string(),
-    _creationTime: v.number(),
-    userId: v.string(),
-    connectionId: v.string(),
-  })
-    .index("by_user", ["userId"])
-    .index("by_connection", ["connectionId"]),
-
-
-  // Storage
-  Storage: defineTable({
-    _id: v.string(),
-    _creationTime: v.number(),
-    storageId: v.string(),
-    author: v.string(),
-    imageUrl: v.optional(v.string()),
-  })
 });
+
 
 

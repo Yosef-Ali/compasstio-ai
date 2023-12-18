@@ -17,27 +17,35 @@ export default function OnBoardingPage() {
     </div>)
   }
 
-
   const { user } = useUser();
-
-  const userInfo = useQuery(api.users.getUser, { userId: user!.id.toString() });
-
 
   if (!user) return null;
 
+  console.log('user', user)
+
+  const userInfo = useQuery(api.users.getUser, { id: user.id.toString() });
 
   if (userInfo?.onboarded) {
     redirect("/chat-with-ai");
+
   }
 
+  // const userInfo = {
+  //   _id: user.id as Id<"users">,
+  //   username: user.username,
+  //   name: user.firstName ?? "",
+  //   bio: "",
+  //   avatarUrl: user.imageUrl,
+  // }
+
   const userData = {
-    _id: userInfo?._id as Id<"users">,
-    userId: user?.id,
+    userId: userInfo?.userId ?? user.id.toString(),
     username: userInfo ? userInfo?.username : user.username,
     name: userInfo ? userInfo?.name : user.firstName ?? "",
     bio: userInfo ? userInfo?.bio : "",
     image: userInfo ? userInfo?.avatarUrl : user.imageUrl,
   };
+
 
   return (
     <>
@@ -56,4 +64,6 @@ export default function OnBoardingPage() {
     </>
   );
 }
+
+
 

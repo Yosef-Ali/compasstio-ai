@@ -17,7 +17,6 @@ import { Id } from "@/convex/_generated/dataModel";
 
 interface Props {
   user: {
-    _id: Id<"users">;
     userId: string;
     username: string | null;
     name: string;
@@ -52,12 +51,13 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
     console.log("onSubmit", values);
 
     const promise = createProfile({
-      userId: user.userId,
+      userId: user.userId ?? "",
       name: values.name,
       username: values.username,
       bio: values.bio,
       onboarded: true,
       avatarUrl: ""
+
     })
 
     toast.promise(promise, {
@@ -93,10 +93,10 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
         const { storageId } = await result.json();
 
         // Step 4: Update the profile photo in the database
-        updateAvatar({
-          id: user.userId as Id<"users">,
-          storageId: storageId,
-        });
+        // updateAvatar({
+        //   userId: user.userId as string ,
+        //   storageId: storageId,
+        // });
       } else {
         // Handle upload error
         console.error('Failed to upload image');

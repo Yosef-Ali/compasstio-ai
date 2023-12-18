@@ -1,20 +1,18 @@
-import { OperationsMenu } from "@/components/operations-menu-users";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardHeader } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Id } from "@/convex/_generated/dataModel";
+import { OperationsMenu } from "@/components/operations-menu-users";
 import { useFormatOnlyTime, useFormattedTime } from "@/lib/formated-time";
-import { CheckCheckIcon } from "lucide-react";
 
 interface ChatCardProps {
   _id: Id<"users">;
-  userId: string;
   name: string;
   avatarUrl: string;
   _creationTime: number;
 }
 
-export function CardAllUsers({ _id, userId, name, avatarUrl, _creationTime }: ChatCardProps) {
+export function CardAllUsers({ _id, name, avatarUrl, _creationTime }: ChatCardProps) {
 
   const formatted = useFormatOnlyTime(_creationTime);
 
@@ -37,7 +35,7 @@ export function CardAllUsers({ _id, userId, name, avatarUrl, _creationTime }: Ch
           <div className="flex justify-end">
             <div className="flex flex-col h-full justify-between">
               <div className="flex">
-                <OperationsMenu userId={userId} _id={_id} />
+                <OperationsMenu _id={_id}  />
               </div>
             </div>
           </div>

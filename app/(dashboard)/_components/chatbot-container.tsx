@@ -40,11 +40,10 @@ const InfoList = ({ items }: InfoListProps) => {
   return (
     <div className="grid items-start ">
       {items.map((item, index) => {
-        console.log('item.icon', item.icon)
         const Icon = Icons[item.icon || "arrowRight"];
         return (
           item.title && (
-            <CardContent className="grid ">
+            <CardContent key={index} className="grid ">
               <div className=" flex items-center space-x-4 rounded-md  p-4">
                 <Avatar className="bg-purple-100 flex justify-center items-center">
                   <Icon className="h-6 w-6 text-purple-500" />
@@ -63,6 +62,7 @@ const InfoList = ({ items }: InfoListProps) => {
     </div>
   );
 };
+
 
 const Intro = () => {
   return (

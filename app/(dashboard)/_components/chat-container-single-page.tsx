@@ -22,28 +22,23 @@ import GroupMessages from "./chat-with-group/groupe-messages";
 import { Skeleton } from "@/components/ui/skeleton";
 
 
-interface Messages {
-  id: string,
-  _creationTime: number,
-  message_content: string,
-  recipient_id: string,
-  seen_at: string | null,
-  sender_id: string,
-  sent_at: string,
-}
+
 
 const ChatContainerSinglePage = () => {
-  const groupId = useParams().groupId as string
+
   const [inputValue, setInputValue] = useState("");
 
-
-  const recipient_id = useParams().groupId as string
-  const messages = useQuery(api.groupMessages.get, {
-    id: groupId
-  })
+  const receiver_id = useParams().id as Id<"users">
 
 
-  const messageSent = useMutation(api.groupMessages.sendMessage)
+  console.log('receiver_id', receiver_id)
+  const messages = receiver_id ? useQuery(api.messages.getMessages, { receiver_id: receiver_id }) : undefined
+
+
+  console.log('messages', messages)
+
+
+  const messageSent = useMutation(api.messages.create)
 
 
 
@@ -56,8 +51,8 @@ const ChatContainerSinglePage = () => {
     if (!inputValue) return;
     console.log(inputValue); // Access input value here
     messageSent({
-      recipient_id: recipient_id,
-      message: inputValue
+      receiver_id: receiver_id,
+      content: inputValue
     })
     setInputValue(""); // Clear input value after submission
   };
@@ -97,7 +92,7 @@ const ChatContainerSinglePage = () => {
       <div className="mx-auto w-full max-w-lg py-24 flex flex-col stretch space-y-10  ">
         {messages ? messages.map(m => {
           return (
-            <GroupMessages key={m._id} recipient_id={m.recipient_id} sender_id={m.sender_id} message={m.message_content} />
+            <GroupMessages key={m._id} sender_id={m.sender_id} message={m.content} />
           )
         })
           : (<p className="text-center">No messages</p>)

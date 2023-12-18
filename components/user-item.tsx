@@ -22,7 +22,10 @@ import { useQuery } from "convex/react";
 
 export const UserItem = () => {
   const { user } = useUser();
-  const userInfo = useQuery(api.users.getUser, { userId: user!.id.toString() });
+  if (!user) {
+    return null;
+  }
+  const userInfo = useQuery(api.users.getUser, { id: user.id.toString() });
 
   return (
     <DropdownMenu>

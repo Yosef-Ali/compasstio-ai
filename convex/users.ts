@@ -1,19 +1,53 @@
 import { v } from "convex/values";
-import { action, internalMutation, mutation, query } from "./_generated/server";
-import { Id } from "./_generated/dataModel";
-import { internal } from "./_generated/api";
+import { mutation, query } from "./_generated/server";
+
 
 export const getUser = query({
   args: {
-    userId: v.string(),
+    id: v.string(),
   },
   handler: async (ctx, args) => {
-    return await ctx.db
+
+    const identity = await ctx.auth.getUserIdentity();
+
+    if (!identity) {
+      throw new Error("Not authenticated");
+    }
+
+    const user = await ctx.db
       .query("users")
-      .filter((q) => q.eq(q.field("userId"), args.userId))
+      .filter((q) => q.eq(q.field("userId"), args.id))
       .first();
+
+    if (!user) {
+      return null;
+    }
+
+    return user;
   },
 });
+
+export const getFriend = query({
+  args: {
+    id: v.id("users"),
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+
+    if (!identity) {
+      throw new Error("Not authenticated");
+    }
+
+    const friend = await ctx.db.get(args.id);
+
+    if (!friend) {
+      return null;
+    }
+    return friend;
+
+  }
+})
+
 
 
 
@@ -29,6 +63,7 @@ export const create = mutation({
     avatarUrl: v.string(),
     bio: v.string(),
     onboarded: v.boolean(),
+
   },
   handler: async (ctx, args) => {
     return await ctx.db.insert("users", {
@@ -89,12 +124,11 @@ export const updateAvatar = mutation({
       throw new Error("Not found");
     }
 
-    if (existingUser.userId !== userId) {
+    if (existingUser._id !== userId) {
       throw new Error("Unauthorized");
     }
 
     const url = await ctx.storage.getUrl(args.storageId);
-    
 
     console.log("URL:", url);
 
@@ -115,23 +149,3 @@ export const updateAvatar = mutation({
 });
 
 
-// export const generateAndStore = action({
-//   args: { prompt: v.string() },
-//   handler: async (ctx, args) => {
-//     // Not shown: generate imageUrl from `prompt`
-//     const imageUrl = "https://....";
-
-//     // Download the image
-//     const response = await fetch(imageUrl);
-//     const image = await response.blob();
-
-//     // Store the image in Convex
-//     const storageId: Id<"_storage"> = await ctx.storage.store(image);
-
-//     // Write `storageId` to a document
-//     await ctx.runMutation(internal.users.storeResult{
-//       storageId,
-//       prompt: args.prompt,
-//     });
-//   },
-// });

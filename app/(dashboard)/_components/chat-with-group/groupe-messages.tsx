@@ -4,20 +4,23 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { UserButton } from "@clerk/clerk-react";
 import { useUser } from '@clerk/nextjs';
 import { useParams } from 'next/navigation';
+import { Id } from '@/convex/_generated/dataModel';
 
 interface Props {
   sender_id: string
-  recipient_id: string
   message: string
 }
 
-export default function GroupMessages({ sender_id, recipient_id, message }: Props) {
+export default function GroupMessages({ sender_id, message }: Props) {
 
-  const groupId = useParams().groupId
+  //const groupId = useParams().groupId
 
   const { user } = useUser();
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  console.log('message:::', message)
+  console.log('sender_id', sender_id)
 
 
   const scrollToBottom = () => {

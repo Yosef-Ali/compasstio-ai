@@ -1,14 +1,8 @@
 import { Doc, Id } from "@/convex/_generated/dataModel";
 import { api } from "@/convex/_generated/api";
 import { useConvexAuth, useQuery } from "convex/react";
-
-import { CardMessage } from "./card-message";
-
-
-import { group } from "console";
 import { CardAllUsers } from "./card-all-users";
 import { useUser } from "@clerk/nextjs";
-import { CardGroup } from "./card-groups";
 import { Skeleton } from "@/components/ui/skeleton";
 
 interface Users {
@@ -21,10 +15,6 @@ interface Users {
   // status: string;
 }
 
-
-
-
-
 export default function AllUsers() {
 
   const users = useQuery(api.users.get)
@@ -33,13 +23,11 @@ export default function AllUsers() {
   return (
     <div className="grid grid-cols-1 gap-4 p-3">
       {users?.map(user => {
-        console.log("user:", user.userId)
         return (
           user.userId !== currentUser ? (
             <CardAllUsers
               key={user._id}
               _id={user._id}
-              userId={user.userId ?? ""}
               name={user.name ?? ""}
               // lastSeen={user.lastSeen ?? ""}
               // status={user.status ?? ""}
@@ -53,7 +41,7 @@ export default function AllUsers() {
   )
 }
 
-CardGroup.Skeleton = function CardMessageSkeleton() {
+CardAllUsers.Skeleton = function CardMessageSkeleton() {
   return (
     <div className="p-4">
       <div className="flex items-center space-x-4">

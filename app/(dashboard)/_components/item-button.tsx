@@ -16,20 +16,22 @@ const ItemButton = ({
   icon: Icon,
   onClick
 }: ItemButtonProps) => {
-  const { user } = useUser();
+  //const { user } = useUser();
 
   const active = false
 
   return (
+    <>
+      <Button className={cn(
+        "group  text-sm py-2 px-4 rounded-lg bg-text-white w-full hover:bg-purple-700 bg-purple-500 flex items-center text-white font-medium",
+        active && "bg-primary/5 text-white"
+      )}
+        onClick={onClick}
+      >
+        <Icon className="mr-2 w-4 h-4" /> {label}
+      </Button>
+    </>
 
-    <Button className={cn(
-      "group  text-sm py-2 px-4 rounded-lg bg-text-white w-full hover:bg-purple-700 bg-purple-500 flex items-center text-white font-medium",
-      active && "bg-primary/5 text-white"
-    )}
-      onClick={onClick}
-    >
-      <Icon className="mr-2 w-4 h-4" /> {label}
-    </Button>
   )
 }
 

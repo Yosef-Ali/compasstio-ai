@@ -3,27 +3,22 @@ import { api } from "@/convex/_generated/api";
 import { useConvexAuth, useQuery } from "convex/react";
 
 import { CardMessage } from "./card-message";
-import { CardGroup } from "./card-groups";
-import { SetStateAction, useState } from "react";
+import { CardFriends } from "./card-friends";
 
-interface Group {
-  _id: Id<"groups">;
-  name: string;
-  description: string;
+interface FriendsProps {
+  _id: Id<"friends">;
+  friends_Id: Id<"users">
   _creationTime: number;
-  avatarUrl: string;
+  isBlocked: boolean;
 }
 
-
-export default function ChatWithGroup() {
-  const [activeGroupId, setActiveGroupId] = useState<string | null>(null);
-
-  const groups = useQuery(api.groups.get) as Group[] | undefined;
+export default function Friends() {
+  const friends = useQuery(api.friends.listFriends)
 
 
   const { isLoading } = useConvexAuth()
 
-  if (groups === undefined || isLoading) {
+  if (friends === undefined || isLoading) {
     return (
       <div className="space-y-3">
         <CardMessage.Skeleton />
@@ -35,18 +30,19 @@ export default function ChatWithGroup() {
 
   return (
     <div className="grid grid-cols-1 gap-4 p-3">
-      {groups?.map(group => {
+      {friends?.map(friend => {
         return (
-          <CardGroup
-            key={group._id}
-            _id={group._id}
-            name={group.name ?? " "}
-            _creationTime={group._creationTime ?? 0}
-            avatarUrl={group.avatarUrl ?? " "}
+          <CardFriends
+            key={friend._id}
+            _id={friend._id}
+            friends_Id={friend.friend_Id}
+            _creationTime={friend._creationTime ?? 0}
+            isBlocked={friend.isBlocked}
           />
         );
       })}
     </div>
   );
 }
+
 

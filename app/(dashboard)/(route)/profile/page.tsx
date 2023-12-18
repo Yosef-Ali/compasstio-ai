@@ -28,9 +28,12 @@ export default function ProfilePage() {
   const updateAvatar = useMutation(api.users.updateAvatar);
   const userInfo = useQuery(api.users.getUser, { userId: user!.id.toString() });
   const totalJournal = useQuery(api.journals.getTotal)
-  const totalGroup = useQuery(api.groups.getTotal)
+  //const totalGroup = useQuery(api.groups.getTotal)
   const { activeItem } = useActiveMenu();
   const { isLoading } = useConvexAuth()
+
+
+  console.log('userInfo', userInfo)
 
 
   async function handleUploadImage() {
@@ -90,9 +93,9 @@ export default function ProfilePage() {
           <h2 className="text-center mt-4">
             {userInfo?.name}
           </h2>
-          <p className="text-center text-gray-600">
+          {/* <p className="text-center text-gray-600">
             {totalGroup} followers · {totalJournal} posts
-          </p>
+          </p> */}
           <ButtonGroup />
         </div>
         <div className="profile-content">
