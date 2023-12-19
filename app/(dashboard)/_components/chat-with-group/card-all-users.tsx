@@ -6,7 +6,7 @@ import { OperationsMenu } from "@/components/operations-menu-users";
 import { useFormatOnlyTime, useFormattedTime } from "@/lib/formated-time";
 
 interface ChatCardProps {
-  _id: Id<"users">;
+  _id: string;
   name: string;
   avatarUrl: string;
   _creationTime: number;
@@ -35,7 +35,7 @@ export function CardAllUsers({ _id, name, avatarUrl, _creationTime }: ChatCardPr
           <div className="flex justify-end">
             <div className="flex flex-col h-full justify-between">
               <div className="flex">
-                <OperationsMenu _id={_id}  />
+                <OperationsMenu _id={_id} />
               </div>
             </div>
           </div>

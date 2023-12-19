@@ -6,7 +6,7 @@ import { useUser } from "@clerk/nextjs";
 import { Skeleton } from "@/components/ui/skeleton";
 
 interface Users {
-  _id: Id<"users">;
+  _id: string;
   _creationTime: number;
   userId: string;
   avatarUrl: string;
@@ -20,6 +20,9 @@ export default function AllUsers() {
   const users = useQuery(api.users.get)
   const currentUser = useUser().user?.id
 
+  console.log('currentUserAllUsers:', currentUser)
+  console.log('usersAllUsers:', users)
+
   return (
     <div className="grid grid-cols-1 gap-4 p-3">
       {users?.map(user => {
@@ -27,7 +30,7 @@ export default function AllUsers() {
           user.userId !== currentUser ? (
             <CardAllUsers
               key={user._id}
-              _id={user._id}
+              _id={user.userId}
               name={user.name ?? ""}
               // lastSeen={user.lastSeen ?? ""}
               // status={user.status ?? ""}

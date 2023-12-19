@@ -34,7 +34,7 @@ export const get = query({
 
 export const getMessages = query({
   args: {
-    receiver_id: v.id("users"),
+    receiver_id: v.string(),
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
@@ -43,27 +43,38 @@ export const getMessages = query({
       throw new Error("Not authenticated");
     }
 
-    const senderId = identity.subject as string;
+    const senderId = identity.subject;
+    //const receiverId = args.receiver_id. as Id<"users">;
 
-    const allMessages = await ctx.db.query("messages")
+    console.log('args.receiver_id', args.receiver_id)
+
+    const filteredMessages = await ctx.db.query("messages")
       .filter((q) =>
         q.or(
-          q.eq(q.field("sender_id"), senderId),
-          q.eq(q.field("receiver_id"), args.receiver_id)
+          q.and(
+            q.eq(q.field("sender_id"), senderId),
+            q.eq(q.field("receiver_id"), args.receiver_id)
+          ),
+          q.and(
+            q.eq(q.field("sender_id"), args.receiver_id),
+            q.eq(q.field("receiver_id"), senderId)
+          )
         )
       )
       .collect();
 
-    return allMessages;
+    return filteredMessages;
+
   }
 })
+
 
 
 
 export const create = mutation({
   args: {
     content: v.string(),
-    receiver_id: v.id("users"),
+    receiver_id: v.string(),
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
@@ -72,6 +83,9 @@ export const create = mutation({
     }
 
     const senderId = identity.subject as string;
+
+    console.log('senderId at create', senderId)
+    console.log('args.receiver_id at create', args.receiver_id)
 
     const messages = await ctx.db.insert("messages", {
       content: args.content,

@@ -91,7 +91,7 @@ export const listFriends = query({
 
 export const createFriend = mutation({
   args: {
-    friendId: v.id("users"),
+    friendId: v.string(),
   },
   handler: async (ctx, args) => {
 
@@ -101,6 +101,8 @@ export const createFriend = mutation({
     const friend_Id = args.friendId
     const user_Id = identity?.subject
     const isBlocked = false
+
+    console.log('user_Id:', user_Id)
 
     const newFriendship = await ctx.db.insert("friends", {
       user_Id: user_Id || "",
@@ -121,7 +123,7 @@ export const createFriend = mutation({
 
 export const isBlocked = mutation({
   args: {
-    friendId: v.id("users"),
+    friendId: v.string(),
   },
   handler: async (ctx, args) => {
     try {

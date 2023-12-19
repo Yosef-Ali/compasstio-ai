@@ -15,13 +15,12 @@ import { OperationsMenu } from "@/components/operations-menu-chat-group";
 import { useUser } from "@clerk/nextjs";
 
 interface CardFriendsProps {
-  _id: Id<"friends">;
-  friends_Id: Id<"users">
+  friends_Id: string
   _creationTime: number;
   isBlocked: boolean;
 }
 
-export function CardFriends({ _id, friends_Id, _creationTime, isBlocked }: CardFriendsProps) {
+export function CardFriends({ friends_Id, _creationTime, isBlocked }: CardFriendsProps) {
   const [message, setMessage] = useState("");
   const [isRead, setIsRead] = useState(false)
   const formatted = useFormatOnlyTime(_creationTime);
@@ -37,9 +36,9 @@ export function CardFriends({ _id, friends_Id, _creationTime, isBlocked }: CardF
   const messageLast = useQuery(api.messages.getMessages, { receiver_id: friends_Id })
 
 
-  //const isActive = _id === useParams().groupId;
+  const isActive = friends_Id === useParams().id;
 
-  const isActive = true
+  //const isActive = true
 
   //const { isLoading, isAuthenticated } = useConvexAuth();
 

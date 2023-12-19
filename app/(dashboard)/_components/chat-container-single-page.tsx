@@ -28,10 +28,9 @@ const ChatContainerSinglePage = () => {
 
   const [inputValue, setInputValue] = useState("");
 
-  const receiver_id = useParams().id as Id<"users">
+  const receiver_id = useParams().id as string;
 
 
-  console.log('receiver_id', receiver_id)
   const messages = receiver_id ? useQuery(api.messages.getMessages, { receiver_id: receiver_id }) : undefined
 
 
@@ -116,6 +115,7 @@ const ChatContainerSinglePage = () => {
     </Wrapper>
   );
 };
+
 
 export default ChatContainerSinglePage;
 

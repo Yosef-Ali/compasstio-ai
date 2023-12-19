@@ -6,12 +6,11 @@ import { CardProfileMessage } from "./card-profile-messages";
 import { SetStateAction, useState } from "react";
 
 interface FriendsProps {
-  _id: Id<"friends">;
-  friends_Id: Id<"users">
+  _id: string;
+  friends_Id: string
   _creationTime: number;
   isBlocked: boolean;
 }
-
 
 export default function Messages() {
 

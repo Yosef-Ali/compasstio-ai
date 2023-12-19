@@ -53,7 +53,7 @@ export default defineSchema({
 
   friends: defineTable({
     user_Id: v.string(),
-    friend_Id: v.id("users"),
+    friend_Id: v.string(),
     isBlocked: v.boolean(),
   })
     .index("by_userId", ["user_Id"])
@@ -82,7 +82,7 @@ export default defineSchema({
   messages: defineTable({
     content: v.string(),
     sender_id: v.string(),
-    receiver_id: v.id("users"),
+    receiver_id: v.string(),
     read: v.boolean(),
   })
     .index("by_sender_id", ["sender_id"])

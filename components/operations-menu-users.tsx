@@ -13,18 +13,21 @@ import { useMutation } from "convex/react";
 import { Id } from "@/convex/_generated/dataModel";
 
 interface OperationsMenuProps {
-  _id: Id<"users">;
+  _id: string;
 }
 
 
 export function OperationsMenu({ _id }: OperationsMenuProps) {
 
 
+  console.log('_id in the OpreationMenu:', _id)
+
+
   const addToFriend = useMutation(api.friends.createFriend);
 
   const handleAddToFriend = async () => {
     addToFriend({
-      friendId: _id as Id<"users">
+      friendId: _id
     })
   }
 

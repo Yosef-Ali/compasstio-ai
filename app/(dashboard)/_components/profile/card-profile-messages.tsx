@@ -8,8 +8,8 @@ import { useQuery } from "convex/react";
 import { CheckCheckIcon } from "lucide-react";
 
 interface CardProfileMessageProps {
-  _id: Id<"friends">;
-  friends_Id: Id<"users">
+  _id: string;
+  friends_Id: string
   _creationTime: number;
   isBlocked: boolean;
 }

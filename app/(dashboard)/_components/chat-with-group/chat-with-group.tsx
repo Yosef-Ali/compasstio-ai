@@ -6,8 +6,7 @@ import { CardMessage } from "./card-message";
 import { CardFriends } from "./card-friends";
 
 interface FriendsProps {
-  _id: Id<"friends">;
-  friends_Id: Id<"users">
+  friends_Id: string;
   _creationTime: number;
   isBlocked: boolean;
 }
@@ -34,7 +33,6 @@ export default function Friends() {
         return (
           <CardFriends
             key={friend._id}
-            _id={friend._id}
             friends_Id={friend.friend_Id}
             _creationTime={friend._creationTime ?? 0}
             isBlocked={friend.isBlocked}

@@ -1,6 +1,6 @@
 import * as React from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, redirect } from "next/navigation";
 
 import {
   DropdownMenu,
@@ -34,7 +34,7 @@ export function OperationsMenu(props: PostProps) {
     // Implement logic to add the post to a group
 
     addToFriend({
-      friendId: id as Id<"users">
+      friendId: id as string,
     })
   };
 
@@ -43,9 +43,12 @@ export function OperationsMenu(props: PostProps) {
     console.log("Blocking user");
 
     isBlocked({
-      friendId: id as Id<"users">,
+      friendId: id as string,
+    }).then((res) => {
+      console.log("isBlocked response:", res);
+      router.push("/chat-with-groups");
     })
-    //router.push("/chat-with-groups");
+
   };
 
   return (

@@ -29,7 +29,7 @@ export const getUser = query({
 
 export const getFriend = query({
   args: {
-    id: v.id("users"),
+    id: v.string(),
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
@@ -38,15 +38,19 @@ export const getFriend = query({
       throw new Error("Not authenticated");
     }
 
-    const friend = await ctx.db.get(args.id);
+    const friend = await ctx.db.query("users")
+      .filter(q => q.eq(q.field("userId"), args.id))
+      .first();
 
     if (!friend) {
       return null;
     }
+
     return friend;
 
   }
 })
+
 
 
 
