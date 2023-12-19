@@ -16,6 +16,8 @@ export default function Messages() {
 
   const friends = useQuery(api.friends.listFriends)
 
+  console.log('friendsMessges profile:', friends)
+
 
   const { isLoading } = useConvexAuth()
 

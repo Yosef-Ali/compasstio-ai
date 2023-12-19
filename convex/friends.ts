@@ -32,7 +32,7 @@ export const listFriends = query({
       }
       const friends = await ctx.db
         .query("friends")
-        .filter((q) => q.eq(q.field("user_Id"), identity.subject))
+        .filter((q) => q.eq(q.field("user_Id"), identity.subject.toString()))
         .filter((q) => q.eq(q.field("isBlocked"), false))
         .collect()
 

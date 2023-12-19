@@ -33,7 +33,7 @@ export default function ProfilePage() {
   const { isLoading } = useConvexAuth()
 
 
-  console.log('userInfo', userInfo)
+  console.log('userInfo:::', userInfo?._id)
 
 
   async function handleUploadImage() {

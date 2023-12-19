@@ -52,12 +52,11 @@ export const getFriend = query({
 })
 
 
-
-
-
 export const get = query(async ({ db }) => {
   return await db.query("users").order("desc").collect();
 });
+
+
 
 export const create = mutation({
   args: {
@@ -100,7 +99,6 @@ export const generateUploadUrl = mutation({
 
     // update the user with the upload URL
 
-
     return uploadUrl;
   },
 });
@@ -112,44 +110,22 @@ export const updateAvatar = mutation({
     storageId: v.id("_storage"),
   },
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity();
-
-    if (!identity) {
-      throw new Error("Unauthenticated");
-    }
-
-    const userId = identity.subject;
-
-    const { id } = args;
-
-    const existingUser = await ctx.db.get(id);
-
-    if (!existingUser) {
-      throw new Error("Not found");
-    }
-
-    if (existingUser._id !== userId) {
-      throw new Error("Unauthorized");
-    }
 
     const url = await ctx.storage.getUrl(args.storageId);
-
-    console.log("URL:", url);
 
     if (!url) {
       throw new Error("Upload URL generation failed");
     }
 
 
-    const user = await ctx.db.patch(id, {
-      avatarUrl: url,
+    const user = await ctx.db.patch(args.id, {
+      avatarUrl: url as string,
     });
-
-
-    console.log("user from server:", user);
 
     return user;
   },
 });
+
+
 
 
