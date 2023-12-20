@@ -5,11 +5,7 @@ import { useConvexAuth, useQuery } from "convex/react";
 import { CardMessage } from "./card-message";
 import { CardFriends } from "./card-friends";
 
-interface FriendsProps {
-  friends_Id: string;
-  _creationTime: number;
-  isBlocked: boolean;
-}
+
 
 export default function Friends() {
   const friends = useQuery(api.friends.listFriends)

@@ -5,6 +5,8 @@ import { UserButton } from "@clerk/clerk-react";
 import { useUser } from '@clerk/nextjs';
 import { useParams } from 'next/navigation';
 import { Id } from '@/convex/_generated/dataModel';
+import { useQuery } from 'convex/react';
+import { api } from '@/convex/_generated/api';
 
 interface Props {
   sender_id: string
@@ -13,14 +15,14 @@ interface Props {
 
 export default function GroupMessages({ sender_id, message }: Props) {
 
-  //const groupId = useParams().groupId
 
   const { user } = useUser();
+  const receiver_id = useParams().id as string;
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  console.log('message:::', message)
-  console.log('sender_id', sender_id)
+  const senderInfo = useQuery(api.users.getFriend, { id: sender_id })
+  const receiverInfo = useQuery(api.users.getFriend, { id: receiver_id })
 
 
   const scrollToBottom = () => {
@@ -38,7 +40,11 @@ export default function GroupMessages({ sender_id, message }: Props) {
       {sender_id === user?.id && (
         <div className="flex items-end  mb-4 w-full ">
           <div className="flex items-start">
-            <UserButton />
+            {/* <UserButton /> */}
+            <Avatar>
+              <AvatarImage src={senderInfo?.avatarUrl || user?.imageUrl} />
+              <AvatarFallback>YA</AvatarFallback>
+            </Avatar>
             <div className="px-3 py-2 ml-3 rounded-lg rounded-l-none inline-block bg-muted">
               {message}
             </div>
@@ -49,7 +55,7 @@ export default function GroupMessages({ sender_id, message }: Props) {
       ) || sender_id !== user?.id && (
         <div className="flex items-start">
           <Avatar>
-            <AvatarImage src="https://github.com/shadcn.png" />
+            <AvatarImage src={receiverInfo?.avatarUrl} />
             <AvatarFallback>YA</AvatarFallback>
           </Avatar>
           <div className="flex flex-col items-start ml-3 ">

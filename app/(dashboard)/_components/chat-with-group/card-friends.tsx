@@ -38,13 +38,6 @@ export function CardFriends({ friends_Id, _creationTime, isBlocked }: CardFriend
 
   const isActive = friends_Id === useParams().id;
 
-  //const isActive = true
-
-  //const { isLoading, isAuthenticated } = useConvexAuth();
-
-  // const messageLast = _id && useQuery(api.groupMessages.getLastMessage, { id: _id })
-
-  //const messageLast = _id && useQuery(api.messages.getMessages, { id: _id  })
 
   useEffect(() => {
     if (messageLast) {
