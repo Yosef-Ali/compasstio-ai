@@ -17,19 +17,20 @@ export function CardAllUsers({ _id, name, avatarUrl, _creationTime }: ChatCardPr
   const formatted = useFormatOnlyTime(_creationTime);
 
   return (
-    <Card >
-      <CardHeader>
-        <div className="flex items-center">
+    <Card  >
+      <CardHeader className="p-4 lg:p4">
+        <div className="flex items-center justify-between">
           <Avatar className="w-12 h-12">
             <AvatarImage src={avatarUrl} />
             <AvatarFallback>YA</AvatarFallback>
           </Avatar>
           <div className="ml-4">
             <div className="text-lg font-medium truncate">{name}</div>
-            <div className="flex items-center space-x-4">
-              <div className="text-gray-600 truncate">Last seen &nbsp; {formatted}</div>
+            <div className="flex flex-col xl:flex xl:flex-row ">
               <div className="text-gray-600">{"Offline"}</div>
+              <p className="text-gray-600 truncate">Last seen &nbsp; {formatted}</p>
             </div>
+
           </div>
           <div className="flex-1"></div>
           <div className="flex justify-end">

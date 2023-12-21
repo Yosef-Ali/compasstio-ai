@@ -40,7 +40,6 @@ export default function GroupMessages({ sender_id, message }: Props) {
       {sender_id === user?.id && (
         <div className="flex items-end  mb-4 w-full ">
           <div className="flex items-start">
-            {/* <UserButton /> */}
             <Avatar>
               <AvatarImage src={senderInfo?.avatarUrl || user?.imageUrl} />
               <AvatarFallback>YA</AvatarFallback>

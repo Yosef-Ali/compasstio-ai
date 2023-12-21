@@ -14,7 +14,7 @@ import { useEffect, useState } from "react";
 
 const TitleChatWithGroups = () => {
   const { id } = useParams<{ id: Id<"users"> }>();
- 
+
   let friendInfo = id ? useQuery(api.users.getFriend, { id: id }) : null;
 
 
@@ -44,7 +44,7 @@ const TitleChatWithGroups = () => {
               </div>
             </div>
           </div>
-          <div className="flex shrink-0 items-center mr-4 w-[300px]">
+          <div className="hidden md:flex shrink-0 items-center mr-4 w-[300px]">
             <SearchBar />
           </div>
           <div

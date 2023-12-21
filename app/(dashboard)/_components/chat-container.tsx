@@ -17,13 +17,14 @@ const InfoList = ({ items }: InfoListProps) => {
   }
 
   return (
-    <div className="grid items-start ">
+
+    <div className="grid items-start">
       {items.map((item, index) => {
         const Icon = Icons[item.icon || "arrowRight"];
         return (
           item.title && (
-            <CardContent className="grid" key={index}>
-              <div className=" flex items-center space-x-4 rounded-md  p-4">
+            <div className="grid" key={index}>
+              <div className=" flex items-center space-x-4 space-y-4  rounded-md  md:p-4">
                 <Avatar className="bg-purple-100 flex justify-center items-center">
                   <Icon className="h-6 w-6 text-purple-500" />
                 </Avatar>
@@ -34,7 +35,7 @@ const InfoList = ({ items }: InfoListProps) => {
                   </p>
                 </div>
               </div>
-            </CardContent>
+            </div>
           )
         );
       })}
@@ -47,7 +48,7 @@ const Intro = () => {
     <div className="mx-auto w-full max-w-lg py-24 flex flex-col stretch space-y-10 ">
       <div className="flex flex-col items-center space-y-4">
         <div className="flex flex-col items-start space-y-4 md:items-center">
-          <h1 className="text-3xl font-bold text-purple-500">
+          <h1 className="text-3xl font-bold text-purple-500 text-center">
             Welcome to Messagingdd
           </h1>
         </div>

@@ -5,7 +5,7 @@ interface WrapperProps {
 const Wrapper: React.FC<WrapperProps> = ({ children }) => {
   return (
     <div className="flex flex-1 overflow-y-hidden ">
-      <div className="flex-1 grid grid-cols-12 ">
+      <div className="flex-1 lg:grid lg:grid-cols-12">
         {children}
       </div>
     </div>

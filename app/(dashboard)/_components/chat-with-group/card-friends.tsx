@@ -51,7 +51,7 @@ export function CardFriends({ friends_Id, _creationTime, isBlocked }: CardFriend
   return (
     <Link href={`/chat-with-groups/${friends_Id}`}>
       <Card className={`cursor-pointer ${isActive ? 'bg-muted' : ''}`}>
-        <CardHeader>
+        <CardHeader className="p-2 lg:p-4">
           <div className="flex">
             <div className="flex-1">
               <div className="flex items-center">
@@ -61,20 +61,22 @@ export function CardFriends({ friends_Id, _creationTime, isBlocked }: CardFriend
                 </Avatar>
 
                 <div className="ml-4 flex-shrink-0">
-                  <div className="text-lg font-medium">{friendInfo?.name}</div>
-                  <div className="text-gray-600">{message}</div>
+                  <div className="text-lg font-medium ">{friendInfo?.name}</div>
+                  <p className="text-gray-600 truncate max-w-[100px] overflow-hidden ...">{message}</p>
                 </div>
+
               </div>
             </div>
 
-            <div className="flex-1"></div>
+            <div className="lg:flex-1"></div>
 
             <div className="flex justify-end">
               <div className="flex flex-col h-full justify-between">
                 <div className="flex">
                   {isRead ? <CheckCheckIcon className="h-5 w-5 mr-1" /> : <CheckIcon className="h-5 w-5 mr-1" />}
-                  <p className="text-sm ">{formatted}</p>
+
                 </div>
+                <p className="text-sm ">{formatted}</p>
 
               </div>
             </div>

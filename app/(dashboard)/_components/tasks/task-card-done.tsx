@@ -48,34 +48,42 @@ export function TaskCardDone({ _id, title, description, status, creationTime, du
           <CardDescription>
           </CardDescription>
         </CardHeader>
-        <CardFooter className="flex justify-between">
-          <div className="flex space-x-4 text-sm text-muted-foreground w-full ">
-            <div className="flex items-center">
+        <CardFooter className="flex flex-col space-y-4 justify-start">
+
+          <div className="flex flex-col  space-y-4 text-sm text-muted-foreground w-full justify-start ">
+            <div className="space-y-4 xl:space-y-0 xl:flex xl:flex-row xl:gap-4" >
               {status === 'done' ? (
-                <Badge className="py-1 bg-green-100 text-muted-foreground hover:bg-green-200">
+                <Badge className="py-1 bg-green-100 text-muted-foreground hover:bg-green-200 max-w-fit ">
                   <TimerIcon className="mr-1 h-4 w-4 text-muted-foreground" />
                   Done
                 </Badge>
 
               ) : (
 
-                <Badge className="py-1 bg-blue-100 text-muted-foreground hover:bg-blue-200">
-                  <TimerIcon className="mr-1 h-4 w-4 text-muted-foreground" />
-                  In progress
+                <Badge className="py-1 bg-blue-100 text-muted-foreground hover:bg-blue-200 max-w-fit ">
+                  <TimerIcon className="mr-1 h-4 w-4 text-muted-foreground " />
+                  <p className="whitespace-nowrap">
+                    In progress
+                  </p>
                 </Badge>
+
               )}
+
+
+              <div className="flex items-center justify-center max-w-fit ">
+                <Clock className="mr-1 h-4 w-4 text-muted-foreground" />
+                {formatted}
+              </div>
+
             </div>
 
-            <div className="flex items-center">
+            <Badge className="py-1 bg-red-300 text-muted-foreground hover:bg-red-400 max-w-fit">
               <Clock className="mr-1 h-4 w-4 text-muted-foreground" />
-              {formatted}
-            </div>
+              {formattedDueDate}
+            </Badge>
+
           </div>
 
-          <Badge className="py-1 bg-red-300 text-muted-foreground hover:bg-red-400 flex-shrink-0">
-            <Clock className="mr-1 h-4 w-4 text-muted-foreground" />
-            {formattedDueDate}
-          </Badge>
 
         </CardFooter>
       </Card>

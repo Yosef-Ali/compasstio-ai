@@ -16,8 +16,8 @@ interface TabsProps {
 const RightAside = ({ tabs }: TabsProps) => {
   return (
 
-    <div className="border-l sm:col-span-4 h-full overflow-y-auto">
-      <Tabs defaultValue={tabs[0].name}>
+    <div className="hidden border-l lg:col-span-4 lg:flex h-full overflow-y-auto">
+      <Tabs defaultValue={tabs[0].name} className="w-full">
         <div className=" border-b px-6 pt-4 pb-2 text-center sticky top-0 bg-background z-35">
           <TabsList className="grid w-full grid-cols-2">
             {tabs.map(tab => (

@@ -88,7 +88,7 @@ const ChatContainerSinglePage = () => {
   return (
 
     <Wrapper>
-      <div className="mx-auto w-full max-w-lg py-24 flex flex-col stretch space-y-10  ">
+      <div className="mx-auto w-full max-w-md py-24 flex flex-col stretch space-y-10 ">
         {messages ? messages.map(m => {
           return (
             <GroupMessages key={m._id} sender_id={m.sender_id} message={m.content} />
@@ -97,8 +97,8 @@ const ChatContainerSinglePage = () => {
           : (<p className="text-center">No messages</p>)
         }
 
-        <form onSubmit={handleFormSubmit}>
-          <div className="flex w-full max-w-md items-center space-x-2 fixed bottom-6">
+        <form onSubmit={handleFormSubmit} className="fixed bottom-6 w-full sm:max-w-md max-w-xs">
+          <div className="flex items-center space-x-2">
             <Input
               type="text"
               placeholder="Say something..."
@@ -106,7 +106,7 @@ const ChatContainerSinglePage = () => {
               onChange={handleInputChange}
               className="ring-offset-purple-300 focus-visible:ring-purple-400"
             />
-            <Button type="submit" className="bg-purple-400">
+            <Button type="submit" className="px-4 py-2 text-white bg-purple-500 rounded-l">
               Send
             </Button>
           </div>
