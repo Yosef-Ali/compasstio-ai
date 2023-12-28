@@ -14,19 +14,20 @@ const TopNavChatWithAi = () => {
   return <>
     <div className="sticky top-0 z-40 bg-background ">
       <div className="w-full">
-        <div className=" pl-5 pr-5 py-3 md:pr-8 border-b  flex-1 flex  w-full">
-          <div className="flex items-center w-full p-1"><div className="flex-1">
-            <div className="flex items-center">
-              <Avatar className="w-12 h-12">
-                <AvatarImage src="/avatarAi.svg" />
-              </Avatar>
-              <div className="ml-4 flex-shrink-0">
-                <div className="text-card-foreground">Chatbot</div>
+        <div className=" px-5 py-3 md:pr-6 border-b flex-1 flex ">
+          <div className="flex items-center w-full p-1">
+            <div className="flex-1">
+              <div className="flex items-center">
+                <Avatar className="w-12 h-12">
+                  <AvatarImage src="/avatarAi.svg" />
+                </Avatar>
+                <div className="ml-4 flex-shrink-0">
+                  <div className="text-card-foreground">Chatbot</div>
+                </div>
               </div>
             </div>
           </div>
-          </div>
-          <div className="hidden md:flex shrink-0 items-center mr-4 w-[300px]">
+          <div className="hidden lg:flex shrink-0 items-center mr-4 w-[300px]">
             <SearchBar />
           </div>
           <div className="flex shrink-0 items-center ">

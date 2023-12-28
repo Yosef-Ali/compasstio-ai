@@ -1,15 +1,12 @@
 
 "use client"
 
-import React, { useEffect } from 'react'
-
 import RightAside from '../../_components/right-aside'
-
 import ChatContainer from '../../_components/chat-container'
 import AllUsers from '../../_components/chat-with-group/all-users'
 import TopNav from '../../_components/top-nav'
 import Wrapper from '../../_components/wrapper'
-import Shell from '../../_components/shell'
+import Shell from "../../_components/shell"
 import Friends from '../../_components/chat-with-group/chat-with-group'
 
 

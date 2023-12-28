@@ -10,7 +10,6 @@ import { CardFriends } from "./card-friends";
 export default function Friends() {
   const friends = useQuery(api.friends.listFriends)
 
-
   const { isLoading } = useConvexAuth()
 
   if (friends === undefined || isLoading) {
@@ -24,7 +23,7 @@ export default function Friends() {
   };
 
   return (
-    <div className="grid grid-cols-1 gap-4 p-3">
+    <div className="flex flex-col space-y-4">
       {friends?.map(friend => {
         return (
           <CardFriends

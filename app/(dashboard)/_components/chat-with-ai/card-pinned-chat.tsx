@@ -22,10 +22,8 @@ dayjs.extend(relativeTime);
 
 export function ChatCardPinned({ id, prompt, result, creationTime }: ChatCardProps) {
 
-  
-
   return (
-    <Card>
+    <Card  >
       <CardHeader>
         <div className="flex justify-between">
           <CardTitle className="text-lg truncate">
@@ -33,7 +31,7 @@ export function ChatCardPinned({ id, prompt, result, creationTime }: ChatCardPro
           </CardTitle>
           <OperationsMenu id={id} identity="chat" />
         </div>
-        <CardDescription className="line-clamp-2">{result}</CardDescription>
+        <CardDescription className="line-clamp-2 flex-1 min-w-0">{result}</CardDescription>
         <CardDescription>
 
           {dayjs(creationTime).fromNow()}

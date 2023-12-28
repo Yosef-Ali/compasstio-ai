@@ -20,6 +20,9 @@ import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import GroupMessages from "./chat-with-group/groupe-messages";
 import { Skeleton } from "@/components/ui/skeleton";
+import useWindowPositionAndMobile from "@/app/hooks/useWindowPositionAndMobile";
+import { useSlideState } from "@/app/hooks/useSlideState";
+
 
 
 
@@ -29,6 +32,9 @@ const ChatContainerSinglePage = () => {
   const [inputValue, setInputValue] = useState("");
 
   const receiver_id = useParams().id as string;
+  const { isMobile } = useWindowPositionAndMobile();
+  const { isSlideOut } = useSlideState(); // Initialize isSlideOut to false
+
 
 
   const messages = receiver_id ? useQuery(api.messages.getMessages, { receiver_id: receiver_id }) : undefined
@@ -87,32 +93,32 @@ const ChatContainerSinglePage = () => {
 
   return (
 
-    <Wrapper>
-      <div className="mx-auto w-full max-w-md py-24 flex flex-col stretch space-y-10 ">
-        {messages ? messages.map(m => {
-          return (
-            <GroupMessages key={m._id} sender_id={m.sender_id} message={m.content} />
-          )
-        })
-          : (<p className="text-center">No messages</p>)
-        }
 
-        <form onSubmit={handleFormSubmit} className="fixed bottom-6 w-full sm:max-w-md max-w-xs">
-          <div className="flex items-center space-x-2">
-            <Input
-              type="text"
-              placeholder="Say something..."
-              value={inputValue}
-              onChange={handleInputChange}
-              className="ring-offset-purple-300 focus-visible:ring-purple-400"
-            />
-            <Button type="submit" className="px-4 py-2 text-white bg-purple-500 rounded-l">
-              Send
-            </Button>
-          </div>
-        </form>
-      </div>
-    </Wrapper>
+    <div className=" mx-auto w-full max-w-md py-24 h-full  flex-col stretch space-y-10 text-center ">
+      {messages ? messages.map(m => {
+        return (
+          <GroupMessages key={m._id} sender_id={m.sender_id} message={m.content} />
+        )
+      })
+        : (<p className="text-center">No messages</p>)
+      }
+
+      <form onSubmit={handleFormSubmit} className={`${isMobile && !isSlideOut ? 'fixed' : 'hidden'} bottom-6 w-full max-w-xs sm:max-w-md lg:max-w-sm xl:max-w-lg  `}>
+        <div className="flex items-center space-x-2">
+          <Input
+            type="text"
+            placeholder="Say something..."
+            value={inputValue}
+            onChange={handleInputChange}
+            className="ring-offset-purple-300 focus-visible:ring-purple-400"
+          />
+          <Button type="submit" className="px-4 py-2 text-white bg-purple-500 rounded-l">
+            Send
+          </Button>
+        </div>
+      </form>
+    </div>
+
   );
 };
 

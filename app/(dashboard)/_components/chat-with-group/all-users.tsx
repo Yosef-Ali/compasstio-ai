@@ -10,9 +10,7 @@ interface Users {
   _creationTime: number;
   userId: string;
   avatarUrl: string;
-  // lastSeen: number;
   name: string;
-  // status: string;
 }
 
 export default function AllUsers() {
@@ -20,11 +18,8 @@ export default function AllUsers() {
   const users = useQuery(api.users.get)
   const currentUser = useUser().user?.id
 
-  console.log('currentUserAllUsers:', currentUser)
-  console.log('usersAllUsers:', users)
-
   return (
-    <div className="grid grid-cols-1 gap-4 p-3">
+    <div className="w-full mx-auto space-y-4" >
       {users?.map(user => {
         return (
           user.userId !== currentUser ? (
@@ -32,8 +27,6 @@ export default function AllUsers() {
               key={user._id}
               _id={user.userId}
               name={user.name ?? ""}
-              // lastSeen={user.lastSeen ?? ""}
-              // status={user.status ?? ""}
               _creationTime={user._creationTime ?? 0}
               avatarUrl={user.avatarUrl ?? ""}
             />

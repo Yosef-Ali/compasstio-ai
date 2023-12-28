@@ -9,6 +9,9 @@ import { Button } from "@/components/ui/button";
 import ChatPromptResponse from "./chat-with-ai/chat-messages";
 import { useChat } from 'ai/react';
 import Wrapper from "./wrapper";
+import { useSlideState } from '@/app/hooks/useSlideState';
+import { useSlideStateMobile } from '@/app/hooks/useSlideStateMobile';
+import useWindowPositionAndMobile from '@/app/hooks/useWindowPositionAndMobile';
 
 interface InfoListProps {
   items: ChatInfo[];
@@ -32,25 +35,28 @@ interface ExtendedUseChatHelpers extends UseChatHelpers {
   initialInput: string;
 }
 
+
+
+
 const InfoList = ({ items }: InfoListProps) => {
   if (!items?.length) {
     return null;
   }
 
   return (
-    <div className="grid items-start ">
+    <div>
       {items.map((item, index) => {
         const Icon = Icons[item.icon || "arrowRight"];
         return (
           item.title && (
-            <CardContent key={index} className="grid ">
+            <CardContent key={index} >
               <div className=" flex items-center space-x-4 space-y-4 rounded-md  md:p-4">
                 <Avatar className="bg-purple-100 flex justify-center items-center">
                   <Icon className="h-6 w-6 text-purple-500" />
                 </Avatar>
-                <div className="flex-1 space-y-1">
-                  <h3 className="font-bold">{item.title}</h3>
-                  <p className="text-sm text-muted-foreground">
+                <div className="flex-1 space-y-1 ">
+                  <h3 className="font-bold text-left">{item.title}</h3>
+                  <p className="text-sm text-muted-foreground text-left ">
                     {item.description}
                   </p>
                 </div>
@@ -66,13 +72,13 @@ const InfoList = ({ items }: InfoListProps) => {
 
 const Intro = () => {
   return (
-    <div className="mx-auto flex flex-col items-center md:px-4 max-w-3xl">
+    <div className="mx-auto flex flex-col items-center md:px-4 ">
       <div className="flex flex-col items-center space-y-4">
         <div className="flex flex-col items-start space-y-4 md:items-center">
           <h1 className="text-center md:text-left text-3xl font-bold text-purple-500">
             Welcome to Chat with AI
           </h1>
-          <p className="text-center  text-sm text-purple-800 md:text-md md:w-[380px] ">
+          <p className="text-center text-sm text-purple-800 md:text-md ">
             Get started by writing a task and Chat can do the rest. Not sure where to start? Check out the Prompt Library for inspiration.
           </p>
         </div>
@@ -84,21 +90,24 @@ const Intro = () => {
 
 const ChatbotContainer: React.FC = () => {
   const [inputFocused, setInputFocused] = useState<boolean>(false);
+  const { isMobile } = useWindowPositionAndMobile();
+  const { isSlideOut } = useSlideState(); // Initialize isSlideOut to false
+
 
   const { messages, input, handleInputChange, handleSubmit } = useChat({
     api: "/api/chat"
   });
 
-  return (
-    <Wrapper>
-      <div className="mx-auto w-full max-w-md py-24 flex flex-col stretch space-y-10">
+  function ChatBlock() {
+    return (
+      <div className="mx-auto w-full z-0 max-w-sm md:max-w-md lg:max-w-lg px-4  py-12 lg:py-24 flex flex-col stretch space-y-10 text-center transition-width duration-500">
         {!inputFocused && <Intro />}
         <div className="space-y-4">
           {messages.map((m: Message) => (
             <ChatPromptResponse key={m.id} role={m.role} content={m.content} />
           ))}
         </div>
-        <form onSubmit={handleSubmit} className="fixed bottom-6 w-full  sm:max-w-md max-w-xs">
+        <form onSubmit={handleSubmit} className={`${isMobile && !isSlideOut ? 'fixed' : 'hidden'} bottom-6 w-full max-w-xs sm:max-w-sm md:max-w-sm lg:max-w-md`}>
           <div className="flex items-center space-x-2">
             <Input
               type="text"
@@ -108,11 +117,16 @@ const ChatbotContainer: React.FC = () => {
               onFocus={() => setInputFocused(true)}
               className="w-full px-4 py-2 border rounded-lg"
             />
-            <Button type="submit" className="px-4 py-2 text-white bg-purple-500 rounded-lg">Send</Button>
+            <Button type="submit" className="px-4 py-2 text-white bg-purple-500 rounded-lg ">Send</Button>
           </div>
         </form>
       </div>
-    </Wrapper>
+    );
+  }
+  return (
+    <>
+      {<ChatBlock />}
+    </>
   );
 };
 

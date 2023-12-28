@@ -5,7 +5,7 @@ import { useConvexAuth, useQuery } from "convex/react";
 import { ChatCardPinned } from "./card-pinned-chat"
 
 
-export default function CardRecentChatBots(){
+export default function CardRecentChatBots() {
 
   const { isLoading } = useConvexAuth()
   const chats = useQuery(api.chats.getPinnedChats);
@@ -13,8 +13,6 @@ export default function CardRecentChatBots(){
   if (!chats) {
     return null;
   }
-
-
 
   if (chats === undefined || isLoading) {
     return (
@@ -28,7 +26,7 @@ export default function CardRecentChatBots(){
 
   return (
 
-    <div className="grid grid-cols-1 gap-4 p-3">
+    <div className="flex flex-col space-y-4">
       {chats?.map(chat => {
         return (
           <ChatCardPinned

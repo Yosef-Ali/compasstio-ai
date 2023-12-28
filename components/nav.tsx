@@ -6,20 +6,24 @@ import { usePathname } from "next/navigation"
 import { SidebarNavItem } from "@/types"
 import { cn } from "@/lib/utils"
 import { Icons } from "@/components/icons"
+import useWindowPositionAndMobile from "@/app/hooks/useWindowPositionAndMobile"
 
 interface DashboardNavProps {
   items: SidebarNavItem[]
 }
 
-export function DashboardNav({ items }: DashboardNavProps) {
 
+
+
+export function DashboardNav({ items }: DashboardNavProps) {
+  const { isMobile } = useWindowPositionAndMobile()
   const pathname = usePathname()
   const currentPath = `/${pathname.split('/')[1]}`;
 
   if (!items?.length) {
     return null
   }
-
+  const showCustomDrawer = isMobile && window.innerWidth <= 425;
   return (
     <nav className="grid items-start gap-2">
       {items.map((item, index) => {

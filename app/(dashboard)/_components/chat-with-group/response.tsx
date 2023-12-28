@@ -29,7 +29,6 @@ export default function ChatPromptResponse({ prompt, response }: Props) {
           </div>
         </div>
       </div>
-
       <div className="flex justify-end">
         <div className="flex flex-col  mr-3 ">
           <div className="px-3 py-2 rounded-lg inline-block bg-muted/30 rounded-l-none ">
@@ -42,7 +41,6 @@ export default function ChatPromptResponse({ prompt, response }: Props) {
         </Avatar>
         <div ref={messagesEndRef} />
       </div>
-
     </div >
   )
 }

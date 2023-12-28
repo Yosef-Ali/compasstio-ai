@@ -21,20 +21,17 @@ const TitleChatWithGroups = () => {
   const formatted = useFormattedTime(friendInfo?._creationTime || 0);
 
   return <>
-    <div className="sticky top-0 z-40 bg-background ">
+    <div className="sticky top-0 z-40 bg-background">
       <div className="w-full">
-        <div className=" pl-5 pr-5 py-3 md:pr-8 border-b  flex-1 flex  w-full">
+        <div className=" px-5 py-3 md:px-6 border-b flex-1 flex ">
           <div className="flex items-center w-full p-1">
             <div className="flex-1">
               <div className="flex items-center">
-                {/* Avatar component */}
-
                 {friendInfo && <>
                   <Avatar className="w-10 h-10">
                     <AvatarImage src={friendInfo?.avatarUrl} />
                     <AvatarFallback>YA</AvatarFallback>
                   </Avatar>
-
                   <div className="ml-4 flex-shrink-0">
                     <div className="text-card-foreground">{friendInfo?.name}</div>
                     <div className="text-muted-foreground text-sm"> {`last seen ${formatted}`}</div>
@@ -44,19 +41,18 @@ const TitleChatWithGroups = () => {
               </div>
             </div>
           </div>
-          <div className="hidden md:flex shrink-0 items-center mr-4 w-[300px]">
+          <div className="hidden lg:flex shrink-0 items-center mr-4 w-[300px]">
             <SearchBar />
           </div>
           <div
             className=
-            "flex shrink-0 items-center mr-4">
+            "flex shrink-0 items-center justify-end">
             <OperationsMenu id={id} />
           </div>
         </div>
       </div>
     </div >
   </>;
-
 };
 
 export default TitleChatWithGroups;

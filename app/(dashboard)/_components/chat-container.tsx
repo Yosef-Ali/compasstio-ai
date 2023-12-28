@@ -5,11 +5,19 @@ import { Icons } from "@/components/icons";
 import { CardContent } from "@/components/ui/card";
 import { messageInfoConfig } from "@/config/chat-info";
 import { Avatar } from "@/components/ui/avatar";
-import Wrapper from "./wrapper";
+import RightAside from "./right-aside";
+import AllUsers from "./chat-with-group/all-users";
+import Friends from "./chat-with-group/chat-with-group";
+import { useSlideState } from "@/app/hooks/useSlideState";
+import useWindowPositionAndMobile from "@/app/hooks/useWindowPositionAndMobile";
+import { useSlideStateMobile } from "@/app/hooks/useSlideStateMobile";
+
 
 interface InfoListProps {
   items: ChatInfo[];
 }
+
+
 
 const InfoList = ({ items }: InfoListProps) => {
   if (!items?.length) {
@@ -29,8 +37,8 @@ const InfoList = ({ items }: InfoListProps) => {
                   <Icon className="h-6 w-6 text-purple-500" />
                 </Avatar>
                 <div className="flex-1 space-y-1">
-                  <h3 className="font-bold">{item.title}</h3>
-                  <p className="text-sm text-muted-foreground">
+                  <h3 className="font-bold text-left">{item.title}</h3>
+                  <p className="text-sm text-muted-foreground text-left">
                     {item.description}
                   </p>
                 </div>
@@ -45,11 +53,11 @@ const InfoList = ({ items }: InfoListProps) => {
 
 const Intro = () => {
   return (
-    <div className="mx-auto w-full max-w-lg py-24 flex flex-col stretch space-y-10 ">
+    <div className="mx-auto w-full z-0 max-w-sm md:max-w-md lg:max-w-lg px-4  py-12 lg:py-24 flex flex-col stretch space-y-10 text-center transition-width duration-500">
       <div className="flex flex-col items-center space-y-4">
-        <div className="flex flex-col items-start space-y-4 md:items-center">
+        <div className="flex  items-start space-y-4 md:items-center">
           <h1 className="text-3xl font-bold text-purple-500 text-center">
-            Welcome to Messagingdd
+            Welcome to Messaging
           </h1>
         </div>
         <InfoList items={messageInfoConfig} />
@@ -59,10 +67,11 @@ const Intro = () => {
 };
 
 const ChatContainer = () => {
+
   return (
-    <Wrapper>
+    <>
       <Intro />
-    </Wrapper>
+    </>
   );
 };
 

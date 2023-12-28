@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Card, CardHeader } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Id } from "@/convex/_generated/dataModel";
 import { useFormatOnlyTime, useFormattedMonthYear, useFormattedTime } from "@/lib/formated-time";
@@ -13,6 +13,7 @@ import { useConvexAuth, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { OperationsMenu } from "@/components/operations-menu-chat-group";
 import { useUser } from "@clerk/nextjs";
+import { Badge } from "@/components/ui/badge";
 
 interface CardFriendsProps {
   friends_Id: string
@@ -50,38 +51,28 @@ export function CardFriends({ friends_Id, _creationTime, isBlocked }: CardFriend
 
   return (
     <Link href={`/chat-with-groups/${friends_Id}`}>
-      <Card className={`cursor-pointer ${isActive ? 'bg-muted' : ''}`}>
-        <CardHeader className="p-2 lg:p-4">
-          <div className="flex">
-            <div className="flex-1">
-              <div className="flex items-center">
-                <Avatar className="w-12 h-12">
-                  <AvatarImage src={friendInfo?.avatarUrl} />
-                  <AvatarFallback>YA</AvatarFallback>
-                </Avatar>
-
-                <div className="ml-4 flex-shrink-0">
-                  <div className="text-lg font-medium ">{friendInfo?.name}</div>
-                  <p className="text-gray-600 truncate max-w-[100px] overflow-hidden ...">{message}</p>
-                </div>
-
-              </div>
-            </div>
-
-            <div className="lg:flex-1"></div>
-
-            <div className="flex justify-end">
-              <div className="flex flex-col h-full justify-between">
-                <div className="flex">
-                  {isRead ? <CheckCheckIcon className="h-5 w-5 mr-1" /> : <CheckIcon className="h-5 w-5 mr-1" />}
-
-                </div>
-                <p className="text-sm ">{formatted}</p>
-
-              </div>
-            </div>
+      
+      <Card className={`cursor-pointer  ${isActive ? 'bg-muted' : ''}`}>
+        <CardContent className="flex items-center p-4">
+          <Avatar className="w-12 h-12 mr-4">
+            <AvatarImage src={friendInfo?.avatarUrl} />
+            <AvatarFallback>YA</AvatarFallback>
+          </Avatar>
+          <div className="flex-grow">
+            <CardTitle className="text-lg font-semibold">{friendInfo?.name}</CardTitle>
+            <CardDescription className="text-sm text-gray-500 dark:text-gray-400">
+              {message}
+            </CardDescription>
           </div>
-        </CardHeader>
+          <div className="flex flex-col h-full justify-between items-end">
+
+            {isRead ? <CheckCheckIcon className="h-5 w-5 mr-1" /> : <CheckIcon className="h-5 w-5 mr-1" />}
+
+            <Badge className="mt-2" variant="secondary">
+              {formatted}
+            </Badge>
+          </div>
+        </CardContent>
       </Card>
     </Link>
   );

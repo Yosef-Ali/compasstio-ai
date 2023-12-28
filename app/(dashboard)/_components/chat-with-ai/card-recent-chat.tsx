@@ -30,18 +30,17 @@ export function CardRecentChat({ id, prompt, result, creationTime }: ChatCardPro
   }
 
   return (
-    <Card>
+    <Card  >
       <CardHeader>
         <div className="flex justify-between">
-          <CardTitle className="text-lg truncate">
+          <CardTitle className="text-lg truncate md:max-w-[100px] xl:max-w-full">
             {prompt}
           </CardTitle>
           <Button variant="outline" size="icon" onClick={handleClick}>
-            {/* button code */}
             <PinIcon className="w-4 h-4 text-foreground" />
           </Button>
         </div>
-        <CardDescription className="line-clamp-2">{result}</CardDescription>
+        <CardDescription className="line-clamp-2 flex-1 min ">{result}</CardDescription>
         <CardDescription>
 
           {dayjs(creationTime).fromNow()}

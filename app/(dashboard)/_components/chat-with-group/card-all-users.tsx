@@ -1,9 +1,11 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Card, CardHeader } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Id } from "@/convex/_generated/dataModel";
 import { OperationsMenu } from "@/components/operations-menu-users";
 import { useFormatOnlyTime, useFormattedTime } from "@/lib/formated-time";
+import { CheckIcon } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 
 interface ChatCardProps {
   _id: string;
@@ -17,31 +19,28 @@ export function CardAllUsers({ _id, name, avatarUrl, _creationTime }: ChatCardPr
   const formatted = useFormatOnlyTime(_creationTime);
 
   return (
-    <Card  >
-      <CardHeader className="p-4 lg:p4">
-        <div className="flex items-center justify-between">
-          <Avatar className="w-12 h-12">
-            <AvatarImage src={avatarUrl} />
-            <AvatarFallback>YA</AvatarFallback>
-          </Avatar>
-          <div className="ml-4">
-            <div className="text-lg font-medium truncate">{name}</div>
-            <div className="flex flex-col xl:flex xl:flex-row ">
-              <div className="text-gray-600">{"Offline"}</div>
-              <p className="text-gray-600 truncate">Last seen &nbsp; {formatted}</p>
-            </div>
-
-          </div>
-          <div className="flex-1"></div>
-          <div className="flex justify-end">
-            <div className="flex flex-col h-full justify-between">
-              <div className="flex">
-                <OperationsMenu _id={_id} />
-              </div>
-            </div>
-          </div>
+    <Card >
+      <CardContent className="flex items-center p-4">
+        <Avatar className="w-12 h-12 mr-4">
+          <AvatarImage src={avatarUrl} />
+          <AvatarFallback>YA</AvatarFallback>
+        </Avatar>
+        <div className="flex-grow">
+          <CardTitle className="text-lg font-semibold">{name}</CardTitle>
+          <CardDescription className="text-sm text-gray-500 dark:text-gray-400">
+            <div className="text-gray-600">{"Offline"}</div>
+            <span>
+              Last seen &nbsp;
+              <Badge variant="secondary">
+                {formatted}
+              </Badge>
+            </span>
+          </CardDescription>
         </div>
-      </CardHeader>
+        <div className="flex justify-end items-center">
+          <OperationsMenu _id={_id} />
+        </div>
+      </CardContent>
     </Card>
   );
 }
