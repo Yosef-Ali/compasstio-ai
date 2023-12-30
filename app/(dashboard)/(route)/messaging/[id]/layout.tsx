@@ -5,7 +5,7 @@ import TopNav from '../../../_components/top-nav'
 import Shell from '../../../_components/shell'
 import Wrapper from '../../../_components/wrapper'
 import RightAside from '../../../_components/right-aside'
-import Friends from '../../../_components/chat-with-group/chat-with-group'
+import Friends from '../../../_components/chat-with-group/messaging-with-friends'
 import { useOnCreate } from "@/app/hooks/use-on-create";
 import { useUser } from "@clerk/clerk-react";
 import AllUsers from '../../../_components/chat-with-group/all-users'
@@ -33,17 +33,7 @@ const ChatWithGroupPage = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const { user } = useUser();
-  const isOpen = useOnCreate((state) => state.isOpen);
-  const toggleOpen = useOnCreate((state) => state.toggleOpen);
-
-  useEffect(() => {
-    useOnCreate.setState({ isOpen });
-  }, [isOpen]);
-
-  const onCreate = () => {
-    toggleOpen(!isOpen);
-  };
+  
   return (
     <>
       <TopNav />

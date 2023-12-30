@@ -22,6 +22,7 @@ import GroupMessages from "./chat-with-group/groupe-messages";
 import { Skeleton } from "@/components/ui/skeleton";
 import useWindowPositionAndMobile from "@/app/hooks/useWindowPositionAndMobile";
 import { useSlideState } from "@/app/hooks/useSlideState";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 
 
@@ -95,6 +96,7 @@ const ChatContainerSinglePage = () => {
 
 
     <div className=" mx-auto w-full max-w-md py-24 h-full  flex-col stretch space-y-10 text-center ">
+
       {messages ? messages.map(m => {
         return (
           <GroupMessages key={m._id} sender_id={m.sender_id} message={m.content} />
@@ -103,7 +105,7 @@ const ChatContainerSinglePage = () => {
         : (<p className="text-center">No messages</p>)
       }
 
-      <form onSubmit={handleFormSubmit} className={`${isMobile && !isSlideOut ? 'fixed' : 'hidden'} bottom-6 w-full max-w-xs sm:max-w-md lg:max-w-sm xl:max-w-lg  `}>
+      <form onSubmit={handleFormSubmit} className={`${isMobile && !isSlideOut || !isMobile ? 'fixed' : 'hidden'} bottom-6 w-full max-w-xs sm:max-w-md lg:max-w-sm xl:max-w-lg  `}>
         <div className="flex items-center space-x-2">
           <Input
             type="text"
@@ -117,6 +119,7 @@ const ChatContainerSinglePage = () => {
           </Button>
         </div>
       </form>
+
     </div>
 
   );

@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 
 interface NewButtonProps {
   onClick: () => void;
-  entity: "chat-with-ai" | "chat-with-groups" | "journals" | "tasks" | "live-sessions" | "untitled"
+  entity: "chat-with-ai" | "messaging" | "journals" | "tasks" | "live-sessions" | "untitled"
 }
 
 function NewButton({ onClick, entity }: NewButtonProps) {

@@ -6,7 +6,7 @@ import { useConvexAuth, useQuery } from "convex/react";
 import { useEffect } from "react";
 //import { ChatCard } from "../chat-with-ai/card-recent-chat";
 import { Id, Doc } from "@/convex/_generated/dataModel";
-import { JournalCard } from "./journal-card";
+import { JournalCard } from "./journal-card-recent";
 
 interface Journal extends Doc<"journals"> {
   _id: Id<"journals">;
@@ -23,7 +23,7 @@ interface Journal extends Doc<"journals"> {
 export default function RecentJournal() {
   const journals = useQuery(api.journals.get) as Journal[];
   const { isLoading } = useConvexAuth()
-  console.log("Journals", journals)
+
   if (journals === undefined || isLoading) {
     return (
       <div className="space-y-3">

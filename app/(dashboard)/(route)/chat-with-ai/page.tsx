@@ -10,7 +10,7 @@ import TopNav from "../../_components/top-nav";
 import Wrapper from "../../_components/wrapper";
 import { CustomDrawer } from "@/components/mobile-menu";
 
-{/* <CardRecentChatBots /> */ }
+
 const tabs = [
   {
     name: 'Recent',
@@ -37,7 +37,6 @@ const ChatWithAiPage = () => {
           <ChatbotContainer />
         </Wrapper>
         <RightAside tabs={tabs} />
-
       </Shell>
       {/* <Footer /> */}
     </>

@@ -14,13 +14,13 @@ export const dashboardConfig: DashboardConfig = {
   ],
   sidebarNav: [
     {
-      title: "Chat with ai",
+      title: "Chat with AI",
       href: "/chat-with-ai",
       icon: "bot",
     },
     {
-      title: "Chat with Group",
-      href: "/chat-with-groups",
+      title: "Messaging",
+      href: "/messaging",
       icon: "message",
     },
     {

@@ -53,7 +53,7 @@ export const create = mutation({
 
 export const pinned = mutation({
   args: {
-    id: v.id("chats"),  
+    id: v.id("chats"),
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
@@ -89,6 +89,40 @@ export const pinned = mutation({
   },
 });
 
+export const unPinned = mutation({
+  args: {
+    id: v.id("chats"),
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+
+    if (!identity) {
+      throw new Error("Unauthenticated");
+    }
+
+    const userId = identity.subject;
+
+    const { id, ...rest } = args;
+
+    const existingChat = await ctx.db.get(args.id);
+
+    if (!existingChat) {
+      throw new Error("Not found");
+    }
+
+    if (existingChat.userId !== userId) {
+      throw new Error("Unauthorized");
+    }
+
+    const chat = await ctx.db.patch(args.id, {
+      ...rest,
+      isPinned: false,
+    });
+
+    return chat;
+  },
+});
+
 export const getPinnedChats = query(async (ctx) => {
   const identity = await ctx.auth.getUserIdentity();
 
@@ -103,10 +137,11 @@ export const getPinnedChats = query(async (ctx) => {
     .query("chats")
     .filter((q) => q.eq(q.field("userId"), userId))
     .filter((q) => q.eq(q.field("isPinned"), true))
+    .order("desc")
     .collect();
 
   return pinnedChats;
-  
+
 })
 
 
@@ -115,7 +150,7 @@ export const deleteChat = mutation({
     id: v.id("chats"),
   },
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity();  
+    const identity = await ctx.auth.getUserIdentity();
 
     if (!identity) {
       throw new Error("Unauthenticated");
@@ -128,7 +163,7 @@ export const deleteChat = mutation({
     const existingChat = await ctx.db.get(args.id);
 
     if (!existingChat) {
-      
+
       throw new Error("Not found");
     }
 
@@ -143,6 +178,13 @@ export const deleteChat = mutation({
 })
 
 export const getChats = query(async (ctx) => {
-  const chats = await ctx.db.query("chats").collect();
+
+  const identity = await ctx.auth.getUserIdentity();
+  const chats = await ctx.db.query("chats")
+    .filter((q) => q.eq(q.field("userId"), identity?.subject))
+    .order("desc")
+    .collect();
   return chats;
 });
+
+

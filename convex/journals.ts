@@ -36,6 +36,42 @@ export const get = query({
   },
 });
 
+export const getArchived = query({
+  handler: async (ctx) => {
+    try {
+      const identity = await ctx.auth.getUserIdentity();
+
+      if (!identity) {
+        throw new Error("Not authenticated");
+      }
+
+      const journals = await ctx.db
+        .query("journals")
+        .filter((q) => q.eq(q.field("userId"), identity.subject))
+        .filter((q) => q.eq(q.field("isArchived"), true))
+        .order("desc")
+        .take(100);
+      if (!journals) {
+        throw new Error("No journals found");
+      }
+
+      return journals;
+    } catch (error) {
+      // Log the error
+      console.error(error);
+
+      // Return a meaningful response to the user
+      return {
+        statusCode: 500,
+        body: {
+          message: "An error occurred while fetching the journals.",
+        },
+      };
+    }
+  },
+});
+
+
 export const getTotal = query({
   handler: async (ctx) => {
     try {
@@ -155,6 +191,70 @@ export const update = mutation({
     return journal;
   },
 });
+
+export const archiveJournal = mutation({
+  args: {
+    id: v.id("journals"),
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+
+    if (!identity) {
+      throw new Error("Unauthenticated");
+    }
+
+    const userId = identity.subject;
+
+    const existingJournal = await ctx.db.get(args.id);
+
+    if (!existingJournal) {
+      throw new Error("Not found");
+    }
+
+    if (existingJournal.userId !== userId) {
+      throw new Error("Unauthorized");
+    }
+
+    const journal = await ctx.db.patch(args.id, {
+      isArchived: true,
+    });
+
+    return journal;
+  },
+});
+
+
+export const restoreJournal = mutation({
+  args: {
+    id: v.id("journals"),
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+
+    if (!identity) {
+      throw new Error("Unauthenticated");
+    }
+
+    const userId = identity.subject;
+
+    const existingJournal = await ctx.db.get(args.id);
+
+    if (!existingJournal) {
+      throw new Error("Not found");
+    }
+
+    if (existingJournal.userId !== userId) {
+      throw new Error("Unauthorized");
+    }
+
+    const journal = await ctx.db.patch(args.id, {
+      isArchived: false,
+    });
+
+    return journal;
+  },
+});
+
 
 export const removeIcon = mutation({
   args: { id: v.id("journals") },

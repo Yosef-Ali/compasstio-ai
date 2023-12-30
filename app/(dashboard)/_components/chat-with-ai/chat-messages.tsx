@@ -38,7 +38,7 @@ export default function ChatPromptResponse({ role, content }: Props) {
               <AvatarFallback>YA</AvatarFallback>
             </Avatar>
             <div
-              className="px-3 py-2 ml-3 rounded-lg rounded-l-none inline-block bg-muted"
+              className="px-3 py-2 ml-3 rounded-lg rounded-l-none inline-block bg-muted text-left"
             >
               {content}
             </div>
@@ -52,8 +52,7 @@ export default function ChatPromptResponse({ role, content }: Props) {
           </Avatar>
           <div className="flex flex-col items-start ml-3 ">
             <div
-
-              className="px-3 py-2 rounded-lg inline-block bg-muted/30 rounded-l-none "
+              className="px-3 py-2 rounded-lg inline-block bg-muted/30 rounded-l-none text-left "
             >
               {content}
             </div>

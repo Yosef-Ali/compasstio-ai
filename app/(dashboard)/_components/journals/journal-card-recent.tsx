@@ -7,7 +7,7 @@ import { Id } from "@/convex/_generated/dataModel";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import "@blocknote/core/style.css";
-import { OperationsMenu } from "@/components/oprations-menu";
+import OperationsMenuJournals from "@/components/operations-menu-journals";
 
 interface CardData {
   _id: Id<"journals">;
@@ -35,7 +35,8 @@ export function JournalCard({ _id, title, description, creationTime }: CardData)
         <CardHeader>
           <div className="flex justify-between">
             <CardTitle className="text-lg">{title}</CardTitle>
-            <OperationsMenu id={_id} identity="journal" />
+            {/* <OperationsMenu id={_id} identity="journal" /> */}
+            <OperationsMenuJournals id={_id} identity="recent" />
           </div>
           <CardDescription className="line-clamp-2">{Description}</CardDescription>
           <CardDescription>

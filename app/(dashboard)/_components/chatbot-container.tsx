@@ -1,3 +1,4 @@
+"use client"
 import React, { useState } from 'react';
 import { ChatInfo } from "@/types";
 import { Icons } from "@/components/icons";
@@ -12,6 +13,7 @@ import Wrapper from "./wrapper";
 import { useSlideState } from '@/app/hooks/useSlideState';
 import { useSlideStateMobile } from '@/app/hooks/useSlideStateMobile';
 import useWindowPositionAndMobile from '@/app/hooks/useWindowPositionAndMobile';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 interface InfoListProps {
   items: ChatInfo[];
@@ -72,7 +74,7 @@ const InfoList = ({ items }: InfoListProps) => {
 
 const Intro = () => {
   return (
-    <div className="mx-auto flex flex-col items-center md:px-4 ">
+    <div className="mx-auto flex flex-col items-center md:px-4">
       <div className="flex flex-col items-center space-y-4">
         <div className="flex flex-col items-start space-y-4 md:items-center">
           <h1 className="text-center md:text-left text-3xl font-bold text-purple-500">
@@ -98,34 +100,33 @@ const ChatbotContainer: React.FC = () => {
     api: "/api/chat"
   });
 
-  function ChatBlock() {
-    return (
-      <div className="mx-auto w-full z-0 max-w-sm md:max-w-md lg:max-w-lg px-4  py-12 lg:py-24 flex flex-col stretch space-y-10 text-center transition-width duration-500">
-        {!inputFocused && <Intro />}
-        <div className="space-y-4">
-          {messages.map((m: Message) => (
-            <ChatPromptResponse key={m.id} role={m.role} content={m.content} />
-          ))}
-        </div>
-        <form onSubmit={handleSubmit} className={`${isMobile && !isSlideOut ? 'fixed' : 'hidden'} bottom-6 w-full max-w-xs sm:max-w-sm md:max-w-sm lg:max-w-md`}>
-          <div className="flex items-center space-x-2">
-            <Input
-              type="text"
-              placeholder="Say something..."
-              value={input}
-              onChange={handleInputChange}
-              onFocus={() => setInputFocused(true)}
-              className="w-full px-4 py-2 border rounded-lg"
-            />
-            <Button type="submit" className="px-4 py-2 text-white bg-purple-500 rounded-lg ">Send</Button>
-          </div>
-        </form>
-      </div>
-    );
-  }
+
   return (
     <>
-      {<ChatBlock />}
+      <div className="mx-auto w-full z-0 max-w-sm md:max-w-md lg:max-w-lg px-4 py-12 lg:py-24 flex flex-col space-y-10 text-center transition-width duration-500">
+        {!inputFocused && <Intro />}
+        <ScrollArea className="h-[82vh] w-full">
+          <div className="space-y-4">
+            {messages.map((m: Message) => (
+              <ChatPromptResponse key={m.id} role={m.role} content={m.content} />
+            ))}
+          </div>
+
+          <form onSubmit={handleSubmit} className={`${isMobile && !isSlideOut || !isMobile ? 'fixed' : 'hidden'} bottom-6 w-full max-w-xs sm:max-w-sm md:max-w-sm lg:max-w-md`}>
+            <div className="flex items-center space-x-2">
+              <Input
+                type="text"
+                placeholder="Say something..."
+                value={input}
+                onChange={handleInputChange}
+                onFocus={() => setInputFocused(true)}
+                className="w-full px-4 py-2 border rounded-lg"
+              />
+              <Button type="submit" className="px-4 py-2 text-white bg-purple-500 rounded-lg ">Send</Button>
+            </div>
+          </form>
+        </ScrollArea>
+      </div>
     </>
   );
 };

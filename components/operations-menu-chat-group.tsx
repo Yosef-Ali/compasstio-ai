@@ -46,7 +46,7 @@ export function OperationsMenu(props: PostProps) {
       friendId: id as string,
     }).then((res) => {
       console.log("isBlocked response:", res);
-      router.push("/chat-with-groups");
+      router.push("/messaging");
     })
 
   };
@@ -67,14 +67,8 @@ export function OperationsMenu(props: PostProps) {
 
         <DropdownMenuContent align="end">
           <DropdownMenuItem>
-            <Link href={"#"} className="flex w-full" onClick={handleAddToGroup}>
-              Add to group
-            </Link>
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem>
             <Link href={"#"} className="flex w-full" onClick={handleBlock}>
-              Block
+              Un friend
             </Link>
           </DropdownMenuItem>
         </DropdownMenuContent>

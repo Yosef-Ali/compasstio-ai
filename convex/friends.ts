@@ -34,7 +34,10 @@ export const listFriends = query({
         .query("friends")
         .filter((q) => q.eq(q.field("user_Id"), identity.subject.toString()))
         .filter((q) => q.eq(q.field("isBlocked"), false))
+        .order("desc")
         .collect()
+
+
 
       if (!friends) {
         throw new Error("Not found");
@@ -119,6 +122,40 @@ export const createFriend = mutation({
   }
 
 })
+
+export const deleteFriend = mutation({
+  args: {
+    friendId: v.string(),
+  },
+  handler: async (ctx, args) => {
+
+
+    const identity = await ctx.auth.getUserIdentity();
+
+    const friend_Id = args.friendId
+    const user_Id = identity?.subject
+
+    console.log('user_Id:', user_Id)
+
+    const deleteFriendship = await ctx.db.query("friends")
+      .filter((q) => q.eq(q.field("user_Id"), user_Id))
+      .filter((q) => q.eq(q.field("friend_Id"), friend_Id))
+      .first();
+
+    if (!deleteFriendship) {
+      throw new Error("Not found");
+    }
+
+    //console.log('deleteFriendship:', deleteFriendship)
+
+    const deleteFriend = await ctx.db.delete(deleteFriendship._id)
+
+    return deleteFriend;
+
+  }
+
+})
+
 
 
 export const isBlocked = mutation({

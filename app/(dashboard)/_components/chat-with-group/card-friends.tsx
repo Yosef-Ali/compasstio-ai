@@ -14,6 +14,7 @@ import { api } from "@/convex/_generated/api";
 import { OperationsMenu } from "@/components/operations-menu-chat-group";
 import { useUser } from "@clerk/nextjs";
 import { Badge } from "@/components/ui/badge";
+import useActiveFriendStore from "@/app/hooks/useActiveFriend";
 
 interface CardFriendsProps {
   friends_Id: string
@@ -26,6 +27,8 @@ export function CardFriends({ friends_Id, _creationTime, isBlocked }: CardFriend
   const [isRead, setIsRead] = useState(false)
   const formatted = useFormatOnlyTime(_creationTime);
   const formattedMonth = useFormattedMonthYear(_creationTime);
+  const { activeFriendId, setActiveFriendId } = useActiveFriendStore();
+
   const { user } = useUser()
 
   if (!user) {
@@ -34,25 +37,35 @@ export function CardFriends({ friends_Id, _creationTime, isBlocked }: CardFriend
 
 
   const friendInfo = useQuery(api.users.getFriend, { id: friends_Id })
-  const messageLast = useQuery(api.messages.getMessages, { receiver_id: friends_Id })
+  const messageLast = useQuery(api.messages.getLatestMessages, { receiver_id: friends_Id })
+
 
 
   const isActive = friends_Id === useParams().id;
+
+  // Set the active friend ID
+  if (isActive && friends_Id !== activeFriendId) {
+    setActiveFriendId(friends_Id);
+  }
+
+
+
+  // Set the active friend ID
 
 
   useEffect(() => {
     if (messageLast) {
       setMessage(
-        messageLast[0]?.content
+        messageLast?.content
       )
-      setIsRead(messageLast[0]?.read)
+      setIsRead(messageLast?.read)
     }
   }, [messageLast])
 
   return (
-    <Link href={`/chat-with-groups/${friends_Id}`}>
-      
-      <Card className={`cursor-pointer  ${isActive ? 'bg-muted' : ''}`}>
+    <Link href={`/messaging/${friends_Id}`}>
+
+      <Card className={`cursor-pointer z-0  ${isActive ? 'bg-muted' : ''}`}>
         <CardContent className="flex items-center p-4">
           <Avatar className="w-12 h-12 mr-4">
             <AvatarImage src={friendInfo?.avatarUrl} />

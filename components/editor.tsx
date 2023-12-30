@@ -48,7 +48,7 @@ const Editor = ({
   })
 
   return (
-    <div >
+    <div className="text-left" >
       <BlockNoteView
         editor={editor}
         theme={resolvedTheme === "dark" ? "dark" : "light"}

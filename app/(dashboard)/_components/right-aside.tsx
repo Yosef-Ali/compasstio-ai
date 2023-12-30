@@ -46,28 +46,30 @@ const RightAside = ({ tabs }: TabsProps) => {
           <>
             <button
               onClick={toggleSlide}
-              className={`  z-50 absolute -left-16 top-1/3 -translate-y-1/2 bg-purple-500 hover:bg-purple-800 text-white  py-2 px-6 rounded-lg rounded-t-none  rotate-90`
+              className={`${isSlideOut ? 'hidden ' : 'flex'}  z-50 absolute -left-16 top-1/3 -translate-y-1/2 bg-purple-500 hover:bg-purple-800 text-white  py-2 px-6 rounded-lg rounded-t-none  rotate-90`
               }
             >
               {isSlideOut ? 'Close' : 'Open'}
             </button>
             <button
               onClick={toggleSlide}
-              className={` z-50 absolute -left-7 top-1/3 -translate-y-1/2  bg-purple-500 hover:bg-purple-800 text-white  py-2 px-6 rounded-lg rounded-b-none  rotate-90`
+              className={`${!isSlideOut ? 'hidden ' : 'flex'} z-50 absolute -left-7 top-1/3 -translate-y-1/2  bg-purple-500 hover:bg-purple-800 text-white  py-2 px-6 rounded-lg rounded-b-none  rotate-90`
               }
             >
               {isSlideOut ? 'Close' : 'Open'}
             </button>
           </>
-          : <button
+          :
+          <button
             onClick={toggleSlide}
             className={`  z-50 absolute -left-16 top-1/3 -translate-y-1/2 bg-purple-500 hover:bg-purple-800 text-white  py-2 px-6 rounded-lg rounded-t-none  rotate-90`
             }
           >
             {isSlideOut ? 'Open' : 'Close'}
-          </button>}
+          </button>
+        }
 
-        <div className="flex-1 h-full">
+        <div className={`flex-1 h-full `}>
           <Tabs defaultValue={tabs[0].name} className="w-full">
             <div className="border-b px-6 pt-4 pb-2 text-center sticky top-0 bg-background z-35">
               <TabsList className="grid w-full grid-cols-2">
@@ -80,8 +82,8 @@ const RightAside = ({ tabs }: TabsProps) => {
             </div>
 
             {tabs.map(tab => (
-              <TabsContent key={tab.name} value={tab.name} className="p-4 ">
-                <ScrollArea className="h-[82vh] w-full">
+              <TabsContent key={tab.name} value={tab.name} >
+                <ScrollArea className="h-[82vh] w-full overflow-y-auto p-4">
                   {tab.content}
                 </ScrollArea>
               </TabsContent>

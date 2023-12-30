@@ -43,7 +43,7 @@ const Wrapper: React.FC<WrapperProps> = ({ children }) => {
       <div className="h-full w-full flex-col p-6 relative text-center z-20 ">
         {children}
       </div>
-
+      {/* mobile menu */}
       {showCustomDrawer && <CustomDrawer />}
 
     </main>

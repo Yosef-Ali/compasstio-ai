@@ -19,7 +19,7 @@ const TopNav = () => {
     switch (currentPath) {
       case 'chat-with-ai':
         return <TopNavChatWithAI />;
-      case 'chat-with-groups':
+      case 'messaging':
         return <TopNavChatWithGroups />;
       case 'journals':
         return <TopNavJournal />;

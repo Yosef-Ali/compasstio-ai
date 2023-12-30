@@ -61,12 +61,53 @@ export const getMessages = query({
           )
         )
       )
+      .order("asc")
       .collect();
 
     return filteredMessages;
 
   }
 })
+
+export const getLatestMessages = query({
+  args: {
+    receiver_id: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+
+    if (!identity) {
+      throw new Error("Not authenticated");
+    }
+
+    const senderId = identity.subject;
+    //const receiverId = args.receiver_id. as Id<"users">;
+
+    console.log('args.receiver_id', args.receiver_id)
+
+    const filteredMessages = await ctx.db.query("messages")
+      .filter((q) =>
+        q.or(
+          q.and(
+            q.eq(q.field("sender_id"), senderId),
+            q.eq(q.field("receiver_id"), args.receiver_id)
+          ),
+          q.and(
+            q.eq(q.field("sender_id"), args.receiver_id),
+            q.eq(q.field("receiver_id"), senderId)
+          )
+        )
+      )
+      .filter((q) => q.eq(q.field("sender_id"), args.receiver_id))
+      .order("desc")
+      .first();
+
+    return filteredMessages;
+
+  }
+})
+
+
 
 
 

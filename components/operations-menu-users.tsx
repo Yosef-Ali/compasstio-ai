@@ -24,9 +24,17 @@ export function OperationsMenu({ _id }: OperationsMenuProps) {
 
 
   const addToFriend = useMutation(api.friends.createFriend);
+  const deleteFriend = useMutation(api.friends.deleteFriend);
 
   const handleAddToFriend = async () => {
     addToFriend({
+      friendId: _id
+    })
+  }
+
+  const handleDelete = async () => {
+
+    deleteFriend({
       friendId: _id
     })
   }
@@ -35,13 +43,16 @@ export function OperationsMenu({ _id }: OperationsMenuProps) {
   return (
     <>
       <DropdownMenu>
-        <DropdownMenuTrigger>
-          <Icons.ellipsis />
+        <DropdownMenuTrigger className="flex h-8 w-8 items-center justify-center rounded-md border transition-colors hover:bg-muted">
+          <Icons.ellipsis className="h-4 w-4" />
+          <span className="sr-only">Open</span>
         </DropdownMenuTrigger>
-
         <DropdownMenuContent align="end">
           <DropdownMenuItem onClick={handleAddToFriend}>
-            Add to group
+            Add to Friends
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={handleDelete}>
+            Delete
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

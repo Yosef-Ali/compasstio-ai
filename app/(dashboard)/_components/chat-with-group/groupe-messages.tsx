@@ -36,18 +36,18 @@ export default function GroupMessages({ sender_id, message }: Props) {
 
 
   return (
-    <div className="flex flex-col mx-auto  w-full space-y-10 ">
+    <div className="flex flex-col mx-auto  w-full space-y-8 py-8 ">
       {sender_id === user?.id && (
-        <div className="flex items-end  mb-4 w-full ">
-          <div className="flex items-start">
-            <Avatar>
+        <div className="flex justify-end mb-4 w-full ">
+          <div className="flex  items-end">
+
+            <div className="px-3 py-2  rounded-lg rounded-r-none inline-block bg-muted">
+              {message}
+            </div>
+            <Avatar className="ml-3">
               <AvatarImage src={senderInfo?.avatarUrl || user?.imageUrl} />
               <AvatarFallback>YA</AvatarFallback>
             </Avatar>
-            <div className="px-3 py-2 ml-3 rounded-lg rounded-l-none inline-block bg-muted">
-              {message}
-            </div>
-
           </div>
         </div>
 

@@ -20,7 +20,7 @@ export function CardAllUsers({ _id, name, avatarUrl, _creationTime }: ChatCardPr
 
   return (
     <Card >
-      <CardContent className="flex items-center p-4">
+      <CardContent className="flex items-center p-4 z-0">
         <Avatar className="w-12 h-12 mr-4">
           <AvatarImage src={avatarUrl} />
           <AvatarFallback>YA</AvatarFallback>

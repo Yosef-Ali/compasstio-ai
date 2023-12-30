@@ -18,7 +18,7 @@ const TopNavChatWithAi = () => {
           <div className="flex items-center w-full p-1">
             <div className="flex-1">
               <div className="flex items-center">
-                <Avatar className="w-12 h-12">
+                <Avatar className="w-8 h-8">
                   <AvatarImage src="/avatarAi.svg" />
                 </Avatar>
                 <div className="ml-4 flex-shrink-0">

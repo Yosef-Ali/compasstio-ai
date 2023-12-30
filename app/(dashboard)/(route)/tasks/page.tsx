@@ -23,7 +23,7 @@ import { toast } from "sonner";
 import { Spinner } from "@/components/spinner";
 
 interface Props {
-  page?: 'chat-with-ai' | 'chat-with-groups' | 'journals' | 'tasks' | 'live-sessions'
+  page?: 'chat-with-ai' | 'messaging' | 'journals' | 'tasks' | 'live-sessions'
 }
 
 const tabs = [

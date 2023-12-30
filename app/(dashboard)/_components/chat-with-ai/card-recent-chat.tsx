@@ -1,4 +1,6 @@
 "use client"
+import { OperationsMenu } from "@/components/oprations-menu";
+import OperationsMenuChat from "@/components/oprations-menu-chat-ai";
 import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -10,7 +12,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import { PinIcon } from "lucide-react";
 
 interface ChatCardProps {
-  id: string;
+  id: Id<"chats">;
   prompt: string;
   result: string;
   creationTime: number;
@@ -21,28 +23,18 @@ dayjs.extend(relativeTime);
 
 export function CardRecentChat({ id, prompt, result, creationTime }: ChatCardProps) {
 
-  const Pinned = useMutation(api.chats.pinned);
-
-  const handleClick = () => {
-    Pinned({
-      id: id as Id<"chats">,
-    });
-  }
 
   return (
     <Card  >
       <CardHeader>
         <div className="flex justify-between">
-          <CardTitle className="text-lg truncate md:max-w-[100px] xl:max-w-full">
+          <CardTitle className="text-lg ">
             {prompt}
           </CardTitle>
-          <Button variant="outline" size="icon" onClick={handleClick}>
-            <PinIcon className="w-4 h-4 text-foreground" />
-          </Button>
+          <OperationsMenuChat id={id} isPinned="recent" />
         </div>
         <CardDescription className="line-clamp-2 flex-1 min ">{result}</CardDescription>
         <CardDescription>
-
           {dayjs(creationTime).fromNow()}
         </CardDescription>
       </CardHeader>
