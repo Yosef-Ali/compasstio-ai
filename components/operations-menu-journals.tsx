@@ -49,6 +49,8 @@ function RecentJournalOptions({ id }: RecentChatOptionsProps) {
     archived({
       id: id as Id<"journals">,
     });
+
+
   }
 
   return (
@@ -64,7 +66,7 @@ function RecentJournalOptions({ id }: RecentChatOptionsProps) {
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={onArchived}>
-          Archived
+          Archive
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

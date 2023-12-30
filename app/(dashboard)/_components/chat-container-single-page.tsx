@@ -95,7 +95,7 @@ const ChatContainerSinglePage = () => {
   return (
 
 
-    <div className=" mx-auto w-full max-w-md py-24 h-full  flex-col stretch space-y-10 text-center ">
+    <div className="mx-auto w-full max-w-md py-24 h-full flex-col stretch space-y-10 text-center ">
 
       {messages ? messages.map(m => {
         return (
@@ -105,7 +105,7 @@ const ChatContainerSinglePage = () => {
         : (<p className="text-center">No messages</p>)
       }
 
-      <form onSubmit={handleFormSubmit} className={`${isMobile && !isSlideOut || !isMobile ? 'fixed' : 'hidden'} bottom-6 w-full max-w-xs sm:max-w-md lg:max-w-sm xl:max-w-lg  `}>
+      <form onSubmit={handleFormSubmit} className={`${isMobile && !isSlideOut || !isMobile ? 'fixed ' : 'hidden'} bottom-14 md:bottom-6 w-full max-w-sm sm:max-w-md lg:max-w-sm xl:max-w-lg`}>
         <div className="flex items-center space-x-2">
           <Input
             type="text"

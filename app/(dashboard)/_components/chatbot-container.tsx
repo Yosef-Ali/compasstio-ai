@@ -112,7 +112,7 @@ const ChatbotContainer: React.FC = () => {
             ))}
           </div>
 
-          <form onSubmit={handleSubmit} className={`${isMobile && !isSlideOut || !isMobile ? 'fixed' : 'hidden'} bottom-6 w-full max-w-xs sm:max-w-sm md:max-w-sm lg:max-w-md`}>
+          <form onSubmit={handleSubmit} className={`${isMobile && !isSlideOut || !isMobile ? 'fixed' : 'hidden'} bottom-14 md:bottom-6 w-full max-w-sm sm:max-w-md lg:max-w-sm xl:max-w-lg`}>
             <div className="flex items-center space-x-2">
               <Input
                 type="text"
