@@ -17,10 +17,13 @@ export default function AllUsers() {
 
   const users = useQuery(api.users.get)
   const currentUser = useUser().user?.id
+  const allUsers = useQuery(api.friends.allUsers)
+
+  console.log('allUsers in client:', allUsers)
 
   return (
     <div className="w-full mx-auto space-y-4" >
-      {users?.map(user => {
+      {allUsers?.map(user => {
         return (
           user.userId !== currentUser ? (
             <CardAllUsers

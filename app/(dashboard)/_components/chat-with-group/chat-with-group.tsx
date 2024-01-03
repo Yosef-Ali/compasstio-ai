@@ -1,4 +1,4 @@
-import { Doc, Id } from "@/convex/_generated/dataModel";
+
 import { api } from "@/convex/_generated/api";
 import { useConvexAuth, useQuery } from "convex/react";
 
@@ -8,6 +8,7 @@ import { CardFriends } from "./card-friends";
 
 
 export default function Friends() {
+
   const friends = useQuery(api.friends.listFriends)
 
   const { isLoading } = useConvexAuth()
@@ -24,16 +25,15 @@ export default function Friends() {
 
   return (
     <div className="flex flex-col space-y-4">
-      {friends?.map(friend => {
-        return (
-          <CardFriends
-            key={friend._id}
-            friends_Id={friend.friend_Id}
-            _creationTime={friend._creationTime ?? 0}
-            isBlocked={friend.isBlocked}
-          />
-        );
-      })}
+      {Object.values(friends ?? {}).map(message => (
+        <CardFriends
+          key={message._id}
+          friends_Id={message.sender_id}
+          _creationTime={message._creationTime ?? 0}
+          message={message.content}
+          isRead={message.isRead}
+        />
+      ))}
     </div>
   );
 }

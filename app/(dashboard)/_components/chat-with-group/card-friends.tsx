@@ -9,7 +9,7 @@ import { CheckCheck, CheckCheckIcon, CheckIcon } from "lucide-react";
 import { useOnGroupSelect } from "@/app/hooks/use-on-group-select";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { useConvexAuth, useQuery } from "convex/react";
+import {  useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { OperationsMenu } from "@/components/operations-menu-chat-group";
 import { useUser } from "@clerk/nextjs";
@@ -19,12 +19,12 @@ import useActiveFriendStore from "@/app/hooks/useActiveFriend";
 interface CardFriendsProps {
   friends_Id: string
   _creationTime: number;
-  isBlocked: boolean;
+  message: string;
+  isRead: boolean;
 }
 
-export function CardFriends({ friends_Id, _creationTime, isBlocked }: CardFriendsProps) {
-  const [message, setMessage] = useState("");
-  const [isRead, setIsRead] = useState(false)
+export function CardFriends({ friends_Id, _creationTime, message, isRead }: CardFriendsProps) {
+
   const formatted = useFormatOnlyTime(_creationTime);
   const formattedMonth = useFormattedMonthYear(_creationTime);
   const { activeFriendId, setActiveFriendId } = useActiveFriendStore();
@@ -35,32 +35,17 @@ export function CardFriends({ friends_Id, _creationTime, isBlocked }: CardFriend
     return <div>Loading...</div>
   }
 
+ 
 
   const friendInfo = useQuery(api.users.getFriend, { id: friends_Id })
-  const messageLast = useQuery(api.messages.getLatestMessages, { receiver_id: friends_Id })
-
-
-
+  
   const isActive = friends_Id === useParams().id;
 
   // Set the active friend ID
   if (isActive && friends_Id !== activeFriendId) {
     setActiveFriendId(friends_Id);
+
   }
-
-
-
-  // Set the active friend ID
-
-
-  useEffect(() => {
-    if (messageLast) {
-      setMessage(
-        messageLast?.content
-      )
-      setIsRead(messageLast?.read)
-    }
-  }, [messageLast])
 
   return (
     <Link href={`/messaging/${friends_Id}`}>
