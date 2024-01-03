@@ -11,16 +11,14 @@ interface CardProfileMessageProps {
   _id: string;
   friends_Id: string
   _creationTime: number;
-  isBlocked: boolean;
+  message: string;
 }
 
 
 
-export function CardProfileMessage({ friends_Id, _creationTime, isBlocked }: CardProfileMessageProps) {
+export function CardProfileMessage({ friends_Id, _creationTime, message }: CardProfileMessageProps) {
 
   const friendInfo = useQuery(api.users.getFriend, { id: friends_Id })
-  const messageLast = useQuery(api.messages.getMessages, { receiver_id: friends_Id })
-
 
   const formatted = useFormattedTime(_creationTime);
 
@@ -36,7 +34,7 @@ export function CardProfileMessage({ friends_Id, _creationTime, isBlocked }: Car
               </Avatar>
               <div className="ml-4">
                 <p className="text-sm font-medium leading-none">{friendInfo?.name}</p>
-                <p className="text-sm text-muted-foreground truncate line-clamp-3">{messageLast && messageLast[0].content}</p>
+                <p className="text-sm text-muted-foreground truncate line-clamp-3">{message}</p>
               </div>
             </div>
           </div>

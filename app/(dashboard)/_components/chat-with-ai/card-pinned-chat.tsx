@@ -23,8 +23,6 @@ dayjs.extend(relativeTime);
 
 export function ChatCardPinned({ id, prompt, result, creationTime }: ChatCardProps) {
 
-
-
   return (
     <Card >
       <CardHeader>

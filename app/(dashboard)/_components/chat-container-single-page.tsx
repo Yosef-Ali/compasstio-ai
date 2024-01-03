@@ -40,13 +40,7 @@ const ChatContainerSinglePage = () => {
 
   const messages = receiver_id ? useQuery(api.messages.getMessages, { receiver_id: receiver_id }) : undefined
 
-
-  console.log('messages', messages)
-
-
   const messageSent = useMutation(api.messages.create)
-
-
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
@@ -55,7 +49,6 @@ const ChatContainerSinglePage = () => {
   const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!inputValue) return;
-    console.log(inputValue); // Access input value here
     messageSent({
       receiver_id: receiver_id,
       content: inputValue

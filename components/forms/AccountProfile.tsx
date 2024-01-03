@@ -44,11 +44,9 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
     },
   });
 
-  console.log("user::", user);
+
 
   const onSubmit = (values: z.infer<typeof UserValidation>) => {
-
-    console.log("onSubmit", values);
 
     const promise = createProfile({
       userId: user.userId ?? "",
@@ -76,7 +74,6 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
   async function handleImage(event: React.ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
 
-    console.log("file", file)
 
     if (file) {
       // Step 1: Generate a URL for uploading
@@ -92,11 +89,6 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
         // Step 3: Update the profile photo URL in the form
         const { storageId } = await result.json();
 
-        // Step 4: Update the profile photo in the database
-        // updateAvatar({
-        //   userId: user.userId as string ,
-        //   storageId: storageId,
-        // });
       } else {
         // Handle upload error
         console.error('Failed to upload image');

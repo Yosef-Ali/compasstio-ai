@@ -26,7 +26,6 @@ export default function ChatbotContainer() {
 
   const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log(messages); // Add console log message here
     handleSubmit(event);
   };
 

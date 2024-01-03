@@ -22,7 +22,7 @@ export default function Journals() {
   const { isLoading } = useConvexAuth()
 
   if (journals === undefined || isLoading) {
-    console.log("journals", journals)
+
     return (
       <div className="space-y-3">
         <JournalCard.Skeleton />

@@ -6,26 +6,7 @@ interface GroupedMessages {
 }
 
 
-// export const listFriends = query({
-//   args: {
-//     id: v.id("users"),
-//   },
-//   handler: async (ctx, args) => {
-//     // use `args` and/or `ctx.auth` to authorize the user
-//     // ...
-//     const identity = ctx.auth.getUserIdentity();
 
-//     if (!identity) {
-//       throw new Error("Not authorized");
-//     }
-//     const friends = await ctx.db.get(args.id)
-
-//     if (!friends) {
-//       throw new Error("Not found");
-//     }
-//     return friends;
-//   }
-// })
 
 // This code snippet exports a function called `listFriends1` that queries a database for a user's friends and their messages. It first checks if the user is authenticated, then retrieves the user's friends and filters out any blocked friends. It then retrieves
 export const listFriends = query({
@@ -71,9 +52,6 @@ export const listFriends = query({
       const keys = Object.keys(groupedMessages);
       const groupedMessagesArray = keys.map(key => groupedMessages[key]);
 
-      //console.log('messages in friends:', messages)
-      console.log('messages in friends:', groupedMessages)
-
       return groupedMessagesArray;
     }
     catch (error) {
@@ -95,8 +73,6 @@ export const createFriend = mutation({
     const friend_Id = args.friendId;
     const user_Id = identity?.subject;
     const isBlocked = false;
-
-    console.log('user_Id:', user_Id);
 
     // Check if the friendship already exists
     const existingFriendship = await ctx.db
@@ -144,9 +120,6 @@ export const deleteFriend = mutation({
     if (!deleteFriendship) {
       throw new Error("Not found");
     }
-
-    //console.log('deleteFriendship:', deleteFriendship)
-
     const deleteFriend = await ctx.db.delete(deleteFriendship._id)
 
     return deleteFriend;

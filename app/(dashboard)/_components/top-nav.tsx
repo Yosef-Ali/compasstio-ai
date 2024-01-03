@@ -13,7 +13,6 @@ const TopNav = () => {
 
   const pathname = usePathname()
   const currentPath = pathname.split('/')[1];
-  console.log('pathname', currentPath)
 
   const renderTopNavComponent = () => {
     switch (currentPath) {

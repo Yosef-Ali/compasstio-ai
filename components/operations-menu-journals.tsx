@@ -42,15 +42,12 @@ export default function OperationsMenuJournals({ id, identity }: PostProps) {
 function RecentJournalOptions({ id }: RecentChatOptionsProps) {
   const archived = useMutation(api.journals.archiveJournal);
   const onEdit = () => {
-    console.log("Edit")
   }
 
   const onArchived = () => {
     archived({
       id: id as Id<"journals">,
     });
-
-
   }
 
   return (

@@ -36,7 +36,7 @@ export default function GroupMessages({ sender_id, message }: Props) {
 
 
   return (
-    <div className="flex flex-col mx-auto w-full space-y-8 pb-12 md:pb-4 ">
+    <div className="flex flex-col mx-auto w-full space-y-8 pb-12 ">
       {sender_id === user?.id && (
         <div className="flex justify-end mb-4 w-full ">
           <div className="flex  items-end">

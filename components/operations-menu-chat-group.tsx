@@ -15,8 +15,8 @@ import ItemButton from "@/app/(dashboard)/_components/item-button";
 import { MoreHorizontal } from "lucide-react";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import { Id } from "@/convex/_generated/dataModel";
-import { cn } from "@/lib/utils";
+import { Button } from "react-day-picker";
+
 
 interface PostProps {
   id: string;
@@ -27,25 +27,12 @@ export function OperationsMenu(props: PostProps) {
   const { id } = props;
 
   const isBlocked = useMutation(api.friends.isBlocked);
-  const addToFriend = useMutation(api.friends.createFriend);
-
-
-  const handleAddToGroup = async () => {
-    // Implement logic to add the post to a group
-
-    addToFriend({
-      friendId: id as string,
-    })
-  };
 
   const handleBlock = async () => {
     // Implement logic to block the user
-    console.log("Blocking user");
-
     isBlocked({
       friendId: id as string,
     }).then((res) => {
-      console.log("isBlocked response:", res);
       router.push("/messaging");
     })
 
@@ -56,13 +43,10 @@ export function OperationsMenu(props: PostProps) {
       <DropdownMenu>
         <DropdownMenuTrigger
           disabled={id ? false : true}
+          className="flex px-6 py-2  items-center justify-center  hover:bg-purple-700 bg-purple-500 rounded-lg text-white"
         >
           <span className="sr-only">Open</span>
-          <ItemButton
-            // onClick={handleCreate}
-            label="More"
-            icon={MoreHorizontal}
-          />
+          ... More
         </DropdownMenuTrigger>
 
         <DropdownMenuContent align="end">

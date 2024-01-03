@@ -57,7 +57,6 @@ export const get = query(async ({ db }) => {
 });
 
 
-
 export const create = mutation({
   args: {
     userId: v.string(),
@@ -91,13 +90,10 @@ export const generateUploadUrl = mutation({
     }
 
     const uploadUrl = await ctx.storage.generateUploadUrl();
-    console.log("uploadUrl:", uploadUrl);
 
     if (!uploadUrl) {
       throw new Error("Upload URL generation failed");
     }
-
-    // update the user with the upload URL
 
     return uploadUrl;
   },
@@ -116,8 +112,6 @@ export const updateAvatar = mutation({
     if (!url) {
       throw new Error("Upload URL generation failed");
     }
-
-
     const user = await ctx.db.patch(args.id, {
       avatarUrl: url as string,
     });

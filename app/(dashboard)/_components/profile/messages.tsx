@@ -16,9 +16,6 @@ export default function Messages() {
 
   const friends = useQuery(api.friends.listFriends)
 
-  console.log('friendsMessges profile:', friends)
-
-
   const { isLoading } = useConvexAuth()
 
   if (friends === undefined || isLoading) {
@@ -32,18 +29,16 @@ export default function Messages() {
   };
 
   return (
-    <div className="grid grid-cols-1 gap-4 p-3">
-      {friends?.map(friend => {
-        return (
-          <CardProfileMessage
-            _id={friend._id}
-            key={friend._id}
-            friends_Id={friend.friend_Id}
-            _creationTime={friend._creationTime ?? 0}
-            isBlocked={friend.isBlocked}
-          />
-        );
-      })}
+    <div className="flex flex-col space-y-4">
+      {Object.values(friends ?? {}).map(message => (
+        <CardProfileMessage
+          key={message._id}
+          _id={message._id}
+          friends_Id={message.sender_id}
+          _creationTime={message._creationTime ?? 0}
+          message={message.content}
+        />
+      ))}
     </div>
   );
 }

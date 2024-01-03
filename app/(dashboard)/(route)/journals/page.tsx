@@ -39,7 +39,6 @@ const JournalsPage = () => {
   const { user } = useUser();
 
   const create = useMutation(api.journals.create);
-  console.log('user', user?.fullName)
 
   const onCreate = () => {
     const promise = create({ title: "Untitled" })

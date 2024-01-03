@@ -20,13 +20,9 @@ export default function Friends() {
   const { isLoading } = useConvexAuth();
   const [sortedFriends, setSortedFriends] = useState<FriendsProps[]>([]);
 
-  console.log('activeFriendId:', activeFriendId)
-
   const handleResort = () => {
 
     if (!friends) return;
-
-    console.log('friendsHandelResort:', friends)
 
     const sorted = [...friends];
 

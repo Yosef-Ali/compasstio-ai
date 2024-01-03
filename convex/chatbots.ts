@@ -19,8 +19,6 @@ export const get = query({
       return chatbots;
     } catch (error) {
       // Log the error
-      console.error(error);
-
       // Return a meaningful response to the user
       return {
         statusCode: 500,

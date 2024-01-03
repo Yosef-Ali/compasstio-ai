@@ -26,7 +26,6 @@ export default function Completion() {
     complete(e.target.value);
   }, 500);
 
-  console.log('completion', completion)
 
   return (
     <div className="space-y-3 p-10 mx-auto w-full max-w-lg">

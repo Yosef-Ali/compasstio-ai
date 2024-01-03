@@ -33,15 +33,13 @@ export default function ProfilePage() {
   const { isLoading } = useConvexAuth()
 
 
-  console.log('userInfo:::', userInfo?._id)
-
 
   async function handleUploadImage() {
 
     // Get the file object from the file input element
     const file = fileInput.current?.files?.[0];
     if (!file) {
-      console.log('No file selected');
+
       return; // Early return if the file is null
     }
 

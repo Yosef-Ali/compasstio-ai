@@ -18,7 +18,7 @@ export async function POST(req: Request) {
   // Extract the `messages` from the body of the request
   const { messages } = await req.json();
 
-  
+
 
   // Initialize a text-generation stream using the Hugging Face Inference SDK
   const response = await Hf.textGenerationStream({
@@ -37,26 +37,25 @@ export async function POST(req: Request) {
   // Convert the async generator into a friendly text-stream
   const stream = HuggingFaceStream(response, {
     onCompletion: async (completion: string) => {
-    const { userId } = auth();
-if (typeof userId === "string") {
-  // Use userId as a string
-  
-  
-  const messagesContent = messages.map((message: { content: string; }) => message.content);
- 
-  await convex.mutation(api.chats.create, {
-    prompt: messagesContent[messagesContent.length - 1],
-    result: completion,
-    userId,
-    conversationId: "",
-  });
-} else {
-  // Handle the case where userId is null or undefined
-  console.error("User ID is not a string");
-}     
-      
+      const { userId } = auth();
+      if (typeof userId === "string") {
+        // Use userId as a string
+
+
+        const messagesContent = messages.map((message: { content: string; }) => message.content);
+
+        await convex.mutation(api.chats.create, {
+          prompt: messagesContent[messagesContent.length - 1],
+          result: completion,
+          userId,
+          conversationId: "",
+        });
+      } else {
+        // Handle the case where userId is null or undefined
+      }
+
     },
-    
+
   });
 
   //const stream = HuggingFaceStream(response);

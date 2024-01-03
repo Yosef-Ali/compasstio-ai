@@ -21,9 +21,6 @@ export default function OperationsMenuChat({ id, isPinned }: PostProps) {
   const { deleteChat } = useDeleteChat(id as Id<"chats">);
 
 
-  console.log('isPinned', isPinned)
-
-
   const onDelete = () => {
     deleteChat();
   };

@@ -20,8 +20,6 @@ interface OperationsMenuProps {
 export function OperationsMenu({ _id }: OperationsMenuProps) {
 
 
-  console.log('_id in the OpreationMenu:', _id)
-
 
   const addToFriend = useMutation(api.friends.createFriend);
   const deleteFriend = useMutation(api.friends.deleteFriend);

@@ -4,7 +4,6 @@ import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/ca
 import { Skeleton } from "@/components/ui/skeleton";
 import { useFormattedTime } from "@/lib/formated-time";
 import "@blocknote/core/style.css";
-import { Console } from "console";
 
 interface CardData {
   title: string;
@@ -15,11 +14,6 @@ interface CardData {
 const regex = new RegExp('"text": "([^"]*)"');
 
 export function JournalCard({ title, description, creationTime }: CardData) {
-
-
-  console.log(description);
-
-
 
   //const regex = /regex-pattern/;
   const match = description.match(regex);

@@ -67,14 +67,6 @@ const ProfilePageLayout = ({
     <TopNav />
     <Shell>
       <Wrapper>
-        {/* {!isOpen ?
-          <WelcomeMessage
-            userFullName={user?.fullName}
-            onCreate={onCreate}
-            buttonLabel="Chat with group"
-          />
-          : <ChatContainer />} */}
-        {/* <ChatContainer /> */}
         {children}
       </Wrapper>
       <RightAside tabs={tabs} />

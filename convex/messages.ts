@@ -48,14 +48,11 @@ export const getFriendSender = query({
         .order("desc")
         .collect();
 
-      console.log('messages:::', messages)
 
       const senderIds = messages.map((message) => message.sender_id);
       //@ts-ignore
       const uniqueSenderIds = [...new Set(senderIds)];
 
-
-      console.log('senderIds:::', uniqueSenderIds)
 
       return uniqueSenderIds;
     } catch (error) {
@@ -111,7 +108,6 @@ export const friendsWithMessages = query({
       // Collect the results
       .collect();
 
-    console.log('users::', users)
 
     // Join the data from the three tables
     const joinedData = messages.map((message) => {
@@ -128,7 +124,6 @@ export const friendsWithMessages = query({
     });
     // Return the joined data
 
-    console.log('joinedData', joinedData)
     return joinedData;
   },
 });
@@ -186,7 +181,6 @@ export const getLatestMessages = query({
     const senderId = identity.subject;
     //const receiverId = args.receiver_id. as Id<"users">;
 
-    console.log('args.receiver_id', args.receiver_id)
 
     const filteredMessages = await ctx.db.query("messages")
       .filter((q) =>
@@ -205,15 +199,10 @@ export const getLatestMessages = query({
       .order("desc")
       .first();
 
-
-    console.log('filteredMessages', filteredMessages)
-
     return filteredMessages;
 
   }
 })
-
-
 
 export const create = mutation({
   args: {
@@ -227,9 +216,6 @@ export const create = mutation({
     }
 
     const senderId = identity.subject as string;
-
-    console.log('senderId at create', senderId)
-    console.log('args.receiver_id at create', args.receiver_id)
 
     const messages = await ctx.db.insert("messages", {
       content: args.content,

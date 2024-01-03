@@ -20,8 +20,6 @@ export default function InprogressTasks() {
   const tasks = useQuery(api.tasks.get) as Task[] | undefined;
   const { isLoading } = useConvexAuth()
 
-  console.log("Tasks", tasks)
-
   if (tasks === undefined || isLoading) {
     return (
       <div className="space-y-3">

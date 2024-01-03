@@ -21,7 +21,7 @@ export default function OnBoardingPage() {
 
   if (!user) return null;
 
-  console.log('user', user)
+
 
   const userInfo = useQuery(api.users.getUser, { id: user.id.toString() });
 
