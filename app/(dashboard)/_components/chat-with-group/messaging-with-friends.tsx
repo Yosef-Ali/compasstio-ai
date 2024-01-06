@@ -12,10 +12,11 @@ interface FriendsProps {
   user_Id: string;
   friend_Id: string;
   isBlocked: boolean;
+  content?: string; // Add the content property with optional string type
+  read?: boolean;
 }
-
 export default function Friends() {
-  const friends = useQuery(api.friends.listFriends);
+  const friends = useQuery(api.friends.listFriends2);
   const { activeFriendId } = useActiveFriendStore();
   const { isLoading } = useConvexAuth();
   const [sortedFriends, setSortedFriends] = useState<FriendsProps[]>([]);
@@ -55,15 +56,18 @@ export default function Friends() {
 
   return (
     <div className="flex flex-col space-y-4">
-      {Object.values(friends ?? {}).map(message => (
-        <CardFriends
-          key={message._id}
-          friends_Id={message.sender_id}
-          _creationTime={message._creationTime ?? 0}
-          message={message.content}
-          isRead={message.isRead}
-        />
-      ))}
+      {friends?.map((friend: FriendsProps) => {
+        const friendId = friend.friend_Id || friend.user_Id || "";
+        return (
+          <CardFriends
+            key={friend._id}
+            friends_Id={friendId}
+            _creationTime={friend._creationTime ?? 0}
+            message={friend.content ?? " "}
+            isRead={friend.read ?? false}
+          />
+        );
+      })}
     </div>
   );
 }

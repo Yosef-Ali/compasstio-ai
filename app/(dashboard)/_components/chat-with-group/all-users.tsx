@@ -13,7 +13,7 @@ interface Users {
 }
 
 export default function AllUsers() {
-  const allUsers = useQuery(api.friends.allUsers)
+  const allUsers = useQuery(api.friends.allUsers2)
 
   return (
     <div className="w-full mx-auto space-y-4" >

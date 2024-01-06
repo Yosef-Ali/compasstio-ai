@@ -1,10 +1,8 @@
 "use client"
 import React, { useEffect, useRef, useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { UserButton } from "@clerk/clerk-react";
 import { useUser } from '@clerk/nextjs';
 import { useParams } from 'next/navigation';
-import { Id } from '@/convex/_generated/dataModel';
 import { useQuery } from 'convex/react';
 import { api } from '@/convex/_generated/api';
 
@@ -36,7 +34,7 @@ export default function GroupMessages({ sender_id, message }: Props) {
 
 
   return (
-    <div className="flex flex-col mx-auto w-full space-y-8 pb-12 ">
+    <div className="flex flex-col mx-auto w-full space-y-8 pb-12  overflow-y-auto">
       {sender_id === user?.id && (
         <div className="flex justify-end mb-4 w-full ">
           <div className="flex  items-end">
