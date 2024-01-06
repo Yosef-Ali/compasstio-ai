@@ -21,28 +21,7 @@ export default function Friends() {
   const { isLoading } = useConvexAuth();
   const [sortedFriends, setSortedFriends] = useState<FriendsProps[]>([]);
 
-  const handleResort = () => {
 
-    if (!friends) return;
-
-    const sorted = [...friends];
-
-    const activeIndex = sorted.findIndex(f => f._id === activeFriendId);
-
-    if (activeIndex > -1) {
-      const activeFriend = sorted.splice(activeIndex, 1)[0];
-      sorted.unshift(activeFriend);
-    }
-
-    setSortedFriends(sorted);
-
-  }
-
-  useEffect(() => {
-
-    handleResort();
-
-  }, [friends, activeFriendId]);
 
   if (friends === undefined || isLoading) {
     return (
@@ -56,14 +35,23 @@ export default function Friends() {
 
   return (
     <div className="flex flex-col space-y-4">
-      {friends?.map((friend: FriendsProps) => {
-        const friendId = friend.friend_Id || friend.user_Id || "";
+      {friends?.map((friend) => {
+        //@ts-ignore
+        const friendId = friend.friend_Id || friend.sender_id || "";
+
+        if (friendId === "") {
+          console.error("Friend does not have a valid ID");
+          return null; // Handle the case where the friend does not have a valid ID
+        }
+
         return (
           <CardFriends
             key={friend._id}
             friends_Id={friendId}
             _creationTime={friend._creationTime ?? 0}
-            message={friend.content ?? " "}
+            //@ts-ignore
+            message={friend.content ?? ""}
+            //@ts-ignore
             isRead={friend.read ?? false}
           />
         );
