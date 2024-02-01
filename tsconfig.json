@@ -34,7 +34,7 @@
     "**/*.tsx",
     "next/types/**/*.ts",
     ".next/types/**/*.ts"
-  ],
+, "lib/useResponsiveSize.js"  ],
   "exclude": [
     "node_modules"
   ]

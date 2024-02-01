@@ -4,54 +4,52 @@ import { Card, CardHeader } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useFormattedTime } from "@/lib/formated-time";
 import { CheckCheckIcon } from "lucide-react";
+import Link from "next/link";
 
-interface CardData {
+
+interface ChatCardProps {
   name: string;
-  content: string;
+  meetingId: string;
   creationTime: number;
   avatarUrl: string;
 }
 
-interface ChatCardProps extends CardData {
-  onClick: () => void;
-}
 
 
-
-export function CardLiveStreaming({ name, content, creationTime, avatarUrl, onClick }: ChatCardProps) {
-
+export function CardLiveStreaming({ name, meetingId, creationTime, avatarUrl }: ChatCardProps) {
 
   const formatted = useFormattedTime(creationTime);
-
   return (
-    <Card >
-      <CardHeader>
-        <div className="flex">
-          <div className="flex-1">
-            <div className="flex items-center">
-              <Avatar>
-                <AvatarImage src={avatarUrl} />
-                <AvatarFallback>YA</AvatarFallback>
-              </Avatar>
+    <Link href={`/live-sessions/${meetingId}`}>
+      <Card className="cursor-pointer" >
+        <CardHeader>
+          <div className="flex">
+            <div className="flex-1">
+              <div className="flex items-center">
+                <Avatar>
+                  <AvatarImage src={avatarUrl} />
+                  <AvatarFallback>YA</AvatarFallback>
+                </Avatar>
 
-              <div className="ml-4">
-                <div className="text-lg font-medium">{name}</div>
-                <div className="text-gray-600">{content}</div>
+                <div className="ml-4">
+                  <div className="text-lg font-medium">{name}</div>
+                  <div className="text-gray-600">{meetingId}</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex-1"></div>
+
+            <div className="flex justify-end">
+              <div className="flex flex-col h-full justify-between">
+                <p className="text-sm ">{formatted}</p>
+                <CheckCheckIcon className="h-5 w-5" />
               </div>
             </div>
           </div>
-
-          <div className="flex-1"></div>
-
-          <div className="flex justify-end">
-            <div className="flex flex-col h-full justify-between">
-              <p className="text-sm ">{formatted}</p>
-              <CheckCheckIcon className="h-5 w-5" />
-            </div>
-          </div>
-        </div>
-      </CardHeader>
-    </Card>
+        </CardHeader>
+      </Card>
+    </Link>
   );
 }
 

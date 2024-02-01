@@ -88,6 +88,11 @@ export default defineSchema({
     .index("by_sender_id", ["sender_id"])
     .index("by_receiver_id", ["receiver_id"]),
 
+  meetings: defineTable({
+    userId: v.string(),
+    meetingId: v.string(),
+  })
+
 });
 
 

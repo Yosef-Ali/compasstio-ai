@@ -40,7 +40,7 @@ const Wrapper: React.FC<WrapperProps> = ({ children }) => {
 
   return (
     <main className={cn(asideWidth, `${isMobile && isSlideOut ? 'w-0' : ' w-full'} h-full overflow-y-auto z-20 transition-width duration-500`)}>
-      <div className="h-full w-full flex-col p-6 relative text-center z-20 ">
+      <div className="h-full w-full flex-col  relative text-center z-20 ">
         {children}
       </div>
       {/* mobile menu */}

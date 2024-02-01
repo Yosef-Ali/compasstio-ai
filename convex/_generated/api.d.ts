@@ -20,6 +20,7 @@ import type * as chats from "../chats.js";
 import type * as files from "../files.js";
 import type * as friends from "../friends.js";
 import type * as journals from "../journals.js";
+import type * as meetings from "../meetings.js";
 import type * as messages from "../messages.js";
 import type * as product from "../product.js";
 import type * as tasks from "../tasks.js";
@@ -40,6 +41,7 @@ declare const fullApi: ApiFromModules<{
   files: typeof files;
   friends: typeof friends;
   journals: typeof journals;
+  meetings: typeof meetings;
   messages: typeof messages;
   product: typeof product;
   tasks: typeof tasks;

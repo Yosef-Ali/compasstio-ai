@@ -6,6 +6,8 @@ import { useQuery } from "convex/react";
 
 import { CardLiveStreaming } from "./card-live-streaming";
 import { CardMessage } from "../chat-with-group/card-message";
+import { useUser } from "@clerk/nextjs";
+import { useMeeting } from "@videosdk.live/react-sdk";
 
 interface Message {
   _id: Id<"messages">;
@@ -19,6 +21,9 @@ interface Message {
 }
 
 export default function ParticipantList() {
+  const { user } = useUser();
+  const userIfo = useQuery(api.users.getUser, { id: user?.id as string });
+  const meetings = useQuery(api.meetings.get);
 
   const messages = [] as Message[];
 
@@ -34,18 +39,17 @@ export default function ParticipantList() {
 
   return (
     <div className="grid grid-cols-1 gap-4 p-3">
-      {messages?.map(message => {
+      {meetings ? meetings?.map(meeting => {
         return (
           <CardLiveStreaming
-            key={message._id}
-            name={message.senderId ?? " "}
-            content={message.content ?? " "}
-            creationTime={message._creationTime}
-            avatarUrl={message.avatarUrl ?? " "}
-            onClick={() => { }}
+            key={meeting._id}
+            name={userIfo?.name ?? " "}
+            meetingId={meeting.meetingId ?? " "}
+            creationTime={meeting._creationTime}
+            avatarUrl={userIfo?.avatarUrl ?? " "}
           />
         );
-      })}
+      }) : <div className="text-center pt-4">No meetings</div>}
     </div>
   );
 }

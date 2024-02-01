@@ -37,7 +37,6 @@ const tabs = [
 const JournalsPage = () => {
   const router = useRouter();
   const { user } = useUser();
-
   const create = useMutation(api.journals.create);
 
   const onCreate = () => {
