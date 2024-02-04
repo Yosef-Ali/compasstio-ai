@@ -5,6 +5,7 @@ import {
   MeetingConsumer,
   useMeeting,
   useParticipant,
+  Constants,
 } from "@videosdk.live/react-sdk";
 import { authToken, createMeeting } from "@/lib/api";
 import ReactPlayer from "react-player";
@@ -14,12 +15,13 @@ import Controls from "@/app/(dashboard)/_components/live-streaming/controls";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/spinner";
 import { api } from "@/convex/_generated/api";
-import { useQuery } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
 import { useUser } from "@clerk/nextjs";
 
 type ParticipantsViewer = {
   participantId: string;
   videoHeight: string;
+  meetingId: string
 }
 
 
@@ -48,38 +50,52 @@ function JoinScreen({
   );
 }
 
-function ParticipantView({ participantId, videoHeight }: ParticipantsViewer) {
 
+function ParticipantView({ participantId, videoHeight, meetingId }: ParticipantsViewer) {
+  const { user } = useUser();
+  const userId = user?.id as string;
   const micRef = useRef<HTMLAudioElement>(null);
-  const { webcamStream, micStream, webcamOn, micOn, isLocal, displayName } =
-    useParticipant(participantId);
+  const mMeeting = useMeeting();
+
+  // Destructuring participantId for clarity
+
+
+  const { webcamStream, micStream, webcamOn, micOn, isLocal, displayName } = useParticipant(participantId);
+
+  const saveParticipants = useMutation(api.meetings.saveParticipant);
 
   const videoStream = useMemo(() => {
     if (webcamOn && webcamStream) {
-      const mediaStream = new MediaStream();
-      mediaStream.addTrack(webcamStream.track);
-      return mediaStream;
+      return new MediaStream([webcamStream.track]); // Simplified MediaStream creation
     }
   }, [webcamStream, webcamOn]);
 
   useEffect(() => {
     if (micRef.current) {
       if (micOn && micStream) {
-        const mediaStream = new MediaStream();
-        mediaStream.addTrack(micStream.track);
-
-        micRef.current.srcObject = mediaStream;
-        micRef.current
-          .play()
-          .catch((error) =>
-            console.error("videoElem.current.play() failed", error)
-          );
+        micRef.current.srcObject = new MediaStream([micStream.track]);
+        micRef.current.play().catch((error) => console.error("micRef.play() failed", error));
       } else {
         micRef.current.srcObject = null;
       }
     }
   }, [micStream, micOn]);
 
+
+  const viewer = mMeeting.localParticipant.mode == Constants.modes.VIEWER ? true : false
+
+  console.log("isLocal", isLocal);
+
+  useEffect(() => {
+    if (participantId && isLocal) {
+      saveParticipants({
+        meetingId,
+        participant: { userId, participantId }, // Align with mutation field name
+      });
+    }
+  }, [participantId]); // Include extracted properties
+
+  
   return (
 
     <div
@@ -90,7 +106,7 @@ function ParticipantView({ participantId, videoHeight }: ParticipantsViewer) {
       // onMouseLeave={() => {
       //   setMouseOver(false);
       // }}
-      className={`h-full w-full  bg-gray-750 relative overflow-hidden rounded-lg video-cover`}
+      className={`h-full w-full  bg-gray-750 relative overflow-hidden rounded-lg video-cover -my-10`}
     >
 
       {/* <p>
@@ -140,9 +156,11 @@ function MeetingView({
   onMeetingLeave: () => void,
   meetingId: string | null,
 }) {
+
   const [joined, setJoined] = useState<string | null>(null);
   const [columns, setColumns] = useState(1); // Initial layout
   const [videoHeight, setVideoHeight] = useState('100%');
+
 
   //Get the method which will be used to join the meeting.
   //We will also get the participants list to display all participants
@@ -161,6 +179,9 @@ function MeetingView({
     join();
   };
   const isPresenting = participants.size > 1
+
+
+
 
   useEffect(() => {
     const updateLayout = () => {
@@ -183,16 +204,15 @@ function MeetingView({
 
   }, [participants]);
 
-  console.log("participants", participants.size);
-  console.log("columns", columns);
+
   return (
 
-    <div className="w-full h-full object-contain p-12 bg-gray-800">
+    <div className="container w-full h-full object-contain bg-gray-800 ">
       {/* <h3>Meeting Id: {meetingId}</h3> */}
       {joined && joined == "JOINED" ? (
 
-        <>
-          <div className={`grid grid-cols-${columns} gap-4 justify-center items-center`}>
+        <div className="w-full h-full py-12 ">
+          <div className={`grid grid-cols-${columns} gap-4 justify-center items-center `}>
             {
               //@ts-ignore
               [...participants.keys()].map((participantId) => (
@@ -200,13 +220,14 @@ function MeetingView({
                   participantId={participantId}
                   key={participantId}
                   videoHeight={videoHeight}
+                  meetingId={meetingId || ""}
                 />
               ))}
           </div>
-          <div className="-mt-1">
-            <Controls />
-          </div>
-        </>
+
+          <Controls />
+
+        </div>
 
 
       ) : joined && joined == "JOINING" ? (
@@ -258,8 +279,8 @@ function Page() {
       <MeetingView meetingId={meetingId} onMeetingLeave={onMeetingLeave} />
     </MeetingProvider>
   ) : (
-    // <JoinScreen getMeetingAndToken={getMeetingAndToken} />
-    <p>Loading...</p>
+    <JoinScreen getMeetingAndToken={getMeetingAndToken} />
+    // <p>Loading...</p>
   );
 }
 

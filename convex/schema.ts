@@ -88,12 +88,18 @@ export default defineSchema({
     .index("by_sender_id", ["sender_id"])
     .index("by_receiver_id", ["receiver_id"]),
 
-  meetings: defineTable({
-    userId: v.string(),
-    meetingId: v.string(),
-  })
 
+  meetings: defineTable({
+    userId: v.string(), // The creator user id
+    meetingId: v.string(),
+    title: v.optional(v.string()),
+    participants: v.optional(v.array(v.object({ // An array of nested objects
+      userId: v.string(), // The participant user id
+      participantId: v.string(), // The participant id
+    }))),
+  }),
 });
+
 
 
 

@@ -6,7 +6,7 @@ import Wrapper from "../../_components/wrapper";
 import RightAside from "../../_components/right-aside";
 import Shell from '../../_components/shell'
 import ParticipantList from "../../_components/live-streaming/ParticipantList";
-
+import MeetingList from "../../_components/live-streaming/MeetingList";
 
 
 const LiveStream = dynamic(
@@ -15,17 +15,18 @@ const LiveStream = dynamic(
     ssr: false,
   }
 );
+
 const LiveStreamPage = () => {
 
   const tabs = [
     {
-      name: 'Participant ',
-      title: 'Participant',
-      content: <ParticipantList />
+      name: 'Meetings',
+      title: 'Meetings',
+      content: <MeetingList />
     },
     {
-      name: 'Setting',
-      title: 'Setting',
+      name: 'Participants',
+      title: 'Participants',
       content: <ParticipantList />
     }
   ];

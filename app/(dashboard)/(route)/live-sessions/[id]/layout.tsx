@@ -5,11 +5,8 @@ import TopNav from '../../../_components/top-nav'
 import Shell from '../../../_components/shell'
 import Wrapper from '../../../_components/wrapper'
 import RightAside from '../../../_components/right-aside'
-import Friends from '../../../_components/chat-with-group/messaging-with-friends'
-import { useOnCreate } from "@/app/hooks/use-on-create";
-import { useUser } from "@clerk/clerk-react";
-import AllUsers from '../../../_components/chat-with-group/all-users'
-import ParticipantList from '@/app/(dashboard)/_components/live-streaming/ParticipantList'
+import ParticipantListPage from '@/app/(dashboard)/_components/live-streaming/ParticipantListSinglePage'
+import MeetingList from '@/app/(dashboard)/_components/live-streaming/MeetingList'
 
 interface ChatWithGroupPageProps {
   children: React.ReactNode
@@ -19,12 +16,12 @@ const tabs = [
   {
     name: 'Participant ',
     title: 'Participant',
-    content: <ParticipantList />
+    content: <ParticipantListPage />
   },
   {
-    name: 'Setting',
-    title: 'Setting',
-    content: <ParticipantList />
+    name: 'Meetings',
+    title: 'Meetings',
+    content: <MeetingList />
   }
 ];
 

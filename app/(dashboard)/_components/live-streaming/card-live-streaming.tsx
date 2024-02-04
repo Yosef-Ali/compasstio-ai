@@ -2,54 +2,55 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardHeader } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { api } from "@/convex/_generated/api";
 import { useFormattedTime } from "@/lib/formated-time";
+import { useQuery } from "convex/react";
 import { CheckCheckIcon } from "lucide-react";
 import Link from "next/link";
 
 
-interface ChatCardProps {
-  name: string;
+interface LiveStreamingProps {
+  userId: string;
   meetingId: string;
-  creationTime: number;
-  avatarUrl: string;
 }
 
 
+export function CardLiveStreaming({ userId, meetingId }: LiveStreamingProps) {
 
-export function CardLiveStreaming({ name, meetingId, creationTime, avatarUrl }: ChatCardProps) {
+  const userIfo = useQuery(api.users.getUser, { id: userId as string });
 
-  const formatted = useFormattedTime(creationTime);
+  const formatted = useFormattedTime(userIfo?._creationTime as number);
+  
   return (
-    <Link href={`/live-sessions/${meetingId}`}>
-      <Card className="cursor-pointer" >
-        <CardHeader>
-          <div className="flex">
-            <div className="flex-1">
-              <div className="flex items-center">
-                <Avatar>
-                  <AvatarImage src={avatarUrl} />
-                  <AvatarFallback>YA</AvatarFallback>
-                </Avatar>
+    <Card className="cursor-pointer" >
+      <CardHeader>
+        <div className="flex">
+          <div className="flex-1">
+            <div className="flex items-center">
+              <Avatar>
+                <AvatarImage src={userIfo?.avatarUrl} />
+                <AvatarFallback>YA</AvatarFallback>
+              </Avatar>
 
-                <div className="ml-4">
-                  <div className="text-lg font-medium">{name}</div>
-                  <div className="text-gray-600">{meetingId}</div>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex-1"></div>
-
-            <div className="flex justify-end">
-              <div className="flex flex-col h-full justify-between">
-                <p className="text-sm ">{formatted}</p>
-                <CheckCheckIcon className="h-5 w-5" />
+              <div className="ml-4">
+                <div className="text-lg font-medium">{userIfo?.name}</div>
+                {/* <div className="text-gray-600">{meetingId}</div> */}
               </div>
             </div>
           </div>
-        </CardHeader>
-      </Card>
-    </Link>
+
+          <div className="flex-1"></div>
+
+          <div className="flex justify-end">
+            <div className="flex flex-col h-full justify-between">
+              <p className="text-sm ">{formatted}</p>
+              <CheckCheckIcon className="h-5 w-5" />
+            </div>
+          </div>
+        </div>
+      </CardHeader>
+    </Card>
+
   );
 }
 

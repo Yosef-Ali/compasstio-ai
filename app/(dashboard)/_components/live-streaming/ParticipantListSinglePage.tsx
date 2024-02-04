@@ -1,29 +1,21 @@
 "use client"
 
 import { api } from "@/convex/_generated/api";
-import { useConvexAuth, useQuery } from "convex/react";
+import { useQuery } from "convex/react";
 import { CardLiveStreaming } from "./card-live-streaming";
-import { useUser } from "@clerk/nextjs";
+import { CardMessage } from "../chat-with-group/card-message";
 import { useParams } from "next/navigation";
+
 
 export default function ParticipantList() {
 
-  const { user } = useUser();
   const meetingId = useParams().id as string
 
+  const getParticipantByUseParam = useQuery(api.meetings.getParticipantByUseParam, {
+    meetingId: meetingId as string,
+  });
 
-  // const getParticipantByUseParam = useQuery(api.meetings.getParticipantByUseParam, {
-  //   meetingId: meetingId as string,
-  // });
-
-  // const meetingId = getMeetingByUserId?.meetingId || null;
-
-  const getParticipantByUserId = useQuery(api.meetings.getParticipantByUserId, {
-    id: user?.id as string,
-  })
-
-  const Participants = getParticipantByUserId
-
+  const Participants = getParticipantByUseParam
 
   return (
     <div className="grid grid-cols-1 gap-4 p-3">

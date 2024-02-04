@@ -65,7 +65,7 @@ function Container(props: ContainerProps) {
   }, [joined])
 
   return (
-    <div className="container w-full h-full object-contain p-4">
+    <div className="container w-full h-full object-contain bg-gray-800">
       {/* <h3>Meeting Id: {props.meetingId}</h3> */}
       {joined && joined == "JOINED" ? (
         mMeeting.localParticipant.mode == Constants.modes.CONFERENCE ? (

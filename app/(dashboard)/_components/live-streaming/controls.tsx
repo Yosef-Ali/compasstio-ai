@@ -7,7 +7,7 @@ function Controls() {
   } = useMeeting();
 
   return (
-    <div className=" flex justify-center items-center space-x-2 py-4">
+    <div className=" flex justify-center items-center space-x-2 py-12">
       <Avatar onClick={() => toggleMic()} className="bg-purple-100 flex justify-center items-center cursor-pointer hover:scale-90">
         {localMicOn ?
           <MicIcon className="text-purple-500 h-6 w-6" /> :

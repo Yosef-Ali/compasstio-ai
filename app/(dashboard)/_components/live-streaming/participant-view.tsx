@@ -4,9 +4,10 @@ import ReactPlayer from "react-player";
 
 type ParticipantViewProps = {
   participantId: string;
+  videoHeight: string
 };
 
-function ParticipantView({ participantId }: ParticipantViewProps) {
+function ParticipantView({ participantId, videoHeight }: ParticipantViewProps) {
   const micRef = useRef<HTMLAudioElement>(null);
   const {
     displayName,
@@ -58,40 +59,45 @@ function ParticipantView({ participantId }: ParticipantViewProps) {
       onMouseLeave={() => {
         setMouseOver(false);
       }}
-      className={`h-full w-full  bg-gray-750 relative overflow-hidden rounded-lg video-cover`}
+      className={`h-full w-full  bg-gray-750 relative overflow-hidden rounded-lg video-cover -my-10`}
+
     >
       <audio ref={micRef} autoPlay muted={isLocal} />
-      {webcamOn ? (
-        <ReactPlayer
-          //
-          playsinline // very very imp prop
-          playIcon={<></>}
-          //
-          pip={false}
-          light={false}
-          controls={false}
-          muted={true}
-          playing={true}
-          //
-          url={webcamMediaStream}
-          //
-          height={"100%"}
-          width={"100%"}
-          onError={(err) => {
-            console.log(err, "participant video error");
-          }}
-        />
-      ) : (
-        <div className="h-full w-full flex items-center justify-center">
-          <div
-            className={`z-10 flex items-center justify-center rounded-full bg-gray-700 2xl:h-[92px] h-[52px] 2xl:w-[92px] w-[52px]`}
-          >
-            <p className="text-2xl text-white">
-              {String(displayName).charAt(0).toUpperCase()}
-            </p>
+      {
+        webcamOn ? (
+          <ReactPlayer
+            //
+            playsinline // very very imp prop
+            playIcon={<></>}
+            //
+            pip={false}
+            light={false}
+            controls={false}
+            muted={true}
+            playing={true}
+            //
+            url={webcamMediaStream}
+            //
+            height={videoHeight}
+            width={"100%"}
+            onError={(err) => {
+              console.log(err, "participant video error");
+
+            }}
+
+          />
+        ) : (
+          <div className="h-full w-full flex items-center justify-center">
+            <div
+              className={`z-10 flex items-center justify-center rounded-full bg-gray-700 2xl:h-[92px] h-[52px] 2xl:w-[92px] w-[52px]`}
+            >
+              <p className="text-2xl text-white">
+                {String(displayName).charAt(0).toUpperCase()}
+              </p>
+            </div>
           </div>
-        </div>
-      )}
+        )
+      }
       {/* <CornerDisplayName
         {...{
           isLocal,
@@ -104,7 +110,7 @@ function ParticipantView({ participantId }: ParticipantViewProps) {
           isActiveSpeaker,
         }}
       /> */}
-    </div>
+    </div >
   ) : null;
 }
 
