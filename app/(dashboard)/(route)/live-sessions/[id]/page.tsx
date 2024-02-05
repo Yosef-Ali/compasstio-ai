@@ -18,6 +18,7 @@ import { api } from "@/convex/_generated/api";
 import { useMutation, useQuery } from "convex/react";
 import { useUser } from "@clerk/nextjs";
 
+
 type ParticipantsViewer = {
   participantId: string;
   videoHeight: string;
@@ -53,14 +54,15 @@ function JoinScreen({
 
 function ParticipantView({ participantId, videoHeight, meetingId }: ParticipantsViewer) {
   const { user } = useUser();
+  const router = useRouter();
   const userId = user?.id as string;
   const micRef = useRef<HTMLAudioElement>(null);
-  const mMeeting = useMeeting();
+
 
   // Destructuring participantId for clarity
 
 
-  const { webcamStream, micStream, webcamOn, micOn, isLocal, displayName } = useParticipant(participantId);
+  const { webcamStream, micStream, webcamOn, micOn, isLocal, displayName, } = useParticipant(participantId, { onStreamDisabled: onStreamDisabled });
 
   const saveParticipants = useMutation(api.meetings.saveParticipant);
 
@@ -69,6 +71,11 @@ function ParticipantView({ participantId, videoHeight, meetingId }: Participants
       return new MediaStream([webcamStream.track]); // Simplified MediaStream creation
     }
   }, [webcamStream, webcamOn]);
+
+  function onStreamDisabled() {
+    console.log(" onStreamEnabled for ", participantId);
+    router.push('/live-sessions');
+  }
 
   useEffect(() => {
     if (micRef.current) {
@@ -82,11 +89,6 @@ function ParticipantView({ participantId, videoHeight, meetingId }: Participants
   }, [micStream, micOn]);
 
 
-  //const viewer = mMeeting.localParticipant.mode == Constants.modes.VIEWER ? true : false
-
-  console.log("isLocal", isLocal);
-  console.log("mMeeting", mMeeting?.meeting.livestreamState);
-
   useEffect(() => {
     if (participantId && isLocal) {
       saveParticipants({
@@ -95,6 +97,11 @@ function ParticipantView({ participantId, videoHeight, meetingId }: Participants
       });
     }
   }, [participantId]); // Include extracted properties
+
+  const handleMeetingLeft = () => {
+    // Do some action here
+    console.log("Meeting left");
+  };
 
 
   return (
@@ -162,17 +169,15 @@ function MeetingView({
     //callback for when meeting is left
     onMeetingLeft: () => {
       onMeetingLeave();
+      //router.push('/live-sessions');
+      // console.log("left");
     },
   });
   const joinMeeting = () => {
     setJoined("JOINING");
     join();
   };
-  const isPresenting = participants.size > 1
-
-
-
-
+  
   useEffect(() => {
     const updateLayout = () => {
       const participantCount = participants.size;
@@ -255,6 +260,8 @@ function Page() {
     setMeetingId(null);
     router.push('/live-sessions');
   };
+
+
 
   return authToken && meetingId ? (
     <MeetingProvider

@@ -1,5 +1,5 @@
 import { Avatar } from "@/components/ui/avatar";
-import { MicIcon, Video } from "lucide-react";
+import { MicIcon, MicOffIcon, Video, VideoOff } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 interface VideoComponentProps {
@@ -86,10 +86,13 @@ const VideoComponent: React.FC<VideoComponentProps> = () => {
             <div className="absolute xl:bottom-6 bottom-4 left-0 right-0">
               <div className="container grid grid-flow-col space-x-4 items-center justify-center md:-m-2">
                 <Avatar onClick={handleToggleMicrophone} className="bg-purple-100 flex justify-center items-center cursor-pointer hover:scale-90">
-                  <MicIcon className="text-purple-500 h-6 w-6" />
+                  {isMicrophoneOn ?
+                    <MicIcon className="text-purple-500 h-6 w-6" /> :
+                    <MicOffIcon className="text-purple-500 h-6 w-6" />}
                 </Avatar>
                 <Avatar onClick={handleToggleCamera} className="bg-purple-100 flex justify-center items-center cursor-pointer hover:scale-90">
-                  <Video className="text-purple-500 h-6 w-6" />
+                  {isCameraOn ? <Video className="text-purple-500 h-6 w-6" /> :
+                    <VideoOff className="text-purple-500 h-6 w-6" />}
                 </Avatar>
               </div>
             </div>
