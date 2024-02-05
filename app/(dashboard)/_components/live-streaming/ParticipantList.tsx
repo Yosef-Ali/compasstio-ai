@@ -9,14 +9,6 @@ import { useParams } from "next/navigation";
 export default function ParticipantList() {
 
   const { user } = useUser();
-  const meetingId = useParams().id as string
-
-
-  // const getParticipantByUseParam = useQuery(api.meetings.getParticipantByUseParam, {
-  //   meetingId: meetingId as string,
-  // });
-
-  // const meetingId = getMeetingByUserId?.meetingId || null;
 
   const getParticipantByUserId = useQuery(api.meetings.getParticipantByUserId, {
     id: user?.id as string,
@@ -29,6 +21,9 @@ export default function ParticipantList() {
     <div className="grid grid-cols-1 gap-4 p-3">
       {Participants ?
         Participants.map((participant) => {
+          // if (participant.userId !== user?.id) {
+          //   return null; // Skip rendering this participant
+          // }
           return (
             <CardLiveStreaming
               key={participant.participantId}
@@ -38,7 +33,7 @@ export default function ParticipantList() {
           );
         })
         :
-        <div className="text-center pt-4">No meetings</div>
+        <div className="text-center pt-4">No Participants</div>
       }
     </div>
   );

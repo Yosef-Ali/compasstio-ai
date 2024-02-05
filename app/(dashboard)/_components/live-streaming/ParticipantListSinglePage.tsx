@@ -3,7 +3,6 @@
 import { api } from "@/convex/_generated/api";
 import { useQuery } from "convex/react";
 import { CardLiveStreaming } from "./card-live-streaming";
-import { CardMessage } from "../chat-with-group/card-message";
 import { useParams } from "next/navigation";
 
 
@@ -30,7 +29,7 @@ export default function ParticipantList() {
           );
         })
         :
-        <div className="text-center pt-4">No meetings</div>
+        <div className="text-center pt-4">No Participants</div>
       }
     </div>
   );

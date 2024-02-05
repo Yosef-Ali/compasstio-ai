@@ -82,9 +82,10 @@ function ParticipantView({ participantId, videoHeight, meetingId }: Participants
   }, [micStream, micOn]);
 
 
-  const viewer = mMeeting.localParticipant.mode == Constants.modes.VIEWER ? true : false
+  //const viewer = mMeeting.localParticipant.mode == Constants.modes.VIEWER ? true : false
 
   console.log("isLocal", isLocal);
+  console.log("mMeeting", mMeeting?.meeting.livestreamState);
 
   useEffect(() => {
     if (participantId && isLocal) {
@@ -95,24 +96,13 @@ function ParticipantView({ participantId, videoHeight, meetingId }: Participants
     }
   }, [participantId]); // Include extracted properties
 
-  
+
   return (
 
     <div
       key={participantId}
-      // onMouseEnter={() => {
-      //   setMouseOver(true);
-      // }}
-      // onMouseLeave={() => {
-      //   setMouseOver(false);
-      // }}
       className={`h-full w-full  bg-gray-750 relative overflow-hidden rounded-lg video-cover -my-10`}
     >
-
-      {/* <p>
-        Participant: {displayName} | Webcam: {webcamOn ? "ON" : "OFF"} | Mic:{" "}
-        {micOn ? "ON" : "OFF"}
-      </p> */}
       <audio ref={micRef} autoPlay muted={isLocal} />
       {webcamOn ? (
         <ReactPlayer
