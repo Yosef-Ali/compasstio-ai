@@ -1,8 +1,5 @@
 "use client"
 
-import Shell from "@/app/(dashboard)/_components/shell";
-import TopNav from "@/app/(dashboard)/_components/top-nav";
-import Wrapper from "@/app/(dashboard)/_components/wrapper";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -10,10 +7,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { api } from "@/convex/_generated/api";
 import { useUser } from "@clerk/nextjs";
 import { useQuery } from "convex/react";
-import Image from "next/image";
 import { redirect, useParams } from "next/navigation";
 import { useState } from "react";
-//import { useRouter } from "next/router";
+
+
+export const dynamic = 'force-dynamic'
 
 
 

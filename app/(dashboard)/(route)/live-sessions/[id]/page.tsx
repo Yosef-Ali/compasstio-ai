@@ -2,15 +2,12 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
   MeetingProvider,
-  MeetingConsumer,
   useMeeting,
   useParticipant,
-  Constants,
 } from "@videosdk.live/react-sdk";
 import { authToken, createMeeting } from "@/lib/api";
 import ReactPlayer from "react-player";
 import { redirect, useParams, useRouter } from "next/navigation";
-import { cn } from "@/lib/utils";
 import Controls from "@/app/(dashboard)/_components/live-streaming/controls";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/spinner";
@@ -25,7 +22,7 @@ type ParticipantsViewer = {
   meetingId: string
 }
 
-
+export const dynamic = 'force-dynamic'
 function JoinScreen({
   getMeetingAndToken,
 }: {

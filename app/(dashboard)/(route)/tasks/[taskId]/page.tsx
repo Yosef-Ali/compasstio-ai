@@ -2,17 +2,10 @@
 
 import React from 'react';
 
-import Editor from '@/components/editor';
 import { useRouter } from "next/navigation"
-import { useUser } from "@clerk/clerk-react";
 import { Id } from "@/convex/_generated/dataModel";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Toolbar } from "@/components/toolbar";
 import { useMutation, useQuery } from "convex/react"
-
-import { Button } from "@/components/ui/button"
-import { PlusCircleIcon, Tablets } from "lucide-react"
-import { toast } from "sonner"
 import { api } from "@/convex/_generated/api"
 import dynamic from "next/dynamic";
 import { useMemo } from "react";
