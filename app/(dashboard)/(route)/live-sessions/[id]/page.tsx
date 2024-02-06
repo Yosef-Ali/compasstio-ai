@@ -174,7 +174,7 @@ function MeetingView({
     setJoined("JOINING");
     join();
   };
-  
+
   useEffect(() => {
     const updateLayout = () => {
       const participantCount = participants.size;
@@ -258,7 +258,8 @@ function Page() {
     router.push('/live-sessions');
   };
 
-
+  console.log("meetingId:", meetingId);
+  console.log("authToken:", authToken);
 
   return authToken && meetingId ? (
     <MeetingProvider
