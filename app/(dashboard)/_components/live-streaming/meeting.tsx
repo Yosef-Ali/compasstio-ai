@@ -64,7 +64,6 @@ function LiveStream() {
   };
 
   // Get the meeting ID and token when the component mounts
-  console.log("authToken::", authToken);
 
   // Render the appropriate component based on the authToken and meetingId
   return authToken && meetingId ? (

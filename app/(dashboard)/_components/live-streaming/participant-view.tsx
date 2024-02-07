@@ -87,7 +87,7 @@ function ParticipantView({ participantId, videoHeight }: ParticipantViewProps) {
 
           />
         ) : (
-          <div className="h-full w-full flex items-center justify-center">
+          <div className="h-[80vh] w-full flex items-center justify-center">
             <div
               className={`z-10 flex items-center justify-center rounded-full bg-gray-700 2xl:h-[92px] h-[52px] 2xl:w-[92px] w-[52px]`}
             >

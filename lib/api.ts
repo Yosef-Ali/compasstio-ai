@@ -1,4 +1,3 @@
-
 const API_BASE_URL = "https://api.videosdk.live";
 export const authToken: string | undefined = process.env.NEXT_PUBLIC_VIDEOSDK_TOKEN;
 export const getToken: string | undefined = process.env.NEXT_PUBLIC_VIDEOSDK_TOKEN;

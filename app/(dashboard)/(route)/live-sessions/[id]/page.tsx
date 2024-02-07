@@ -51,7 +51,6 @@ function JoinScreen({
 
 function ParticipantView({ participantId, videoHeight, meetingId }: ParticipantsViewer) {
   const { user } = useUser();
-  const router = useRouter();
   const userId = user?.id as string;
   const micRef = useRef<HTMLAudioElement>(null);
 
@@ -71,7 +70,7 @@ function ParticipantView({ participantId, videoHeight, meetingId }: Participants
 
   function onStreamDisabled() {
     console.log(" onStreamEnabled for ", participantId);
-    router.push('/live-sessions');
+    //router.push('/live-sessions');
   }
 
   useEffect(() => {
@@ -84,7 +83,6 @@ function ParticipantView({ participantId, videoHeight, meetingId }: Participants
       }
     }
   }, [micStream, micOn]);
-
 
   useEffect(() => {
     if (participantId && isLocal) {
@@ -99,7 +97,6 @@ function ParticipantView({ participantId, videoHeight, meetingId }: Participants
     // Do some action here
     console.log("Meeting left");
   };
-
 
   return (
 
@@ -127,7 +124,7 @@ function ParticipantView({ participantId, videoHeight, meetingId }: Participants
           }}
         />
       ) : (
-        <div className="h-full w-full flex items-center justify-center">
+        <div className="h-[80vh] w-full flex items-center justify-center">
           <div
             className={`z-10 flex items-center justify-center rounded-full bg-gray-700 2xl:h-[92px] h-[52px] 2xl:w-[92px] w-[52px]`}
           >
@@ -150,7 +147,7 @@ function MeetingView({
   onMeetingLeave: () => void,
   meetingId: string | null,
 }) {
-
+  const router = useRouter();
   const [joined, setJoined] = useState<string | null>(null);
   const [columns, setColumns] = useState(1); // Initial layout
   const [videoHeight, setVideoHeight] = useState('100%');
@@ -164,12 +161,15 @@ function MeetingView({
       setJoined("JOINED");
     },
     //callback for when meeting is left
+    onParticipantLeft: () => {
+      router.push('/live-sessions');
+    },
     onMeetingLeft: () => {
       onMeetingLeave();
       //router.push('/live-sessions');
-      // console.log("left");
     },
   });
+
   const joinMeeting = () => {
     setJoined("JOINING");
     join();
@@ -196,7 +196,7 @@ function MeetingView({
 
   }, [participants]);
 
-
+  console.log("joined", joined);
   return (
 
     <div className="container w-full h-full object-contain bg-gray-800 ">
@@ -220,7 +220,6 @@ function MeetingView({
           <Controls />
 
         </div>
-
 
       ) : joined && joined == "JOINING" ? (
         <div className="flex justify-center items-center h-full text-gray-400">
@@ -258,8 +257,6 @@ function Page() {
     router.push('/live-sessions');
   };
 
-  console.log("meetingId:", meetingId);
-  console.log("authToken:", authToken);
 
   return authToken && meetingId ? (
     <MeetingProvider
@@ -274,8 +271,10 @@ function Page() {
       <MeetingView meetingId={meetingId} onMeetingLeave={onMeetingLeave} />
     </MeetingProvider>
   ) : (
-    <JoinScreen getMeetingAndToken={getMeetingAndToken} />
-    // <p>Loading...</p>
+    //<JoinScreen getMeetingAndToken={getMeetingAndToken} />
+    <div className="flex justify-center items-center h-full text-gray-400">
+      <p>Loading...</p>
+    </div>
   );
 }
 

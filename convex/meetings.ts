@@ -6,23 +6,31 @@ export const saveMeetingId = mutation({
     meetingId: v.string(),
   },
   handler: async (ctx, args) => {
-    try {
-      const identity = await ctx.auth.getUserIdentity();
-      if (!identity) {
-        throw new Error("Not authenticated");
-      }
-      const userId = identity.subject as string;
-
-      await ctx.db.insert("meetings", {
-        userId,
-        meetingId: args.meetingId
-      });
-    } catch (error) {
-      console.error(error);
-      throw new Error("An error occurred while saving the meeting ID");
+    // Get the user identity or throw an error
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      throw new Error("Not authenticated");
     }
+    const userId = identity.subject as string;
+
+    // Check if the meeting already exists or throw an error
+    const existingMeeting = await ctx.db
+      .query("meetings")
+      .filter((q) => q.eq(q.field("meetingId"), args.meetingId))
+      .filter((q) => q.eq(q.field("userId"), userId))
+      .first();
+
+    if (existingMeeting) {
+      throw new Error("Meeting already exists");
+    }
+    // Save the meeting ID to the database
+    await ctx.db.insert("meetings", {
+      userId,
+      meetingId: args.meetingId
+    });
   },
 });
+
 
 export const removeMeeting = mutation({
   args: { meetingId: v.string(), },

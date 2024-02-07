@@ -45,20 +45,18 @@ function Container(props: ContainerProps) {
   };
 
   const mMeetingRef = useRef(mMeeting);
+
   useEffect(() => {
     mMeetingRef.current = mMeeting;
-
   }, [mMeeting]);
 
-  const isPresenting = mMeeting.presenterId ? true : false;
-
-
-  console.log("joined CONFERENCE", joined);
 
   //Function to save the meeting in db when the meeting is joined
   useEffect(() => {
     if (joined == "JOINED") {
       if (mMeeting.localParticipant.mode == Constants.modes.CONFERENCE) {
+
+        //save the meeting id in db
         saveMeeting({ meetingId: props.meetingId });
       }
     }
