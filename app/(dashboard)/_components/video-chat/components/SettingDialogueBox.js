@@ -185,7 +185,7 @@ export default function SettingDialogueBox({
   const isSMONly = useMediaQuery(theme.breakpoints.only("sm"));
   const [dlgDevices, setDlgDevices] = useState(false);
 
-  //const [boxHeight, setBoxHeight] = useState(0);
+  const [boxHeight, setBoxHeight] = useState(0);
   const boxRef = useRef();
 
   const { width: windowWidth } = useWindowSize();

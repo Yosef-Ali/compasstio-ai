@@ -13,6 +13,7 @@ export function LiveSessionsDialog({ ...props }) {
   const { isOpen, onClose } = useDialog()
   const formRef = useRef<any>();
 
+  // eslint-disable-next-line react/display-name
   const CreateDialog = () => {
     return (
       <Dialog onOpenChange={onClose} open={isOpen} modal defaultOpen={false} >
