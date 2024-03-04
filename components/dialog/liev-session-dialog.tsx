@@ -41,6 +41,7 @@ export function LiveSessionsDialog({ ...props }) {
     )
   }
 
+  CreateDialog.displayName = 'LiveSessionsCreateDialog';
   const EditDialog = () => {
     return (
       <Dialog onOpenChange={onClose} open={isOpen} modal defaultOpen={false} >
@@ -68,6 +69,7 @@ export function LiveSessionsDialog({ ...props }) {
       </Dialog>
     )
   }
+  EditDialog.displayName = 'LiveSessionsEditDialog';
   const DeleteDialog = () => {
     return (
       <Dialog onOpenChange={onClose} open={isOpen} modal defaultOpen={false} >
@@ -87,6 +89,8 @@ export function LiveSessionsDialog({ ...props }) {
       </Dialog>
     )
   }
+
+  DeleteDialog.displayName = 'LiveSessionsDeleteDialog';
 
   return (
     <>
