@@ -2,6 +2,15 @@ import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
 
 export default defineSchema({
+  meetings: defineTable({
+    userId: v.string(), // The creator user id
+    meetingId: v.string(),
+    title: v.optional(v.string()),
+    groupsId: v.optional(v.array(v.string())),
+  })
+    .index("by_user", ["userId"])
+    .index("by_meetingId", ["meetingId"]),
+
   journals: defineTable({
     title: v.string(),
     userId: v.string(),
@@ -41,15 +50,6 @@ export default defineSchema({
     content: v.string(),
   }),
 
-  // groups: defineTable({
-  //   _id: v.string(),
-  //   _creationTime: v.number(),
-  //   userId: v.string(),
-  //   name: v.string(),
-  //   description: v.string(),
-  //   avatarUrl: v.string(),
-  //   isBlocked: v.boolean(),
-  // }).index("by_user", ["userId"]),
 
   friends: defineTable({
     user_Id: v.string(),
@@ -66,6 +66,7 @@ export default defineSchema({
     onboarded: v.boolean(),
     userId: v.string(),
     username: v.string(),
+    email: v.optional(v.string()),
   }).index("by_username", ["username"]),
 
 
@@ -88,16 +89,12 @@ export default defineSchema({
     .index("by_sender_id", ["sender_id"])
     .index("by_receiver_id", ["receiver_id"]),
 
-
-  meetings: defineTable({
-    userId: v.string(), // The creator user id
-    meetingId: v.string(),
+  groups: defineTable({
+    userId: v.optional(v.string()), // The creator user id
     title: v.optional(v.string()),
-    participants: v.optional(v.array(v.object({ // An array of nested objects
-      userId: v.string(), // The participant user id
-      participantId: v.string(), // The participant id
-    }))),
-  }),
+    members: v.array(v.string()),
+  })
+
 });
 
 

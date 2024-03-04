@@ -4,10 +4,10 @@ import localFont from "next/font/local"
 import "@/styles/globals.css"
 import type { Metadata } from 'next'
 import { cn } from "@/lib/utils"
-import { Toaster } from "sonner";
+import { Toaster as SonnerToaster } from "sonner";
 import { ThemeProvider } from "@/components/theme-provider"
 import { ConvexClientProvider } from "@/components/providers/convex-provider"
-
+import { Toaster } from "@/components/ui/toaster"
 
 
 // Improve code readability by using descriptive variable names for fonts
@@ -45,8 +45,9 @@ export default function RootLayout({
       )}>
         <ConvexClientProvider>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-            <Toaster position="bottom-center" />
+            <SonnerToaster position="bottom-center" />
             {children}
+            <Toaster />
           </ThemeProvider>
         </ConvexClientProvider>
       </body>

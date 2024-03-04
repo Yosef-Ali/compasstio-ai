@@ -3,10 +3,8 @@ import { useMeeting, Constants } from "@videosdk.live/react-sdk";
 import { useEffect, useRef, useState } from "react";
 import SpeakerView from "./speaker-view";
 import ViewerView from "./viewer-view";
-import { CodeSandboxLogoIcon } from "@radix-ui/react-icons";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import { ParticipantsViewer } from "./participantsView";
 import { Spinner } from "@/components/spinner";
 
 type ContainerProps = {
@@ -55,17 +53,17 @@ function Container(props: ContainerProps) {
   useEffect(() => {
     if (joined == "JOINED") {
       if (mMeeting.localParticipant.mode == Constants.modes.CONFERENCE) {
-
         //save the meeting id in db
         saveMeeting({ meetingId: props.meetingId });
       }
     }
   }, [joined])
 
+
   return (
     <div className="container w-full h-full object-contain bg-gray-800">
       {/* <h3>Meeting Id: {props.meetingId}</h3> */}
-      {joined && joined == "JOINED" ? (
+      {joined === "JOINED" ? (
         mMeeting.localParticipant.mode == Constants.modes.CONFERENCE ? (
           <SpeakerView />
         ) : mMeeting.localParticipant.mode == Constants.modes.VIEWER ? (

@@ -14,4 +14,5 @@ export const UserValidation = z.object({
     .string()
     .min(3, { message: "Minimum 3 characters." })
     .max(1000, { message: "Maximum 1000 characters." }),
+  email: z.string().email(),
 });

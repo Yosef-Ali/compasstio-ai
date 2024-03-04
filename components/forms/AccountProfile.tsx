@@ -22,6 +22,7 @@ interface Props {
     name: string;
     bio: string;
     image: string;
+    email: string;
   };
   btnTitle: string;
 }
@@ -41,12 +42,13 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
       name: user?.name ? user.name : "",
       username: user?.username ? user.username : "",
       bio: user?.bio ? user.bio : "",
+      email: user?.email ? user.email : "",
     },
   });
 
-
-
   const onSubmit = (values: z.infer<typeof UserValidation>) => {
+
+    console.log("values", values);
 
     const promise = createProfile({
       userId: user.userId ?? "",
@@ -54,8 +56,8 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
       username: values.username,
       bio: values.bio,
       onboarded: true,
-      avatarUrl: ""
-
+      avatarUrl: "",
+      email: user?.email ? user.email : "",
     })
 
     toast.promise(promise, {
@@ -73,7 +75,6 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
 
   async function handleImage(event: React.ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
-
 
     if (file) {
       // Step 1: Generate a URL for uploading
@@ -170,6 +171,25 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
               <FormControl>
                 <Input
                   type='text'
+                  className='account-form_input no-focus'
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name='email'
+          render={({ field }) => (
+            <FormItem className='flex w-full flex-col gap-3'>
+              <FormLabel className='text-base-semibold text-light-2'>
+                Email
+              </FormLabel>
+              <FormControl>
+                <Input
+                  type='email'
                   className='account-form_input no-focus'
                   {...field}
                 />

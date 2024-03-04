@@ -8,7 +8,6 @@ import TopNavChatWithGroups from './top-nav/top-nav-chat-with-groups';
 import TopNavLiveSections from './top-nav/top-nav-livesection';
 
 
-
 const TopNav = () => {
 
   const pathname = usePathname()

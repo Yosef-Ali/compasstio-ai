@@ -61,6 +61,9 @@ export function MeetingContainer({
 
   const { participantRaisedHand } = useRaisedHandParticipants();
 
+
+  console.log("containerHeight", containerHeight);
+
   const _handleMeetingLeft = () => {
     setIsMeetingLeft(true);
   };

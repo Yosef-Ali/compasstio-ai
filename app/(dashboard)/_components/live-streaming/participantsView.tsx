@@ -62,6 +62,7 @@ function ParticipantView({ participantId }: ParticipantViewProps) {
         ) : (
           <></>
         )}
+
         {/* <p className="text-sm text-white">
           {isPresenting
             ? isLocal
@@ -120,10 +121,6 @@ export function ParticipantsViewer({ isPresenting }: ParticipantsViewerProps) {
   const participants = isPresenting
     ? participantsArray.slice(0, 6)
     : participantsArray;
-
-  console.log("participants:", participants.length)
-  console.log("participants")
-
 
   const isXStoSM = theme.breakpoints.between("xs", "sm");
   const isMobile = window.matchMedia(
@@ -184,7 +181,7 @@ export function ParticipantsViewer({ isPresenting }: ParticipantsViewerProps) {
                 {participants
                   .slice(i * perRow, (i + 1) * perRow)
                   .map((participantId) => {
-                    console.log("participantId", participantId);
+
                     return (
                       <div
                         key={`participant_${participantId}`}

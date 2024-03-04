@@ -2,7 +2,7 @@
 
 import { api } from "@/convex/_generated/api";
 import { useQuery } from "convex/react";
-import { CardLiveStreaming } from "./card-live-streaming";
+import { CardLiveStreaming } from "./card-live-grouplist";
 import { useParams } from "next/navigation";
 
 

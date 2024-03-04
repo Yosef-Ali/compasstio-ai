@@ -1,0 +1,52 @@
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: "transparent";
+  /* #212032; */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1178f880;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #1178f8;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+div .button {
+  margin: 0 15px 15px 0;
+}
+
+.video-contain video {
+  object-fit: contain;
+  overflow: hidden
+}
+
+textarea:focus {
+  outline: none;
+  border-color: none;
+  box-shadow: none;
+}
+
+input:focus-visible {
+  outline: none;
+  border-color: none;
+  box-shadow: none;
+}
+
+.video-cover video {
+  position: absolute;
+  object-fit: cover;
+}
+
+div .button {
+  margin: 0 15px 15px 0;
+  background-color: blue;
+}

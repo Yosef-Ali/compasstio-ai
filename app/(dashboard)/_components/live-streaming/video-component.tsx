@@ -51,7 +51,6 @@ const VideoComponent: React.FC<VideoComponentProps> = () => {
       if (videoRef.current) {
         videoRef.current.srcObject = mediaStream;
         videoRef.current.play();
-
       }
     } catch (error) {
       console.error('Error accessing camera:', error);

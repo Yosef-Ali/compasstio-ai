@@ -542,6 +542,7 @@ export function JoiningScreen({
                           flexDirection: "row",
                           alignItems: "center",
                           justifyContent: "center",
+                          whiteSpace: 'nowrap'
                         }}
                         m={0.5}
                       >
@@ -557,6 +558,7 @@ export function JoiningScreen({
                           variant="subtitle1"
                           style={{
                             marginLeft: 4,
+                            whiteSpace: 'nowrap'
                           }}
                         >
                           Check your audio and video

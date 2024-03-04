@@ -58,11 +58,11 @@ function ParticipantView({ participantId }) {
               ? `You are presenting`
               : `${nameTructed(displayName, 15)} is presenting`
             : isLocal
-            ? "You"
-            : nameTructed(displayName, 26)}
+              ? "You"
+              : nameTructed(displayName, 26)}
         </p>
       </div>
-      <audio ref={micRef} autoPlay muted={isLocal}/>
+      <audio ref={micRef} autoPlay muted={isLocal} />
       {webcamOn ? (
         <ReactPlayer
           //
@@ -116,19 +116,19 @@ export function ParticipantsViewer({ isPresenting, sideBarMode }) {
       ? participants.length < 4
         ? 1
         : participants.length < 9
-        ? 2
-        : 3
+          ? 2
+          : 3
       : participants.length < 5
-      ? 2
-      : participants.length < 7
-      ? 3
-      : participants.length < 9
-      ? 4
-      : participants.length < 10
-      ? 3
-      : participants.length < 11
-      ? 4
-      : 4;
+        ? 2
+        : participants.length < 7
+          ? 3
+          : participants.length < 9
+            ? 4
+            : participants.length < 10
+              ? 3
+              : participants.length < 11
+                ? 4
+                : 4;
   return (
     <div
       style={{
@@ -139,15 +139,14 @@ export function ParticipantsViewer({ isPresenting, sideBarMode }) {
         justifyContent: "center",
         alignItems: "center",
       }}
-      className={`${
-        participants.length < 2 && !sideBarMode && !isPresenting
-          ? "md:px-16 md:py-2"
-          : participants.length < 4 && !sideBarMode && !isPresenting
+      className={`${participants.length < 2 && !sideBarMode && !isPresenting
+        ? "md:px-16 md:py-2"
+        : participants.length < 4 && !sideBarMode && !isPresenting
           ? "md:px-16 md:py-10"
           : participants.length > 4 && !sideBarMode && !isPresenting
-          ? "md:px-14"
-          : "md:px-0"
-      }`}
+            ? "md:px-14"
+            : "md:px-0"
+        }`}
     >
       <div className="flex flex-col w-full h-full">
         {Array.from(
@@ -156,34 +155,31 @@ export function ParticipantsViewer({ isPresenting, sideBarMode }) {
             return (
               <div
                 key={`row_${i}`}
-                className={`flex flex-1 ${
-                  isPresenting
-                    ? participants.length === 1
-                      ? "justify-start items-start"
-                      : "items-center justify-center"
+                className={`flex flex-1 ${isPresenting
+                  ? participants.length === 1
+                    ? "justify-start items-start"
                     : "items-center justify-center"
-                }`}
+                  : "items-center justify-center"
+                  }`}
               >
                 {participants
                   .slice(i * perRow, (i + 1) * perRow)
                   .map((participantId) => {
-                    // console.log("participantId", participantId);
+
                     return (
                       <div
                         key={`participant_${participantId}`}
-                        className={`flex flex-1 ${
-                          isPresenting
-                            ? participants.length === 1
-                              ? "md:h-34 md:w-32 xl:w-52 xl:h-48 "
-                              : participants.length === 2
+                        className={`flex flex-1 ${isPresenting
+                          ? participants.length === 1
+                            ? "md:h-34 md:w-32 xl:w-52 xl:h-48 "
+                            : participants.length === 2
                               ? "md:w-36 xl:w-56"
                               : "md:w-32 xl:w-48"
-                            : "w-full"
-                        } items-center justify-center h-full ${
-                          participants.length === 1
+                          : "w-full"
+                          } items-center justify-center h-full ${participants.length === 1
                             ? "md:max-w-7xl 2xl:max-w-[1480px] "
                             : "md:max-w-lg 2xl:max-w-2xl"
-                        } overflow-clip overflow-hidden  p-1`}
+                          } overflow-clip overflow-hidden  p-1`}
                       >
                         <ParticipantView participantId={participantId} />
                       </div>

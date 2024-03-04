@@ -30,22 +30,14 @@ export default function OnBoardingPage() {
 
   }
 
-  // const userInfo = {
-  //   _id: user.id as Id<"users">,
-  //   username: user.username,
-  //   name: user.firstName ?? "",
-  //   bio: "",
-  //   avatarUrl: user.imageUrl,
-  // }
-
   const userData = {
     userId: userInfo?.userId ?? user.id.toString(),
     username: userInfo ? userInfo?.username : user.username,
     name: userInfo ? userInfo?.name : user.firstName ?? "",
     bio: userInfo ? userInfo?.bio : "",
     image: userInfo ? userInfo?.avatarUrl : user.imageUrl,
+    email: userInfo ? userInfo?.email ?? "" : user.emailAddresses?.[0]?.emailAddress ?? "",
   };
-
 
   return (
     <>

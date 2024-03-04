@@ -1,39 +1,59 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
+import { Id } from "./_generated/dataModel";
 
-export const saveMeetingId = mutation({
-  args: {
-    meetingId: v.string(),
-  },
-  handler: async (ctx, args) => {
-    // Get the user identity or throw an error
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) {
-      throw new Error("Not authenticated");
-    }
-    const userId = identity.subject as string;
 
-    // Check if the meeting already exists or throw an error
-    const existingMeeting = await ctx.db
+
+export const getMeetings = query({
+  handler: async (ctx) => {
+    const meetings = await ctx.db
       .query("meetings")
-      .filter((q) => q.eq(q.field("meetingId"), args.meetingId))
-      .filter((q) => q.eq(q.field("userId"), userId))
-      .first();
+      .collect();
 
-    if (existingMeeting) {
-      throw new Error("Meeting already exists");
+    if (!meetings.length) {
+      return null;
     }
-    // Save the meeting ID to the database
-    await ctx.db.insert("meetings", {
-      userId,
-      meetingId: args.meetingId
-    });
+
+    const identity = await ctx.auth.getUserIdentity();
+
+    const email = identity?.email;
+
+    if (!email) {
+      throw new Error("Unauthenticated");
+    }
+
+    if (meetings.length) {
+      const filteredMeetings = meetings.filter((meeting) => meeting.groupsId?.includes(email));
+      return filteredMeetings;
+    }
   },
 });
 
 
+export const getMeetingList = query({
+  args: {
+    meetingId: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const meetings = await ctx.db
+      .query("meetings")
+      .filter((q) => q.eq(q.field("meetingId"), args.meetingId))
+      .first();
+
+    if (!meetings) {
+      throw new Error("Meeting not found");
+    }
+
+    const groupsExist = meetings.groupsId?.map((groupId) =>
+      ctx.db.query("groups").filter((q) => q.eq(q.field("_id"), groupId)).first()
+    );
+
+    return groupsExist
+  },
+});
+
 export const removeMeeting = mutation({
-  args: { meetingId: v.string(), },
+  args: { userId: v.optional(v.string()) },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
 
@@ -45,7 +65,6 @@ export const removeMeeting = mutation({
     const meeting = await ctx.db
       .query("meetings")
       .filter((q) => q.eq(q.field("userId"), userId))
-      .filter((q) => q.eq(q.field("meetingId"), args.meetingId))
       .first()
 
     if (!meeting) {
@@ -54,6 +73,41 @@ export const removeMeeting = mutation({
     await ctx.db.delete(meeting._id);
   },
 });
+
+export const saveMeetingId = mutation({
+  args: {
+    meetingId: v.string(),
+  },
+  handler: async (ctx, args) => {
+    try {
+      // Get the user identity or throw an error
+      const identity = await ctx.auth.getUserIdentity();
+      if (!identity) {
+        throw new Error("Not authenticated");
+      }
+      const userId = identity.subject as string;
+
+      // Check if the meeting already exists or throw an error
+      const existingMeeting = await ctx.db
+        .query("meetings")
+        .filter((q) => q.eq(q.field("meetingId"), args.meetingId))
+        .filter((q) => q.eq(q.field("userId"), userId))
+        .first();
+
+      if (existingMeeting) {
+        throw new Error("Meeting already exists");
+      }
+      // Save the meeting ID to the database
+      await ctx.db.insert("meetings", {
+        userId,
+        meetingId: args.meetingId
+      });
+    } catch (error) {
+      // Handle the error here
+    }
+  },
+});
+
 
 export const get = query(async ({ db }) => {
   return await db.query("meetings").order("desc").collect();
@@ -65,13 +119,15 @@ export const getMeeting = query({
     id: v.string(),
   },
   handler: async (ctx, args) => {
-    const meeting = await ctx.db.query("meetings")
-      .filter((q) => q.eq(q.field("meetingId"), args.id))
-      .first()
-    if (!meeting) {
-      throw new Error("Meeting not found");
+    try {
+      const meeting = await ctx.db.query("meetings")
+        .filter((q) => q.eq(q.field("meetingId"), args.id))
+        .first()
+      return meeting;
+    } catch (error) {
+      console.error(error);
+      throw new Error("An error occurred while fetching the meeting");
     }
-    return meeting;
   }
 })
 
@@ -95,125 +151,132 @@ export const getMeetingByUserId = query({
   }
 })
 
-export const getParticipantByUserId = query({
+
+
+export const saveGroupsInMeeting = mutation({
   args: {
+    meetingId: v.string(),
+    groupId: v.optional(v.id("groups")), // Make the argument optional
+  },
+  handler: async (ctx, args) => {
+    try {
+      const meeting = await ctx.db
+        .query("meetings")
+        .filter((q) => q.eq(q.field("meetingId"), args.meetingId))
+        .first();
+
+      if (!meeting) {
+        throw new Error("Meeting not found");
+      }
+
+      // Retrieve group details (including email if applicable)
+      const selectedGroup = await ctx.db
+        .query("groups")
+        .filter((q) => q.eq(q.field("_id"), args.groupId as Id<"groups">))
+        .first();
+
+      if (!selectedGroup) {
+        throw new Error("Group not found");
+      }
+
+
+      const selectedMembers = selectedGroup?.members;
+
+      if (selectedMembers && meeting.groupsId) {
+        // Update meeting with existing + new group data
+        await ctx.db.patch(meeting._id, {
+          groupsId: [...meeting.groupsId, ...selectedMembers], // Only spread if defined
+        });
+      } else if (selectedMembers) {
+        // Update meeting with new group data
+        await ctx.db.patch(meeting._id, {
+          groupsId: selectedMembers,
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      throw new Error("An error occurred while saving the meeting");
+    }
+  },
+});
+export const removeGroupsInMeeting = mutation({
+  args: {
+    meetingId: v.string(),
+    groupId: v.optional(v.id("groups")), // Make the argument optional
+  },
+  handler: async (ctx, args) => {
+    try {
+      const meeting = await ctx.db
+        .query("meetings")
+        .filter((q) => q.eq(q.field("meetingId"), args.meetingId))
+        .first();
+
+      if (!meeting) {
+        throw new Error("Meeting not found");
+      }
+
+      // Retrieve group details (including email if applicable)
+      const selectedGroup = await ctx.db
+        .query("groups")
+        .filter((q) => q.eq(q.field("_id"), args.groupId as Id<"groups">))
+        .first();
+
+      if (!selectedGroup) {
+        throw new Error("Group not found");
+      }
+
+      const selectedMembers = selectedGroup?.members;
+      // console.log("selectedMembers", selectedMembers);
+
+      if (selectedMembers && meeting.groupsId) {
+        // Update meeting with existing + new group data
+        const updatedGroupsId = meeting.groupsId.filter(
+          (groupId) => !selectedMembers.includes(groupId)
+        );
+
+        await ctx.db.patch(meeting._id, {
+          groupsId: updatedGroupsId,
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      throw new Error("An error occurred while saving the meeting");
+    }
+  },
+});
+
+
+
+export const removeGroupId = mutation({
+  args: {
+    meetingId: v.string(),
     id: v.string(),
   },
   handler: async (ctx, args) => {
     try {
-      const meeting = await ctx.db.query("meetings")
-        .filter((q) => q.eq(q.field("userId"), args.id))
-        .first()
-
-      // if (!meeting) {
-      //   throw new Error("Meeting not found");
-      // }
-      return meeting?.participants;
-    } catch (error) {
-      console.error(error);
-      throw new Error("An error occurred while fetching the meeting");
-    }
-
-  }
-})
-
-export const getParticipantByUseParam = query({
-  args: {
-    meetingId: v.string(),
-  },
-  handler: async (ctx, args) => {
-    try {
-      const meeting = await ctx.db.query("meetings")
+      const meeting = await ctx.db
+        .query("meetings")
         .filter((q) => q.eq(q.field("meetingId"), args.meetingId))
-        .first()
+        .first();
 
-      // if (!meeting) {
-      //   throw new Error("Meeting not found");
-      // }
-      return meeting?.participants;
+      if (!meeting) {
+        // throw new Error("Meeting not found");
+        return null
+      }
+
+      if (!meeting.groupsId) {
+        throw new Error("Groups ID field not found in meeting document");
+      }
+
+      const updatedGroupsId = meeting.groupsId.filter(
+        (groupId) => groupId !== args.id
+      );
+
+      await ctx.db.patch(meeting._id, { groupsId: updatedGroupsId });
     } catch (error) {
       console.error(error);
-      throw new Error("An error occurred while fetching the meeting");
+      throw new Error("An error occurred while removing the group ID");
     }
-
-  }
-})
-
-
-
-// Define the saveParticipant mutation
-export const saveParticipant = mutation({
-  // Define the arguments for the mutation
-  args: {
-    meetingId: v.string(),
-    participant: v.object({ // Rename field to match usage
-      userId: v.string(),
-      participantId: v.string(),
-    }),
-  },
-  // Define the handler function for the mutation
-  handler: async (ctx, args) => {
-
-    const identity = await ctx.auth.getUserIdentity();
-
-    const currentUserId = identity?.subject;
-    // Find the meeting document by meetingId
-    const meeting = await ctx.db.query("meetings") // Use the api.meetings type
-      .filter((q) => q.eq(q.field("meetingId"), args.meetingId))
-      .first();
-
-    // Throw an error if the meeting is not found
-    if (!meeting) {
-      throw new Error("Meeting not found");
-    }
-
-    // Define a custom equality function for the nested objects
-    function isEqual(a: { userId: string; participantId: string }, b: { userId: string; participantId: string }) {
-      return a.userId === b.userId && a.participantId === b.participantId;
-    }
-
-    // Get the current participants as an array or an empty array
-    const participantIds = Array.from(
-      meeting.participants?.map((p) => ({ userId: p.userId, participantId: p.participantId })) || []
-    );
-
-    // Create a new participant object with the values from args
-    const newParticipant = { ...args.participant };
-
-    // Check if the array already has the new participant using the custom equality function
-    if (!participantIds.some((p) => isEqual(p, newParticipant))) {
-      // Add the new participant to the array
-      participantIds.push(newParticipant);
-    }
-
-    if (participantIds[0].userId === currentUserId) { // Add the condition
-      await ctx.db.patch(meeting._id, { // Use the ctx.db.patch method
-        participants: participantIds, // Rename the field to match the schema
-      }); // Add a semicolon
-    }
-  }
-
-}); // Add a semicolon
-
-
-export const getParticipantUserIds = query({
-  args: {
-    meetingId: v.string(),
-  },
-  handler: async (ctx, args) => {
-    // Query the meetings table by meetingId
-    const meeting = await ctx.db.query("meetings")
-      .filter((q) => q.eq(q.field("meetingId"), args.meetingId))
-      .first();
-
-    if (!meeting) {
-      throw new Error("Meeting not found");
-    }
-
-    // Get the userIds from the participants field
-    const userIds = meeting.participants?.map((p) => p.userId);
-
-    // Return the userIds as an array
-    return userIds;
   },
 });
+

@@ -8,7 +8,7 @@ import { useParams } from "next/navigation";
 
 import SearchBar from "@/components/search";
 import { useFormattedTime } from "@/lib/formated-time";
-import { OperationsMenu } from "@/components/operations-menu-chat-group";
+import { OperationsMenu } from "@/components/operations-menu-live-sessions";
 import { useEffect, useState } from "react";
 
 const TopNavLiveSections = () => {
@@ -46,7 +46,7 @@ const TopNavLiveSections = () => {
           <div
             className=
             "flex shrink-0 items-center justify-end">
-            <OperationsMenu id={id} />
+            <OperationsMenu />
           </div>
         </div>
       </div>

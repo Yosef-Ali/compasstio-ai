@@ -47,9 +47,7 @@ const ProfilePageLayout = ({
     useOnCreate.setState({ isOpen });
   }, [isOpen]);
 
-  const onCreate = () => {
-    toggleOpen(!isOpen);
-  };
+  
   const { isAuthenticated, isLoading } = useConvexAuth();
 
   if (isLoading) {

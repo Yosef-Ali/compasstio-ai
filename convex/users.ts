@@ -1,29 +1,32 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 
-
 export const getUser = query({
   args: {
     id: v.string(),
   },
   handler: async (ctx, args) => {
+    try {
+      const identity = await ctx.auth.getUserIdentity();
 
-    const identity = await ctx.auth.getUserIdentity();
+      if (!identity) {
+        throw new Error("Not authenticated");
+      }
 
-    if (!identity) {
-      throw new Error("Not authenticated");
-    }
+      const user = await ctx.db
+        .query("users")
+        .filter((q) => q.eq(q.field("userId"), args.id))
+        .first();
 
-    const user = await ctx.db
-      .query("users")
-      .filter((q) => q.eq(q.field("userId"), args.id))
-      .first();
+      if (!user) {
+        return null;
+      }
 
-    if (!user) {
+      return user;
+    } catch (error) {
+      console.error(error);
       return null;
     }
-
-    return user;
   },
 });
 
@@ -63,6 +66,7 @@ export const create = mutation({
     name: v.string(),
     username: v.string(),
     avatarUrl: v.string(),
+    email: v.string(),
     bio: v.string(),
     onboarded: v.boolean(),
 
@@ -73,6 +77,7 @@ export const create = mutation({
       name: args.name,
       username: args.username,
       avatarUrl: args.avatarUrl,
+      email: args.email,
       bio: args.bio,
       onboarded: true,
     });
@@ -120,6 +125,31 @@ export const updateAvatar = mutation({
   },
 });
 
+export const getAllUsersNameAndEmail = query({
+  handler: async (ctx, args) => {
+    const users = await ctx.db
+      .query("users")
+      .collect();
+    return users.map((user) => ({
+      name: user.username,
+      email: user.email,
+    }));
+  }
+})
 
+export const getAllUsersByEmail = query({
+  args: {
+    email: v.string(),
+  },
+
+  handler: async (ctx, args) => {
+    const user = await ctx.db
+      .query("users")
+      .filter((q) => q.eq(q.field("email"), args.email))
+      .first()
+    return user
+  }
+
+})
 
 
