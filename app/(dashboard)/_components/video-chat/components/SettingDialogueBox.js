@@ -264,13 +264,14 @@ export default function SettingDialogueBox({
                 }}
               >
                 <Box mt={5}>
-                  <Box>
+                  <Box key={label}>
                     {[
                       { value: "audio", label: "Audio" },
                       { value: "video", label: "Video" },
                     ].map(({ value, label }) =>
                       label === "Audio" || label === "Video" ? (
                         <Button
+                          key={label}
                           classes={{
                             root:
                               setting === value

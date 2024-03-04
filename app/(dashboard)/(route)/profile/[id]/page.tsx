@@ -7,13 +7,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { api } from "@/convex/_generated/api";
 import { useUser } from "@clerk/nextjs";
 import { useQuery } from "convex/react";
+import Image from "next/image";
 import { redirect, useParams } from "next/navigation";
 import { useState } from "react";
 
 
 export const dynamic = 'force-dynamic'
-
-
 
 
 const data = [
@@ -63,10 +62,7 @@ export default function ProfileEditSinglePage() {
 
   return (
     <div className="">
-
-
       <div className="flex flex-col items-center w-full p-10 gap-4">
-
         <div className="flex flex-col items-center">
           <Avatar className="w-24 h-24">
             <input
@@ -120,7 +116,7 @@ export default function ProfileEditSinglePage() {
                   <Card key={item.title} className=" p-2" >
                     <div className="flex ">
                       <div className="flex-1">
-                        <img
+                        <Image
                           src={item.imageUrl}
                           alt={item.title}
                           className="w-full h-auto"

@@ -44,7 +44,7 @@ export function DatePickerDemo() {
       id: taskId,
       dueDate: selectedNewDate
     });
-  }, [selectedNewDate]);
+  }, [selectedNewDate, taskId, updateDueDate]);
 
 
 

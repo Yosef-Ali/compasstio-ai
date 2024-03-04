@@ -2,13 +2,8 @@
 
 import * as React from "react"
 import {
-  ArrowUpCircle,
-  CheckCircle2,
-  Circle,
-  HelpCircle,
   LoaderIcon,
-  LucideIcon,
-  XCircle,
+
 } from "lucide-react"
 
 import { cn } from "@/lib/utils"
@@ -61,14 +56,16 @@ export function TaskStatusPopover() {
 
       setSelectedStatus(TaskStatus);
     }
-  }, [taskId, initialData?.status]);
+  }, [taskId, initialData?.status, TaskStatus]);
 
   React.useEffect(() => {
     updateTaskStatus({
       id: taskId,
       status: selectedStatus?.value.toString()
     })
-  }, [selectedStatus])
+  }, [selectedStatus, updateTaskStatus, taskId]);
+
+
 
 
   return (

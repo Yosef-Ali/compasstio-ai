@@ -166,4 +166,7 @@ const MultipleSelectorWithDeleteGroup = React.forwardRef((props: MultipleSelecto
   )
 })
 
+// Add the display name
+MultipleSelectorWithDeleteGroup.displayName = 'MultipleSelectorWithDeleteGroup';
+
 export default MultipleSelectorWithDeleteGroup

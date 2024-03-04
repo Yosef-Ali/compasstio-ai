@@ -58,26 +58,26 @@ export function MeetingContainer({
       setMeetingId(meetingId);
       saveMeetingId({ meetingId });
     }
-  }, [meetingId]);
+  }, [meetingId, setMeetingId, saveMeetingId]);
 
   //clear meeting when window is closed
-  useEffect(() => {
-    // Define a function that removes the meeting
-    const removeCurrentMeeting = () => {
-      if (currentMeetingId) {
-        removeMeeting({ meetingId: currentMeetingId });
-      }
-    };
+  // useEffect(() => {
+  //   // Define a function that removes the meeting
+  //   const removeCurrentMeeting = () => {
+  //     if (currentMeetingId) {
+  //       removeMeeting({ meetingId: currentMeetingId });
+  //     }
+  //   };
 
-    // Add an event listener for the window.onbeforeunload event
-    window.addEventListener('beforeunload', removeCurrentMeeting);
+  //   // Add an event listener for the window.onbeforeunload event
+  //   window.addEventListener('beforeunload', removeCurrentMeeting);
 
-    // Return a cleanup function that removes the event listener and the meeting
-    return () => {
-      window.removeEventListener('beforeunload', removeCurrentMeeting);
-      removeCurrentMeeting();
-    };
-  }, []);
+  //   // Return a cleanup function that removes the event listener and the meeting
+  //   return () => {
+  //     window.removeEventListener('beforeunload', removeCurrentMeeting);
+  //     removeCurrentMeeting();
+  //   };
+  // }, []);
 
   const presentingSideBarWidth = useResponsiveSize({
     xl: 320,
@@ -232,8 +232,6 @@ export function MeetingContainer({
 
   const bottomBarHeight = 60;
   const [sideBarMode, setSideBarMode] = useState(null);
-
-
 
 
   usePubSub("RAISE_HAND", {

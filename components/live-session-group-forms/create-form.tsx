@@ -153,5 +153,7 @@ const MultipleSelectorWithCreateGroup = React.forwardRef((props: MultipleSelecto
   );
 });
 
+// Add the display name
+MultipleSelectorWithCreateGroup.displayName = 'MultipleSelectorWithCreateGroup';
 
-export default MultipleSelectorWithCreateGroup
+export default MultipleSelectorWithCreateGroup;

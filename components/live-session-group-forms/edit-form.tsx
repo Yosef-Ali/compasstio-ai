@@ -247,6 +247,9 @@ const MultipleSelectorWithEditGroup = React.forwardRef((props: MultipleSelectorW
   );
 });
 
+// Add the display name
+MultipleSelectorWithEditGroup.displayName = 'MultipleSelectorWithEditGroup';
+
 export default MultipleSelectorWithEditGroup
 
 
