@@ -4,7 +4,6 @@ import { CheckIcon, ClipboardIcon } from "lucide-react";
 import { useState } from "react";
 
 const MeetingIdCopyBTN = ({ meetingId }: { meetingId: string }) => {
-  //const mMeeting = useMeeting();
 
   const [isCopied, setIsCopied] = useState(false);
   return (
@@ -30,9 +29,6 @@ const MeetingIdCopyBTN = ({ meetingId }: { meetingId: string }) => {
         </button>
       </div>
 
-      {/* <div className="flex border-2 border-gray-850 p-2 ml-4 rounded-md items-center justify-center">
-          <h1 className="text-white">00:30</h1>
-        </div> */}
     </div>
   );
 };

@@ -10,7 +10,6 @@ export default function ParticipantList() {
 
   const { user } = useUser();
 
-  
   const groups = useQuery(api.liveSessionsGroups.getGroups, {
     userId: user?.id as string,
   })

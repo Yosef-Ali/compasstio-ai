@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import useGroupSelected from "@/app/hooks/useGroupSelected";
 import useMeetingIdStore from "@/app/hooks/useMeetingIdStore";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Card, CardHeader } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Switch } from "@/components/ui/switch";
 import { api } from "@/convex/_generated/api";
@@ -25,7 +25,7 @@ const Avatars = ({ email }: { email: string }) => {
     api.users.getAllUsersByEmail,
     { email: email }
   );
-  //console.log("member:", member)
+
   return (
     <div className="flex -space-x-4">
       <Avatar >
@@ -39,10 +39,9 @@ const Avatars = ({ email }: { email: string }) => {
 
 export function CardGroupList({ userId, title, members, groupId }: LiveStreamingProps) {
   const saveGroupsInMeeting = useMutation(api.meetings.saveGroupsInMeeting)
-  //const deleteGroupsFromMeeting = useMutation(api.meetings.deleteGroupsFromMeeting)
   const removeGroupsInMeeting = useMutation(api.meetings.removeGroupsInMeeting);
   const meetingIdStore = useMeetingIdStore();
-  const { currentMeetingId, setMeetingId } = meetingIdStore;
+  const { currentMeetingId } = meetingIdStore;
   const userIfo = useQuery(api.users.getUser, { id: userId as string });
   const formatted = useFormattedTime(userIfo?._creationTime ?? 0); // use nullish coalescing operator
   const { items, toggleItem, deleteItem } = useGroupSelected();
@@ -91,7 +90,6 @@ export function CardGroupList({ userId, title, members, groupId }: LiveStreaming
           <div className="flex justify-end">
             <div className="flex flex-col h-full justify-between">
               <p className="text-sm">{formatted}</p>
-              {/* <CheckCheckIcon className="h-5 w-5" /> */}
               <div className="flex justify-end w-full">
                 <Switch className="bg-muted"
                   id="airplane-mode"
