@@ -4,11 +4,13 @@ import { api } from "@/convex/_generated/api";
 import { useConvexAuth, useQuery } from "convex/react";
 import { CardGroupList } from "./card-live-grouplist";
 import { useUser } from "@clerk/nextjs";
+import useMeetingIdStore from "@/app/hooks/useMeetingIdStore";
 
 export default function ParticipantList() {
 
   const { user } = useUser();
 
+  
   const groups = useQuery(api.liveSessionsGroups.getGroups, {
     userId: user?.id as string,
   })

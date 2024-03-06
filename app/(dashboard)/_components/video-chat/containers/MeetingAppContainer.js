@@ -44,9 +44,9 @@ function MeetingAppContainer() {
       setRaisedHandsParticipants(raisedHandsParticipants);
     };
 
-    // useEffect(() => {
-    //   raisedHandsParticipantsRef.current = raisedHandsParticipants;
-    // }, [raisedHandsParticipants]);
+    useEffect(() => {
+      raisedHandsParticipantsRef.current = raisedHandsParticipants;
+    }, [raisedHandsParticipants]);
 
     const _handleRemoveOld = () => {
       const raisedHandsParticipants = [...raisedHandsParticipantsRef.current];

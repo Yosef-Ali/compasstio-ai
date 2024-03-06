@@ -94,9 +94,24 @@ export const saveMeetingId = mutation({
         .filter((q) => q.eq(q.field("userId"), userId))
         .first();
 
+      // if (existingMeeting) {
+      //   // clear the meeting id
+      //   await ctx.db.delete(existingMeeting._id);
+      //   return
+      // }
+
       if (existingMeeting) {
         throw new Error("Meeting already exists");
       }
+      const orphanMeetings = await ctx.db
+        .query("meetings")
+        .filter((q) => q.eq(q.field("userId"), userId))
+        .collect();
+
+      if (orphanMeetings.length > 0) {
+        await ctx.db.delete(orphanMeetings[0]._id);
+      }
+
       // Save the meeting ID to the database
       await ctx.db.insert("meetings", {
         userId,
@@ -179,7 +194,6 @@ export const saveGroupsInMeeting = mutation({
         throw new Error("Group not found");
       }
 
-
       const selectedMembers = selectedGroup?.members;
 
       if (selectedMembers && meeting.groupsId) {
@@ -199,6 +213,8 @@ export const saveGroupsInMeeting = mutation({
     }
   },
 });
+
+
 export const removeGroupsInMeeting = mutation({
   args: {
     meetingId: v.string(),

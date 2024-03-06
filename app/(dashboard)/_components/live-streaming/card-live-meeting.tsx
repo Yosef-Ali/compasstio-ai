@@ -7,11 +7,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { useFormattedTime } from "@/lib/formated-time";
-import { useUser } from "@clerk/nextjs";
 import { useQuery } from "convex/react";
-import { CheckCheckIcon, CheckIcon, ClipboardIcon } from "lucide-react";
-import Link from "next/link";
-import { useState } from "react";
+import { CheckCheckIcon } from "lucide-react";
 import MeetingIdCopyBTN from "./meetingId-copy-BTN";
 
 
@@ -40,7 +37,9 @@ const CardSingle: React.FC<{
   creationTime: number;
   currentMeetingId?: string | undefined;
 }> = ({ userIfo, meetingId, creationTime, currentMeetingId }) => { // Add return type
+  
   const formatted = useFormattedTime(creationTime);
+
   return (
     <Card >
       <CardHeader>
@@ -53,9 +52,7 @@ const CardSingle: React.FC<{
               </Avatar>
               <div className="ml-4 space-y-1">
                 <div className="text-lg font-medium">{userIfo?.name}</div>
-                {/* <div className="text-gray-600">{meeting?.meetingId}</div> */}
-
-                <MeetingIdCopyBTN meetingId={currentMeetingId || meetingId as string} />
+                <MeetingIdCopyBTN meetingId={meetingId as string} />
                 <p className="text-sm text-muted-foreground truncate ">
                   Copy Meeting Code.
                 </p>

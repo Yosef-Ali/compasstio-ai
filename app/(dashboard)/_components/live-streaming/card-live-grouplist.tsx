@@ -45,11 +45,16 @@ export function CardGroupList({ userId, title, members, groupId }: LiveStreaming
   const { currentMeetingId, setMeetingId } = meetingIdStore;
   const userIfo = useQuery(api.users.getUser, { id: userId as string });
   const formatted = useFormattedTime(userIfo?._creationTime ?? 0); // use nullish coalescing operator
-  const { items, toggleItem } = useGroupSelected();
+  const { items, toggleItem, deleteItem } = useGroupSelected();
 
+  useEffect(() => {
+    if (!currentMeetingId) {
+      deleteItem(groupId);
+    }
+  }, [currentMeetingId]);
 
   const handleSwitch = (value: boolean,) => {
-    toggleItem(groupId); // use toggleItem function only once
+    toggleItem(groupId);
     console.log("handleSwitch", value);
     if (value && currentMeetingId) {
       saveGroupsInMeeting({
@@ -90,7 +95,8 @@ export function CardGroupList({ userId, title, members, groupId }: LiveStreaming
               <div className="flex justify-end w-full">
                 <Switch className="bg-muted"
                   id="airplane-mode"
-                  checked={items.includes(groupId)} // use items.includes expression
+                  disabled={!currentMeetingId}
+                  checked={currentMeetingId ? items.includes(groupId) : false} // use items.includes expression
                   onCheckedChange={(checked: boolean) => handleSwitch(checked)}
                 />
               </div>
