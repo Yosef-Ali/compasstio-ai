@@ -40,7 +40,7 @@ export async function POST(req: Request) {
   const response = await Hf.textGenerationStream({
     //model: "OpenAssistant/oasst-sft-4-pythia-12b-epoch-3.5",
     model: "mistralai/Mistral-7B-Instruct-v0.1",
-    inputs: experimental_buildOpenAssistantPrompt(prompt),
+    inputs: experimental_buildOpenAssistantPrompt(messages),
     parameters: {
       max_new_tokens: 200,
       // @ts-ignore (this is a valid parameter specifically in OpenAssistant models)
