@@ -16,20 +16,28 @@ const Hf = new HfInferenceEndpoint(
   process.env.HUGGINGFACE_API_KEY,
 );
 
+const systemPrompt = { role: "system", content: "Based on and inline with the teachings of the bible, please provide a motivating answer that is respectful, compassionate and honest." };
+
+
 const convex = new ConvexHttpClient(process.env.NEXT_PUBLIC_CONVEX_URL ?? "");
 
 // IMPORTANT! Set the runtime to edge
 export const runtime = "edge";
 
+
+
 export async function POST(req: Request) {
   // Extract the `messages` from the body of the request
   const { messages } = await req.json();
+  const userPrompt = { role: "user", content: messages };
 
 
+  const prompt = [systemPrompt, userPrompt];
 
   // Initialize a text-generation stream using the Hugging Face Inference SDK
   const response = await Hf.textGenerationStream({
-    model: "OpenAssistant/oasst-sft-4-pythia-12b-epoch-3.5",
+    //model: "OpenAssistant/oasst-sft-4-pythia-12b-epoch-3.5",
+    model: "mistralai/Mistral-7B-Instruct-v0.1",
     inputs: experimental_buildOpenAssistantPrompt(messages),
     parameters: {
       max_new_tokens: 200,
