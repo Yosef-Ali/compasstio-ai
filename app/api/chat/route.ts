@@ -1,4 +1,4 @@
-import { HfInference } from "@huggingface/inference";
+import { HfInference, HfInferenceEndpoint } from "@huggingface/inference";
 import { HuggingFaceStream, StreamingTextResponse } from "ai";
 import { experimental_buildOpenAssistantPrompt } from "ai/prompts";
 
@@ -7,7 +7,14 @@ import { api } from "@/convex/_generated/api";
 import { auth } from "@clerk/nextjs";
 
 // Create a new Hugging Face Inference instance
-const Hf = new HfInference(process.env.HUGGINGFACE_API_KEY);
+//const Hf = new HfInference(process.env.HUGGINGFACE_API_KEY);
+
+
+const endpointUrl = 'https://khi0hb5ldx8qdg7q.us-east-1.aws.endpoints.huggingface.cloud';
+const Hf = new HfInferenceEndpoint(
+  endpointUrl,
+  process.env.HUGGINGFACE_API_KEY,
+);
 
 const convex = new ConvexHttpClient(process.env.NEXT_PUBLIC_CONVEX_URL ?? "");
 
