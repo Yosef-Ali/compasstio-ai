@@ -1,140 +1,55 @@
 "use client"
-
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import AccountProfile from "@/components/forms/AccountProfile";
 import { api } from "@/convex/_generated/api";
 import { useUser } from "@clerk/nextjs";
-import { useQuery } from "convex/react";
-import Image from "next/image";
-import { redirect, useParams } from "next/navigation";
-import { useState } from "react";
+import { useConvexAuth, useMutation, useQuery } from "convex/react";
+import { Spinner } from "@/components/spinner";
 
 
-export const dynamic = 'force-dynamic'
+export default function OnBoardingPage() {
+  const { isLoading } = useConvexAuth()
 
+  if (isLoading) {
+    return (<div className="w-full flex items-center justify-center">
+      <Spinner size="lg" />
+    </div>)
+  }
 
-const data = [
-  {
-    imageUrl: '/example.avif',
-    title: 'Title 1',
-    description: 'Description 1',
-  },
-  {
-    imageUrl: '/example.avif',
-    title: 'Title 2',
-    description: 'Description 2',
-  },
-  {
-    imageUrl: '/example.avif',
-    title: 'Title 3',
-    description: 'Description 3',
-  },
-];
-
-export default function ProfileEditSinglePage() {
-
-
-  const param = useParams();
   const { user } = useUser();
-
-  const userInfo = useQuery(api.users.getUser, { id: param.id as string });
-  const [imageSrc, setImageSrc] = useState(userInfo?.avatarUrl);
-  const [loading, setLoading] = useState(false);
-
-
 
   if (!user) return null;
 
-  // Fetch user info using useQuery
 
 
-  if (userInfo?.userId !== param.id) {
-    // Redirect to homepage or show an error message
-    redirect("/");
-    return null;
-  }
-
-  // Render the protected profile page
+  const userInfo = useQuery(api.users.getUser, { id: user.id.toString() });
 
 
+  const userData = {
+    userId: userInfo?.userId ?? user.id.toString(),
+    username: userInfo ? userInfo?.username : user.username,
+    name: userInfo ? userInfo?.name : user.firstName ?? "",
+    bio: userInfo ? userInfo?.bio : "",
+    image: userInfo ? userInfo?.avatarUrl : user.imageUrl,
+    email: userInfo ? userInfo?.email ?? "" : user.emailAddresses?.[0]?.emailAddress ?? "",
+  };
 
   return (
-    <div className="">
-      <div className="flex flex-col items-center w-full p-10 gap-4">
-        <div className="flex flex-col items-center">
-          <Avatar className="w-24 h-24">
-            <input
-              type="file"
-              accept="image/*"
-              onChange={() => { }}
-              disabled={loading}
-            />
+    <>
+      <main className='mx-auto flex max-w-3xl flex-col justify-start px-10 py-10'>
+        <h1 className='text-2xl'>Profile</h1>
+        <p className='mt-3 text-lg'>
+          Edit your profile now, to use <span className='font-bold'>
+            eternalvirtueai.com
+          </span>
+        </p>
 
-            {loading && "< Loader />..."}
-
-            <AvatarImage
-              src={imageSrc}
-              alt={userInfo?.name}
-            />
-
-            <AvatarFallback>CN</AvatarFallback>
-          </Avatar>
-          <h2 className="text-center mt-4">
-            {userInfo?.name}<span className="text-blue-500">✔</span>
-          </h2>
-          <p className="text-center text-gray-600">
-            4,189 followers · 4,389 posts
-          </p>
-          <div className="grid gap-3 grid-cols-4 my-4">
-            <Button className="w-full">
-              Message
-            </Button>
-            <Button variant="secondary" className="w-full">
-              Call
-            </Button>
-            <Button variant="secondary" className="w-full">
-              Video
-            </Button>
-            <Button variant="secondary" className="w-full">
-              More
-            </Button>
-          </div>
-        </div>
-        <div className="profile-content">
-          <Tabs defaultValue="Media" className="w-[400px] flex flex-col items-center">
-            <TabsList aria-label="Profile tabs" className="mb-1 w-full">
-              <TabsTrigger value="Media" className="flex-1">Media</TabsTrigger>
-              <TabsTrigger value="Files" className="flex-1">Files</TabsTrigger>
-              <TabsTrigger value="Links" className="flex-1">Links</TabsTrigger>
-              <TabsTrigger value="Groups" className="flex-1">Groups</TabsTrigger>
-            </TabsList>
-            <TabsContent value="Media">
-              <div className="flex flex-col gap-4 w-[400px]">
-                {data.map((item) => (
-                  <Card key={item.title} className=" p-2" >
-                    <div className="flex ">
-                      <div className="flex-1">
-                        <Image
-                          src={item.imageUrl}
-                          alt={item.title}
-                          className="w-full h-auto"
-                        />
-                      </div>
-                      <div className="flex-1 p-4">
-                        <h2 className="text-xl font-bold">{item.title}</h2>
-                        <p>{item.description}</p>
-                      </div>
-                    </div>
-                  </Card>
-                ))}
-              </div>
-            </TabsContent>
-          </Tabs>
-          {/* Add more tab panels here */}
-        </div>
-      </div>
-    </div>
+        <section className='mt-9 p-10 shadow-lg rounded-xl border bg-card text-card-foreground'>
+          <AccountProfile user={userData} btnTitle='Continue' />
+        </section>
+      </main>
+    </>
   );
 }
+
+
+

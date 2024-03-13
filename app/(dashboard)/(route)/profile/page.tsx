@@ -7,13 +7,17 @@ import { api } from "@/convex/_generated/api";
 import { useUser } from "@clerk/nextjs";
 import { useConvexAuth, useMutation, useQuery } from "convex/react";
 import { Id } from '@/convex/_generated/dataModel';
-import { Upload } from 'lucide-react';
+import { MoreVerticalIcon, Upload } from 'lucide-react';
 import { Spinner } from '@/components/spinner';
 import Messages from '../../_components/profile/messages';
 import Tasks from '../../_components/profile/tasks';
 import { ButtonGroup } from '../../_components/profile/buttons';
 import { useActiveMenu } from '@/app/hooks/useActiveProfileMenu';
 import Journals from '../../_components/profile/journals';
+import { Button } from '@/components/ui/button';
+import { TooltipTrigger, TooltipContent, Tooltip, TooltipProvider } from "@/components/ui/tooltip"
+
+import { redirect, useRouter } from 'next/navigation';
 
 
 
@@ -23,6 +27,10 @@ export default function ProfilePage() {
 
 
   const { user } = useUser();
+  const router = useRouter();
+
+  if (!user) return null;
+
 
   const generateUploadUrl = useMutation(api.users.generateUploadUrl);
   const updateAvatar = useMutation(api.users.updateAvatar);
@@ -64,6 +72,10 @@ export default function ProfilePage() {
     fileInput.current?.click();
   }, []);
 
+  const handleGoToProfile = () => {
+    router.push(`/profile/${userInfo?.userId}`)
+  }
+
   return (
     <div className="">
       <div className="flex flex-col items-center w-full p-10 gap-4">
@@ -77,9 +89,7 @@ export default function ProfilePage() {
           />
 
           <div className="relative w-24 h-24 cursor-pointer" onClick={handleAvatarClick}>
-
             {isLoading && <Spinner />}
-
             <Avatar className="w-full h-full cursor-pointer" >
               <AvatarImage src={userInfo?.avatarUrl} alt={userInfo?.name} />
               <AvatarFallback>CN</AvatarFallback>
@@ -88,9 +98,21 @@ export default function ProfilePage() {
               <Upload className="w-8 h-8 text-gray-600" />
             </div>
           </div>
-          <h2 className="text-center mt-4">
-            {userInfo?.name}
-          </h2>
+          <div className="flex  gap-2 items-center my-4">
+            <h2 className="text-center ">
+              {userInfo?.name}
+            </h2>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button size="sm" variant="ghost" onClick={handleGoToProfile}>
+                    <MoreVerticalIcon className="h-4 w-4" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>Edit Profile</TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
           {/* <p className="text-center text-gray-600">
             {totalGroup} followers · {totalJournal} posts
           </p> */}

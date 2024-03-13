@@ -1,6 +1,51 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 
+
+
+export const updateProfile = mutation({
+  args: {
+    userId: v.string(),
+    name: v.string(),
+    username: v.string(),
+    avatarUrl: v.string(),
+    email: v.string(),
+    bio: v.string(),
+    onboarded: v.boolean(),
+  },
+  handler: async (ctx, args) => {
+    try {
+      // Get the user document from the database
+      const user = await ctx.db
+        .query("users")
+        .filter((q) => q.eq(q.field("userId"), args.userId))
+        .first();
+
+      if (user) {
+        // Update the user document in the database
+        await ctx.db.patch(user._id, {
+          name: args.name,
+          username: args.username,
+          avatarUrl: args.avatarUrl,
+          email: args.email,
+          bio: args.bio,
+          onboarded: args.onboarded,
+        });
+      } else {
+        console.error('User not found:', args.userId);
+        // Handle the case where the user is not found
+        // For example, throw an error or return a specific message
+      }
+    } catch (error) {
+      // Handle any potential errors
+      console.error('Error updating user:', error);
+      throw error;
+    }
+  },
+});
+
+
+
 export const getUser = query({
   args: {
     id: v.string(),

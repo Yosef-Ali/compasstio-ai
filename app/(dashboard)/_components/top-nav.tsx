@@ -5,6 +5,7 @@ import TopNavJournal from './top-nav/top-nav-journal';
 import TopNavTask from './top-nav/top-nav-tasks';
 import TopNavChatWithAI from './top-nav/top-nav-chat-with-ai';
 import TopNavChatWithGroups from './top-nav/top-nav-chat-with-groups';
+import TopNavProfile from './top-nav/top-nav-profile';
 import TopNavLiveSections from './top-nav/top-nav-livesection';
 
 
@@ -25,6 +26,8 @@ const TopNav = () => {
         return <TopNavTask />;
       case 'live-sessions':
         return <TopNavLiveSections />;
+      case 'profile':
+        return <TopNavProfile />
       default:
         return null;
     }

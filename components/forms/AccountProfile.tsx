@@ -32,6 +32,7 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
   const pathname = usePathname();
 
   const createProfile = useMutation(api.users.create)
+  const updateProfile = useMutation(api.users.updateProfile)
   const generateUploadUrl = useMutation(api.users.generateUploadUrl);
   const updateAvatar = useMutation(api.users.updateAvatar);
 
@@ -43,6 +44,7 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
       username: user?.username ? user.username : "",
       bio: user?.bio ? user.bio : "",
       email: user?.email ? user.email : "",
+
     },
   });
 
@@ -50,14 +52,14 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
 
     console.log("values", values);
 
-    const promise = createProfile({
+    const promise = updateProfile({
       userId: user.userId ?? "",
       name: values.name,
       username: values.username,
       bio: values.bio,
       onboarded: true,
       avatarUrl: "",
-      email: user?.email ? user.email : "",
+      email: values.email,
     })
 
     toast.promise(promise, {
@@ -66,8 +68,8 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
       error: "Failed to create a new profile."
     });
 
-    if (pathname === "/profile/edit") {
-      router.back();
+    if (pathname !== "/onboarding") {
+      return null
     } else {
       router.push("/");
     }
@@ -120,11 +122,11 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
                   />
                 ) : (
                   <Image
-                    src='/assets/profile.svg'
+                    src='https://avatars.dicebear.com/api/initials/John%40Doe.svg'
                     alt='profile_icon'
-                    width={24}
-                    height={24}
-                    className='object-contain'
+                    width={96}
+                    height={96}
+                    className='object-contain rounded-full'
                   />
                 )}
 
@@ -146,7 +148,7 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
           name='name'
           render={({ field }) => (
             <FormItem className='flex w-full flex-col gap-3'>
-              <FormLabel className='text-base-semibold text-light-2'>
+              <FormLabel className='text-base-semibold text-light-2 self-start'>
                 Name
               </FormLabel>
               <FormControl>
@@ -164,8 +166,8 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
           control={form.control}
           name='username'
           render={({ field }) => (
-            <FormItem className='flex w-full flex-col gap-3'>
-              <FormLabel className='text-base-semibold text-light-2'>
+            <FormItem className='flex w-full flex-col gap-3 '>
+              <FormLabel className='text-base-semibold text-light-2 self-start'>
                 Username
               </FormLabel>
               <FormControl>
@@ -184,7 +186,7 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
           name='email'
           render={({ field }) => (
             <FormItem className='flex w-full flex-col gap-3'>
-              <FormLabel className='text-base-semibold text-light-2'>
+              <FormLabel className='text-base-semibold text-light-2 self-start'>
                 Email
               </FormLabel>
               <FormControl>
@@ -203,7 +205,7 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
           name='bio'
           render={({ field }) => (
             <FormItem className='flex w-full flex-col gap-3'>
-              <FormLabel className='text-base-semibold text-light-2'>
+              <FormLabel className='text-base-semibold text-light-2 self-start'>
                 Bio
               </FormLabel>
               <FormControl>
