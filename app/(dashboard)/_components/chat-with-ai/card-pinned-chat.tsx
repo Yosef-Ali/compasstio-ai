@@ -10,6 +10,7 @@ import { useMutation, useQuery } from "convex/react";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import { PinIcon } from "lucide-react";
+import { useState } from "react";
 
 interface ChatCardProps {
   id: Id<"chats">;
@@ -22,9 +23,14 @@ interface ChatCardProps {
 dayjs.extend(relativeTime);
 
 export function ChatCardPinned({ id, prompt, result, creationTime }: ChatCardProps) {
+  const [expanded, setExpanded] = useState(false);
+
+  const handleClick = () => {
+    setExpanded(!expanded);
+  };
 
   return (
-    <Card >
+    <Card onClick={handleClick}>
       <CardHeader>
         <div className="flex justify-between">
           <CardTitle className="text-lg ">
@@ -32,7 +38,8 @@ export function ChatCardPinned({ id, prompt, result, creationTime }: ChatCardPro
           </CardTitle>
           <OperationsMenuChat id={id} isPinned="isPinned" />
         </div>
-        <CardDescription className="line-clamp-2 flex-1 min-w-0">{result}</CardDescription>
+        <CardDescription className={`text-gray-700 flex-1 ${expanded ? '' : 'line-clamp-2'
+          } transition-all duration-300`}>{result}</CardDescription>
         <CardDescription>
           {dayjs(creationTime).fromNow()}
         </CardDescription>

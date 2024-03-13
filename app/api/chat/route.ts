@@ -1,6 +1,7 @@
 import { HfInference, HfInferenceEndpoint } from "@huggingface/inference";
 import { HuggingFaceStream, StreamingTextResponse } from "ai";
 import { experimental_buildOpenAssistantPrompt } from "ai/prompts";
+import { experimental_buildStarChatBetaPrompt } from 'ai/prompts';
 
 import { ConvexHttpClient } from "convex/browser";
 import { api } from "@/convex/_generated/api";
@@ -16,7 +17,7 @@ const Hf = new HfInferenceEndpoint(
   process.env.HUGGINGFACE_API_KEY,
 );
 
-const systemPrompt = { role: "system", content: "Based on and inline with the teachings of the bible, please provide a motivating answer that is respectful, compassionate and honest." };
+//const systemPrompt = { role: "system", content: "Based on and inline with the teachings of the bible, please provide a motivating answer that is respectful, compassionate and honest." };
 
 
 const convex = new ConvexHttpClient(process.env.NEXT_PUBLIC_CONVEX_URL ?? "");
@@ -38,9 +39,12 @@ export async function POST(req: Request) {
 
   // Initialize a text-generation stream using the Hugging Face Inference SDK
   const response = await Hf.textGenerationStream({
+    //model: "OpenAssistant/falcon-7b-sft-top1-696",
     //model: "OpenAssistant/oasst-sft-4-pythia-12b-epoch-3.5",
     model: "mistralai/Mistral-7B-Instruct-v0.1",
-    inputs: experimental_buildOpenAssistantPrompt(messages),
+
+    inputs: experimental_buildStarChatBetaPrompt(prompt),
+    //inputs: experimental_buildOpenAssistantPrompt(messages),
     parameters: {
       max_new_tokens: 200,
       // @ts-ignore (this is a valid parameter specifically in OpenAssistant models)
@@ -60,6 +64,8 @@ export async function POST(req: Request) {
 
 
         const messagesContent = messages.map((message: { content: string; }) => message.content);
+
+        console.log("messagesContent", messagesContent);
 
         await convex.mutation(api.chats.create, {
           prompt: messagesContent[messagesContent.length - 1],
