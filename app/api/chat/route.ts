@@ -52,7 +52,7 @@ export async function POST(req: Request) {
       typical_p: 0.2,
       repetition_penalty: 1,
       truncate: 1000,
-      return_full_text: false,
+      return_full_text: true,
     },
   });
 
