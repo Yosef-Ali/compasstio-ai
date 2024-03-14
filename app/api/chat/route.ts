@@ -52,7 +52,13 @@ export async function POST(req: Request) {
       typical_p: 0.2,
       repetition_penalty: 1,
       truncate: 1000,
-      return_full_text: true,
+      // do_sample: false,
+      // temperature: 0.0,
+      // top_k: 0,
+      // top_p: 0.9,
+      // num_beams: 1,
+      // num_return_sequences: 1,
+      return_full_text: false,
     },
   });
 
