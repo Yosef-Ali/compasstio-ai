@@ -42,7 +42,7 @@ export async function POST(req: Request) {
   const response = await Hf.textGenerationStream({
     //model: "OpenAssistant/falcon-7b-sft-top1-696",
     //model: "OpenAssistant/oasst-sft-4-pythia-12b-epoch-3.5",
-    model: "mistralai/Mistral-7B-Instruct-v0.1",
+    model: "llama-2-13b-chat-hf-mbl",
 
     inputs: experimental_buildStarChatBetaPrompt(prompt),
     //inputs: experimental_buildOpenAssistantPrompt(messages),
