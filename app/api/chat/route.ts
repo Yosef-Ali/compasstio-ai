@@ -38,8 +38,6 @@ function formatOutput(input: string): string {
     output += '.';
   }
 
-  console.log("output", output);
-
   return output;
 }
 
@@ -62,7 +60,7 @@ export async function POST(req: Request) {
     inputs: experimental_buildStarChatBetaPrompt(prompt),
     //inputs: experimental_buildOpenAssistantPrompt(messages),
     parameters: {
-      max_new_tokens: 350,
+      max_new_tokens: 200,
       // @ts-ignore (this is a valid parameter specifically in OpenAssistant models)
       typical_p: 0.2,
       repetition_penalty: 1.02,
@@ -80,14 +78,13 @@ export async function POST(req: Request) {
   // Convert the async generator into a friendly text-stream
   const stream = HuggingFaceStream(response, {
     onCompletion: async (completion: string) => {
-      const formattedOutput = formatOutput(completion);
       const { userId } = auth();
       if (typeof userId === "string") {
         // Use userId as a string
         const messagesContent = messages.map((message: { content: string; }) => message.content);
         await convex.mutation(api.chats.create, {
           prompt: messagesContent[messagesContent.length - 1],
-          result: formattedOutput,
+          result: completion,
           userId,
           conversationId: "",
         });
