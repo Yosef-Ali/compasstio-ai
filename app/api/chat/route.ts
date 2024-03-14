@@ -60,6 +60,7 @@ export async function POST(req: Request) {
   const stream = HuggingFaceStream(response, {
     onCompletion: async (completion: string) => {
       const { userId } = auth();
+
       if (typeof userId === "string") {
         // Use userId as a string
 
