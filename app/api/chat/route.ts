@@ -38,6 +38,8 @@ function formatOutput(input: string): string {
     output += '.';
   }
 
+  console.log("output", output);
+
   return output;
 }
 
