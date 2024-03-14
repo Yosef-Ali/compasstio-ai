@@ -1,5 +1,5 @@
 "use client"
-import AccountProfile from "@/components/forms/AccountProfile";
+import AccountProfileEdit from "@/components/forms/AccountProfileEdit";
 import { api } from "@/convex/_generated/api";
 import { useUser } from "@clerk/nextjs";
 import { useConvexAuth, useMutation, useQuery } from "convex/react";
@@ -44,7 +44,7 @@ export default function OnBoardingPage() {
         </p>
 
         <section className='mt-9 p-10 shadow-lg rounded-xl border bg-card text-card-foreground'>
-          <AccountProfile user={userData} btnTitle='Continue' />
+          <AccountProfileEdit user={userData} btnTitle='Continue' />
         </section>
       </main>
     </>

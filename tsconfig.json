@@ -34,7 +34,7 @@
     "**/*.tsx",
     "next/types/**/*.ts",
     ".next/types/**/*.ts"
-, "lib/useResponsiveSize.js", "app/(dashboard)/(route)/layout.js", "app/hooks/useMeetingIdStore.ts"  ],
+, "lib/useResponsiveSize.js", "app/(dashboard)/(route)/layout.js", "app/hooks/useMeetingIdStore.ts", "components/forms/AccountProfileEdit.tsx"  ],
   "exclude": [
     "node_modules"
   ]

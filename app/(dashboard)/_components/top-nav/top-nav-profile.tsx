@@ -2,12 +2,9 @@ import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-import { useParams } from "next/navigation";
-
 import SearchBar from "@/components/search";
 import { useFormattedTime } from "@/lib/formated-time";
 import { OperationsMenu } from "@/components/operations-menu-chat-group";
-import { useEffect, useState } from "react";
 import { useUser } from "@clerk/nextjs";
 
 
@@ -19,8 +16,6 @@ const TitleProfile = () => {
 
 
   const userInfo = useQuery(api.users.getUser, { id: user.id.toString() });
-
-
 
 
   const formatted = useFormattedTime(userInfo?._creationTime || 0);

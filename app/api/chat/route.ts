@@ -47,12 +47,12 @@ export async function POST(req: Request) {
     inputs: experimental_buildStarChatBetaPrompt(prompt),
     //inputs: experimental_buildOpenAssistantPrompt(messages),
     parameters: {
-      max_new_tokens: 200,
+      max_new_tokens: 1600,
       // @ts-ignore (this is a valid parameter specifically in OpenAssistant models)
       typical_p: 0.2,
       repetition_penalty: 1,
       truncate: 1000,
-      return_full_text: true,
+      return_full_text: false,
     },
   });
 
@@ -66,7 +66,6 @@ export async function POST(req: Request) {
 
         const messagesContent = messages.map((message: { content: string; }) => message.content);
 
-        console.log("messagesContent", messagesContent);
 
         await convex.mutation(api.chats.create, {
           prompt: messagesContent[messagesContent.length - 1],

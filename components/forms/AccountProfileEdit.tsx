@@ -12,8 +12,6 @@ import { useMutation, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { usePathname, useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { useRef } from "react";
-import { Id } from "@/convex/_generated/dataModel";
 
 interface Props {
   user: {
@@ -27,11 +25,14 @@ interface Props {
   btnTitle: string;
 }
 
+
+
 const AccountProfile = ({ user, btnTitle }: Props) => {
   const router = useRouter();
   const pathname = usePathname();
 
   const createProfile = useMutation(api.users.create)
+  const updateProfile = useMutation(api.users.updateProfile)
   const generateUploadUrl = useMutation(api.users.generateUploadUrl);
   const updateAvatar = useMutation(api.users.updateAvatar);
 
@@ -43,6 +44,7 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
       username: user?.username ? user.username : "",
       bio: user?.bio ? user.bio : "",
       email: user?.email ? user.email : "",
+
     },
   });
 
@@ -50,14 +52,14 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
 
     console.log("values", values);
 
-    const promise = createProfile({
+    const promise = updateProfile({
       userId: user.userId ?? "",
       name: values.name,
       username: values.username,
       bio: values.bio,
       onboarded: true,
       avatarUrl: "",
-      email: user?.email ? user.email : "",
+      email: values.email,
     })
 
     toast.promise(promise, {
@@ -66,8 +68,8 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
       error: "Failed to create a new profile."
     });
 
-    if (pathname === "/profile/edit") {
-      router.back();
+    if (pathname !== "/onboarding") {
+      return null
     } else {
       router.push("/");
     }
@@ -124,7 +126,7 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
                     alt='profile_icon'
                     width={96}
                     height={96}
-                    className='object-contain'
+                    className='object-contain rounded-full'
                   />
                 )}
 
