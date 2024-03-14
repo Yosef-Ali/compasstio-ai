@@ -26,7 +26,20 @@ const convex = new ConvexHttpClient(process.env.NEXT_PUBLIC_CONVEX_URL ?? "");
 // IMPORTANT! Set the runtime to edge
 export const runtime = "edge";
 
+function formatOutput(input: string): string {
+  // Trim leading and trailing whitespace
+  let output = input.trim();
 
+  // Capitalize the first letter
+  output = output.charAt(0).toUpperCase() + output.slice(1);
+
+  // Add a period at the end if there isn't one
+  if (!output.endsWith('.')) {
+    output += '.';
+  }
+
+  return output;
+}
 
 export async function POST(req: Request) {
   // Extract the `messages` from the body of the request
@@ -65,18 +78,14 @@ export async function POST(req: Request) {
   // Convert the async generator into a friendly text-stream
   const stream = HuggingFaceStream(response, {
     onCompletion: async (completion: string) => {
+      const formattedOutput = formatOutput(completion);
       const { userId } = auth();
-
       if (typeof userId === "string") {
         // Use userId as a string
-
-
         const messagesContent = messages.map((message: { content: string; }) => message.content);
-
-
         await convex.mutation(api.chats.create, {
           prompt: messagesContent[messagesContent.length - 1],
-          result: completion,
+          result: formattedOutput,
           userId,
           conversationId: "",
         });
@@ -87,6 +96,8 @@ export async function POST(req: Request) {
     },
 
   });
+
+
 
   //const stream = HuggingFaceStream(response);
 
