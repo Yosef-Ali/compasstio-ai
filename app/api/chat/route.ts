@@ -47,13 +47,13 @@ export async function POST(req: Request) {
     inputs: experimental_buildStarChatBetaPrompt(prompt),
     //inputs: experimental_buildOpenAssistantPrompt(messages),
     parameters: {
-      max_new_tokens: 300,
+      max_new_tokens: 350,
       // @ts-ignore (this is a valid parameter specifically in OpenAssistant models)
       typical_p: 0.2,
-      repetition_penalty: 1,
+      repetition_penalty: 1.02,
       truncate: 1000,
       // do_sample: false,
-      // temperature: 0.0,
+      temperature: 0.2,
       // top_k: 0,
       // top_p: 0.9,
       // num_beams: 1,
