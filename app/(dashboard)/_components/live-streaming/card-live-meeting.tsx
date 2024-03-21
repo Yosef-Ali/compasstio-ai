@@ -26,8 +26,8 @@ interface User {
   name: string;
   avatarUrl: string; // Add avatarUrl property here
   bio: string;
-  onboarded: boolean;
   username: string;
+  tokenIdentifier: string;
 }
 
 
@@ -37,7 +37,7 @@ const CardSingle: React.FC<{
   creationTime: number;
   currentMeetingId?: string | undefined;
 }> = ({ userIfo, meetingId, creationTime, currentMeetingId }) => { // Add return type
-  
+
   const formatted = useFormattedTime(creationTime);
 
   return (
