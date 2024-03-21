@@ -1,15 +1,34 @@
 "use client";
 
-import { useConvexAuth } from "convex/react";
+import { useConvexAuth, useMutation } from "convex/react";
 import { Spinner } from "@/components/spinner";
-import { buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { SignInButton } from "@clerk/clerk-react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
+import { api } from "@/convex/_generated/api";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export default function IndexPage() {
   const { isAuthenticated, isLoading } = useConvexAuth()
+  const storeUser = useMutation(api.users.store);
+  const router = useRouter();
+
+  useEffect(() => {
+    const storeUserData = async () => {
+      if (isAuthenticated) {
+        try {
+          await storeUser();
+          router.push("/");
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    }
+    storeUserData();
+  }, [isAuthenticated, storeUser, router])
   return (
     <>
       <section className="space-y-6 pb-8 pt-6 md:pb-12 md:pt-10 lg:py-32">
@@ -35,7 +54,7 @@ export default function IndexPage() {
           {isAuthenticated && !isLoading && (
             <div className="space-x-4">
               <Link
-                href="/onboarding"
+                href="/chat-with-ai"
                 rel="noreferrer"
                 className={cn(buttonVariants({ variant: "outline", size: "lg" }))}
               >
@@ -46,9 +65,9 @@ export default function IndexPage() {
           {!isAuthenticated && !isLoading && (
             <div className="space-x-4">
               <SignInButton mode="modal">
-                <Link href="/login" className={cn(buttonVariants({ size: "lg" }))}>
+                <Button className={cn(buttonVariants({ size: "lg" }))}>
                   Join Now
-                </Link>
+                </Button>
               </SignInButton>
               <Link
                 href="/"

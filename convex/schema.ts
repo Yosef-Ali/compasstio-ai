@@ -63,11 +63,15 @@ export default defineSchema({
     avatarUrl: v.string(),
     bio: v.string(),
     name: v.string(),
-    onboarded: v.boolean(),
     userId: v.string(),
     username: v.string(),
     email: v.optional(v.string()),
-  }).index("by_username", ["username"]),
+    tokenIdentifier: v.string(),
+    endsOn: v.optional(v.number()),
+    subscriptionId: v.optional(v.string()),
+  }).index("by_username", ["username"])
+    .index("by_token", ["tokenIdentifier"])
+    .index("by_subscriptionId", ["subscriptionId"]),
 
 
   tasks: defineTable({
@@ -93,7 +97,16 @@ export default defineSchema({
     userId: v.optional(v.string()), // The creator user id
     title: v.optional(v.string()),
     members: v.array(v.string()),
+  }),
+
+  Users: defineTable({
+    tokenIdentifier: v.string(),
+    model: v.union(v.literal("gpt-3.5-turbo-1106"), v.literal("gpt-4-0125-preview")),
+    endsOn: v.optional(v.number()),
+    subscriptionId: v.optional(v.string()),
   })
+    .index("by_token", ["tokenIdentifier"])
+    .index("by_subscriptionId", ["subscriptionId"]),
 
 });
 

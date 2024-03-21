@@ -13,8 +13,6 @@ interface DashboardNavProps {
 }
 
 
-
-
 export function DashboardNav({ items }: DashboardNavProps) {
   const { isMobile } = useWindowPositionAndMobile()
   const pathname = usePathname()

@@ -24,6 +24,7 @@ import type * as liveSessionsGroups from "../liveSessionsGroups.js";
 import type * as meetings from "../meetings.js";
 import type * as messages from "../messages.js";
 import type * as product from "../product.js";
+import type * as stripe from "../stripe.js";
 import type * as tasks from "../tasks.js";
 import type * as users from "../users.js";
 
@@ -46,6 +47,7 @@ declare const fullApi: ApiFromModules<{
   meetings: typeof meetings;
   messages: typeof messages;
   product: typeof product;
+  stripe: typeof stripe;
   tasks: typeof tasks;
   users: typeof users;
 }>;

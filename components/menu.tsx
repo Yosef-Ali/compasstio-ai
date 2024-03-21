@@ -28,19 +28,6 @@ export const Menu = ({
   const router = useRouter();
   const { user } = useUser();
 
-  // const archive = useMutation(api.journals.archive);
-
-  // const onArchive = () => {
-  //   const promise = archive({ id: journalsId })
-
-  //   toast.promise(promise, {
-  //     loading: "Moving to trash...",
-  //     success: "Note moved to trash!",
-  //     error: "Failed to archive note."
-  //   });
-
-  //   router.push("/documents");
-  // };
 
   return (
     <DropdownMenu>

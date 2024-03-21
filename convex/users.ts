@@ -1,7 +1,36 @@
 import { v } from "convex/values";
-import { mutation, query } from "./_generated/server";
+import { mutation, query, internalMutation } from "./_generated/server";
 
+export const store = mutation({
+  args: {},
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      throw new Error("Called storeUser without authenticated user");
+    }
 
+    // check if user is already stored
+    const user = await ctx.db
+      .query("users")
+      .withIndex("by_token", (q) =>
+        q.eq("tokenIdentifier", identity.tokenIdentifier))
+      .unique();
+
+    if (user) {
+      return user;
+    }
+
+    return await ctx.db.insert("users", {
+      userId: identity.subject,
+      name: identity.name || "",
+      username: identity.preferredUsername || identity.subject,
+      avatarUrl: identity.pictureUrl || "",
+      email: identity.emailVerified ? identity.email : "",
+      bio: "",
+      tokenIdentifier: identity.tokenIdentifier,
+    });
+  },
+});
 
 export const updateProfile = mutation({
   args: {
@@ -11,7 +40,6 @@ export const updateProfile = mutation({
     avatarUrl: v.string(),
     email: v.string(),
     bio: v.string(),
-    onboarded: v.boolean(),
   },
   handler: async (ctx, args) => {
     try {
@@ -29,7 +57,6 @@ export const updateProfile = mutation({
           avatarUrl: args.avatarUrl,
           email: args.email,
           bio: args.bio,
-          onboarded: args.onboarded,
         });
       } else {
         console.error('User not found:', args.userId);
@@ -113,10 +140,20 @@ export const create = mutation({
     avatarUrl: v.string(),
     email: v.string(),
     bio: v.string(),
-    onboarded: v.boolean(),
-
   },
   handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      throw new Error("Called storeUser without authenticated user");
+    }
+
+    // check if user is already stored
+    const user = await ctx.db
+      .query("users")
+      .withIndex("by_token", (q) =>
+        q.eq("tokenIdentifier", identity.tokenIdentifier))
+      .unique();
+
     return await ctx.db.insert("users", {
       userId: args.userId,
       name: args.name,
@@ -124,7 +161,7 @@ export const create = mutation({
       avatarUrl: args.avatarUrl,
       email: args.email,
       bio: args.bio,
-      onboarded: true,
+      tokenIdentifier: identity.tokenIdentifier,
     });
   },
 });
@@ -195,6 +232,22 @@ export const getAllUsersByEmail = query({
     return user
   }
 
+})
+
+export const currentUser = query({
+  args: {},
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      throw new Error("Called selectGPT without authenticated user");
+    }
+
+    return await ctx.db
+      .query("Users")
+      .withIndex("by_token", (q) =>
+        q.eq("tokenIdentifier", identity.tokenIdentifier))
+      .unique();
+  }
 })
 
 
