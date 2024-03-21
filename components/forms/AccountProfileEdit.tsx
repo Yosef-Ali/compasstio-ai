@@ -57,7 +57,6 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
       name: values.name,
       username: values.username,
       bio: values.bio,
-      onboarded: true,
       avatarUrl: "",
       email: values.email,
     })
