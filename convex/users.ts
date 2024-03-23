@@ -243,7 +243,7 @@ export const currentUser = query({
     }
 
     return await ctx.db
-      .query("Users")
+      .query("users")
       .withIndex("by_token", (q) =>
         q.eq("tokenIdentifier", identity.tokenIdentifier))
       .unique();
@@ -251,3 +251,31 @@ export const currentUser = query({
 })
 
 
+//update subscription
+export const updateSubscription = internalMutation({
+  args: { subscriptionId: v.string(), userId: v.id("users"), endsOn: v.number() },
+  handler: async (ctx, { subscriptionId, userId, endsOn }) => {
+    await ctx.db.patch(userId, {
+      subscriptionId: subscriptionId,
+      endsOn: endsOn
+    });
+  },
+});
+
+//update subscription by id
+export const updateSubscriptionById = internalMutation({
+  args: { subscriptionId: v.string(), endsOn: v.number() },
+  handler: async (ctx, { subscriptionId, endsOn }) => {
+    const user = await ctx.db.query("users")
+      .withIndex("by_subscriptionId", (q) => q.eq("subscriptionId", subscriptionId))
+      .unique();
+
+    if (!user) {
+      throw new Error("User not found!");
+    }
+
+    await ctx.db.patch(user._id, {
+      endsOn: endsOn
+    });
+  },
+});

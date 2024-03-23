@@ -21,6 +21,7 @@ export const UpgradeModal = ({
   const handleUpgrade = async () => {
     const url = await upgrade({});
     if (!url) return;
+    console.log("url", url);
     router.push(url);
   }
 

@@ -19,6 +19,7 @@ import type * as chatbots from "../chatbots.js";
 import type * as chats from "../chats.js";
 import type * as files from "../files.js";
 import type * as friends from "../friends.js";
+import type * as http from "../http.js";
 import type * as journals from "../journals.js";
 import type * as liveSessionsGroups from "../liveSessionsGroups.js";
 import type * as meetings from "../meetings.js";
@@ -42,6 +43,7 @@ declare const fullApi: ApiFromModules<{
   chats: typeof chats;
   files: typeof files;
   friends: typeof friends;
+  http: typeof http;
   journals: typeof journals;
   liveSessionsGroups: typeof liveSessionsGroups;
   meetings: typeof meetings;
