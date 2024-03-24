@@ -1,3 +1,4 @@
+"use client"
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
@@ -5,25 +6,61 @@ import { api } from "@/convex/_generated/api";
 import { useAction } from "convex/react";
 import { Check } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import Stripe from 'stripe';
 
 interface UpgradeModalProps {
   open: boolean;
   setOpen: (open: boolean) => void;
 }
 
+
+
+const stripe = new Stripe(process.env.NEXT_STRIPE_SECRET_KEY!, {
+  apiVersion: '2023-10-16',
+});
+
+// Function to retrieve and format the subscription price
+export async function getSubscriptionPrice() {
+  try {
+    // Replace 'price_id' with your actual price ID
+    const price = await stripe.prices.retrieve(process.env.STRIPE_SUBSCRIPTION_PRICE_ID!);
+
+    // Format the price to a readable format
+    // e.g., convert 2000 (cents) to 20.00 (dollars)
+    const amount = (price.unit_amount! / 100).toFixed(2);
+    const currency = price.currency.toUpperCase();
+
+    return `${amount} ${currency}`;
+  } catch (error) {
+    console.error('Error fetching price:', error);
+    return 'Unable to retrieve price';
+  }
+}
+
+
 export const UpgradeModal = ({
   open,
   setOpen
 }: UpgradeModalProps) => {
+  const [formattedPrice, setFormattedPrice] = useState<string>('');
   const upgrade = useAction(api.stripe.pay);
   const router = useRouter();
 
   const handleUpgrade = async () => {
     const url = await upgrade({});
     if (!url) return;
-    console.log("url", url);
     router.push(url);
   }
+
+  useEffect(() => {
+    const fetchPrice = async () => {
+      const price = await getSubscriptionPrice();
+      setFormattedPrice(price);
+    };
+
+    fetchPrice();
+  }, []);
 
   return (
     <Dialog open={open} onOpenChange={(e) => setOpen(e)}>
@@ -71,7 +108,7 @@ export const UpgradeModal = ({
           {/* Paid Plan */}
           <div className="w-1/2 p-4 gap-y-2">
             <h3 className="text-lg font-semibold">Pro</h3>
-            <p className="font-thin ">USD $4/month</p>
+            <p className="font-thin ">USD {formattedPrice}/month</p>
             <Button
               className="font-semibold text-xs bg-purple-500 hover:bg-purple-700 p-4 my-4"
               onClick={handleUpgrade}
