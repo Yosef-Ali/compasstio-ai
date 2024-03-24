@@ -3,11 +3,10 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
 import { api } from "@/convex/_generated/api";
-import { useAction } from "convex/react";
+import { useAction, useQuery } from "convex/react";
 import { Check } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import Stripe from 'stripe';
 
 interface UpgradeModalProps {
   open: boolean;
@@ -16,35 +15,13 @@ interface UpgradeModalProps {
 
 
 
-const stripe = new Stripe(process.env.NEXT_STRIPE_SECRET_KEY!, {
-  apiVersion: '2023-10-16',
-});
-
-// Function to retrieve and format the subscription price
-export async function getSubscriptionPrice() {
-  try {
-    // Replace 'price_id' with your actual price ID
-    const price = await stripe.prices.retrieve(process.env.STRIPE_SUBSCRIPTION_PRICE_ID!);
-
-    // Format the price to a readable format
-    // e.g., convert 2000 (cents) to 20.00 (dollars)
-    const amount = (price.unit_amount! / 100).toFixed(2);
-    const currency = price.currency.toUpperCase();
-
-    return `${amount} ${currency}`;
-  } catch (error) {
-    console.error('Error fetching price:', error);
-    return 'Unable to retrieve price';
-  }
-}
-
-
 export const UpgradeModal = ({
   open,
   setOpen
 }: UpgradeModalProps) => {
   const [formattedPrice, setFormattedPrice] = useState<string>('');
   const upgrade = useAction(api.stripe.pay);
+  const price = useAction(api.stripe.getSubscriptionPrice);
   const router = useRouter();
 
   const handleUpgrade = async () => {
@@ -55,12 +32,22 @@ export const UpgradeModal = ({
 
   useEffect(() => {
     const fetchPrice = async () => {
-      const price = await getSubscriptionPrice();
-      setFormattedPrice(price);
+      const subscriptionPrice = await price();
+      if (subscriptionPrice && subscriptionPrice.unit_amount) {
+
+        const formattedPrice = new Intl.NumberFormat('en-US', {
+          style: 'currency',
+          currency: 'USD',
+        }).format(subscriptionPrice.unit_amount / 100);
+        setFormattedPrice(formattedPrice);
+      } else {
+        console.log("Failed to fetch subscription price");
+      }
     };
 
     fetchPrice();
-  }, []);
+  }, [price]);
+
 
   return (
     <Dialog open={open} onOpenChange={(e) => setOpen(e)}>

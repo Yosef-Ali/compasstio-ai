@@ -1,9 +1,10 @@
 
 import { v } from "convex/values";
 import { api, internal } from "./_generated/api";
-import { action, internalAction } from "./_generated/server";
+import { action, internalAction, query } from "./_generated/server";
 import Stripe from 'stripe';
 import { Id } from "./_generated/dataModel";
+
 
 export const pay = action({
   args: {},
@@ -42,7 +43,7 @@ export const pay = action({
         cancel_url: `${domain}`,
       }
     );
-    console.log("session", session);
+    console.log("session", session.payment_intent);
     return session.url;
   },
 });
@@ -101,3 +102,32 @@ export const fulfill = internalAction({
     }
   },
 });
+
+export const getSubscriptionPrice = action({
+  args: {},
+  handler: async (ctx) => {
+    const clerkUser = await ctx.auth.getUserIdentity();
+    const user = await ctx.runQuery(api.users.currentUser, {});
+
+    if (!user || !clerkUser) {
+      throw new Error("User not authenticated!");
+    }
+
+    if (!clerkUser.emailVerified) {
+      throw new Error("User email not verified!");
+    }
+
+    const stripe = new Stripe(process.env.NEXT_STRIPE_SECRET_KEY!, {
+      apiVersion: "2023-10-16"
+    });
+
+    const price = await stripe.prices.retrieve(process.env.STRIPE_SUBSCRIPTION_PRICE_ID!)
+      
+    if (!price) {
+      throw new Error("Price not found!");
+    }
+
+    console.log("price", price);
+    return price
+  }
+})
