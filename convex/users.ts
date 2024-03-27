@@ -1,6 +1,41 @@
 import { v } from "convex/values";
 import { mutation, query, internalMutation } from "./_generated/server";
 
+export const getEndsOn = query({
+  args: {},
+  handler: async (ctx) => {
+    // Authenticate user
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error("Unauthenticated user");
+
+    // Retrieve user by token identifier
+    const user = await ctx.db.query("users")
+      .withIndex("by_token", q => q.eq("tokenIdentifier", identity.tokenIdentifier))
+      .unique();
+    if (!user) throw new Error("User not found!");
+
+    // Determine if the user is non-subscribed
+    const isNonSubscribedUser = !user.endsOn || new Date(user.endsOn * 1000) < new Date();
+
+    // If the user is non-subscribed, check chat limit
+    if (isNonSubscribedUser) {
+      const todayStart = new Date().setHours(0, 0, 0, 0);
+      const chatCount = await ctx.db.query("chats")
+        .filter(q => q.eq("userId", user.userId) && q.gte("_creationTime", new Date(todayStart).toISOString()))
+        .collect;
+
+      if (chatCount.length >= 5) throw new Error("Maximum chat limit reached for today");
+    }
+
+    // Return the subscription end date
+    return {
+      success: true,
+      endsOn: user.endsOn,
+      message: 'Subscription end date retrieved successfully.'
+    };
+  },
+});
+
 export const store = mutation({
   args: {},
   handler: async (ctx) => {
@@ -239,7 +274,7 @@ export const currentUser = query({
   handler: async (ctx) => {
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) {
-      throw new Error("Called selectGPT without authenticated user");
+      throw new Error("Unauthenticated user");
     }
 
     return await ctx.db
@@ -279,3 +314,4 @@ export const updateSubscriptionById = internalMutation({
     });
   },
 });
+

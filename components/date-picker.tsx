@@ -19,25 +19,15 @@ import { api } from "@/convex/_generated/api"
 import { useEffect } from "react"
 
 export function DatePickerDemo() {
-  const [date, setDate] = React.useState<Date | undefined>()
-
-  const { taskId } = useParams<{ taskId: Id<"tasks"> }>();
+  const { taskId } = useParams<{ taskId: Id<"tasks"> }>()
   const initialData = useQuery(api.tasks.getById, { taskId })
-
-  const updateDueDate = useMutation(api.tasks.update);
-
-  useEffect(() => {
-    if (initialData?.dueDate) {
-      const newDate = format(initialData.dueDate, "yyyy-MM-dd") || initialData.dueDate;
-      const newDueDate = new Date(newDate);
-      setDate(newDueDate);
-    }
-  }, [taskId, initialData?.dueDate]);
-
+  const [date, setDate] = React.useState<Date | undefined>(
+    initialData?.dueDate ? new Date(initialData.dueDate) : undefined
+  )
+  const updateDueDate = useMutation(api.tasks.update)
 
   const selectedNewDate = date?.[Symbol.toPrimitive]('number')
 
-  const initialDate = initialData?._creationTime;
   useEffect(() => {
     // Update due date
     updateDueDate({
@@ -45,8 +35,6 @@ export function DatePickerDemo() {
       dueDate: selectedNewDate
     });
   }, [selectedNewDate, taskId, updateDueDate]);
-
-
 
 
   return (

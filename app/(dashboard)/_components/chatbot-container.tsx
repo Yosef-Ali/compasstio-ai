@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ChatInfo } from "@/types";
 import { Icons } from "@/components/icons";
 import { CardContent } from "@/components/ui/card";
@@ -14,6 +14,9 @@ import { useSlideState } from '@/app/hooks/useSlideState';
 import { useSlideStateMobile } from '@/app/hooks/useSlideStateMobile';
 import useWindowPositionAndMobile from '@/app/hooks/useWindowPositionAndMobile';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { useQuery } from 'convex/react';
+import { api } from '@/convex/_generated/api';
+import { Console } from 'console';
 
 interface InfoListProps {
   items: ChatInfo[];
@@ -36,8 +39,6 @@ interface UseChatHelpers {
 interface ExtendedUseChatHelpers extends UseChatHelpers {
   initialInput: string;
 }
-
-
 
 
 const InfoList = ({ items }: InfoListProps) => {
@@ -93,13 +94,30 @@ const Intro = () => {
 const ChatbotContainer: React.FC = () => {
   const [inputFocused, setInputFocused] = useState<boolean>(false);
   const { isMobile } = useWindowPositionAndMobile();
-  const { isSlideOut } = useSlideState(); // Initialize isSlideOut to false
+  const { isSlideOut } = useSlideState();
+
+  const freeTrail = useQuery(api.users.getEndsOn, {});
+  const [isBlocked, setIsBlocked] = useState<boolean>(false);
+
 
 
   const { messages, input, handleInputChange, handleSubmit } = useChat({
     api: "/api/chat"
   });
 
+  const subscriptionEnds = freeTrail?.endsOn ? freeTrail.endsOn < Date.now() / 1000 : false;
+
+  useEffect(() => {
+    if (freeTrail) {
+      if (!freeTrail?.success) {
+        setIsBlocked(true);
+      }
+    }
+
+  }, [freeTrail])
+
+
+  //console.log("isBlocked", isBlocked)
 
   return (
     <>
@@ -107,24 +125,57 @@ const ChatbotContainer: React.FC = () => {
         {!inputFocused && <Intro />}
         <ScrollArea className="h-[82vh] w-full">
           <div className="space-y-4">
-            {messages.map((m: Message) => (
-              <ChatPromptResponse key={m.id} role={m.role} content={m.content} />
-            ))}
-          </div>
+            {isBlocked ? (subscriptionEnds ?
 
-          <form onSubmit={handleSubmit} className={`${isMobile && !isSlideOut || !isMobile ? 'fixed' : 'hidden'} bottom-14 md:bottom-6 w-full max-w-sm sm:max-w-md lg:max-w-sm xl:max-w-lg`}>
-            <div className="flex items-center space-x-2">
-              <Input
-                type="text"
-                placeholder="Say something..."
-                value={input}
-                onChange={handleInputChange}
-                onFocus={() => setInputFocused(true)}
-                className="w-full px-4 py-2 border rounded-lg"
-              />
-              <Button type="submit" className="px-4 py-2 text-white bg-purple-500 rounded-lg ">Send</Button>
-            </div>
-          </form>
+              <div>
+                Your subscription has expired.{" "}
+                <span className="text-purple-500 font-semibold">
+                  Upgrade to Pro for unlimited chats.
+                </span>
+              </div> :
+
+              <div>
+                You have reached the chat limit for unsubscribed users (14 days).{" "}
+                <span className="text-purple-500 font-semibold">
+                  Upgrade to Pro for unlimited chats.
+                </span>
+              </div>
+            )
+              :
+              (
+                messages.map((m: Message) => (
+                  <ChatPromptResponse
+                    key={m.id}
+                    role={m.role}
+                    content={m.content}
+                  />
+                ))
+              )}
+          </div>
+          {!isBlocked && (
+            <form
+              onSubmit={handleSubmit}
+              className={`${isMobile && !isSlideOut || !isMobile ? "fixed" : "hidden"
+                } bottom-14 md:bottom-6 w-full max-w-sm sm:max-w-md lg:max-w-sm xl:max-w-lg`}
+            >
+              <div className="flex items-center space-x-2">
+                <Input
+                  type="text"
+                  placeholder="Say something..."
+                  value={input}
+                  onChange={handleInputChange}
+                  onFocus={() => setInputFocused(true)}
+                  className="w-full px-4 py-2 border rounded-lg"
+                />
+                <Button
+                  type="submit"
+                  className="px-4 py-2 text-white bg-purple-500 rounded-lg "
+                >
+                  Send
+                </Button>
+              </div>
+            </form>
+          )}
         </ScrollArea>
       </div>
     </>

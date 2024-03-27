@@ -99,22 +99,7 @@ export const ToolbarTasks = ({
             {initialData.title}
           </div>
         )}
-        {/* {!initialData.icon && !preview && (
-          // <IconPicker asChild onChange={onIconSelect}>
-          //   <Button
-          //     className="text-muted-foreground text-xs"
-          //     variant="outline"
-          //     size="sm"
-          //   >
-          //     <Smile className="h-4 w-4 mr-2" />
-          //     Add icon
-          //   </Button>
-          // </IconPicker>
-          <Button className="text-muted-foreground text-xs" variant="outline" size="sm">
-            <LoaderIcon className="w-4 h-4 mr-2" />
-            <span>Status</span>
-          </Button>
-        )} */}
+        
 
         <TaskStatusPopover />
         <DatePickerDemo />

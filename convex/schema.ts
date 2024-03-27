@@ -21,16 +21,6 @@ export default defineSchema({
     isPublished: v.boolean(),
   }).index("by_user", ["userId"]),
 
-  chatbots: defineTable({
-    botId: v.string(),
-    name: v.optional(v.string()),
-    description: v.optional(v.string()),
-    intents: v.optional(v.string()),
-    responses: v.optional(v.string()),
-    context: v.optional(v.string()),
-    avatarUrl: v.optional(v.string()),
-    isPinned: v.boolean(),
-  }).index("by_botId", ["botId"]),
 
   chats: defineTable({
     userId: v.string(),
@@ -99,17 +89,8 @@ export default defineSchema({
     members: v.array(v.string()),
   }),
 
-  Users: defineTable({
-    tokenIdentifier: v.string(),
-    model: v.union(v.literal("gpt-3.5-turbo-1106"), v.literal("gpt-4-0125-preview")),
-    endsOn: v.optional(v.number()),
-    subscriptionId: v.optional(v.string()),
-  })
-    .index("by_token", ["tokenIdentifier"])
-    .index("by_subscriptionId", ["subscriptionId"]),
+
 
 });
-
-
 
 

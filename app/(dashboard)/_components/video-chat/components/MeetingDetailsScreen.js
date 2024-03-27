@@ -2,6 +2,9 @@
 import { CheckIcon, ClipboardIcon } from "@heroicons/react/outline";
 import React, { useState } from "react";
 import useResponsiveSize from "@/utils/useResponsiveSize";
+import { useQuery } from 'convex/react';
+import { api } from '@/convex/_generated/api';
+
 
 export function MeetingDetailsScreen({
   onClickJoin,
@@ -15,6 +18,7 @@ export function MeetingDetailsScreen({
   const [meetingId, setMeetingId] = useState("");
   const [meetingIdError, setMeetingIdError] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
+  const subscriptionEnds = useQuery(api.users.getEndsOn, {});
 
   const [iscreateMeetingClicked, setIscreateMeetingClicked] = useState(false);
   const [isJoinMeetingClicked, setIsJoinMeetingClicked] = useState(false);
@@ -26,16 +30,8 @@ export function MeetingDetailsScreen({
     xs: 1.5,
   });
 
-  // meetingId is avalable only when createMeeting is clicked
+  const expiredSubscription = subscriptionEnds > Date.now()
 
-  // crete uesEffect here
-  // useEffect(() => {
-  //   if (meetingId) {
-  //     setIscreateMeetingClicked(true);
-  //     setIsJoinMeetingClicked(false);
-  //   }
-  //     // Add your useEffect logic here
-  // }, [meetingId]);
 
   return (
     <div
@@ -118,7 +114,8 @@ export function MeetingDetailsScreen({
       {!iscreateMeetingClicked && !isJoinMeetingClicked && (
         <div className="w-full md:mt-0 mt-4 flex items-center justify-center flex-col">
           <button
-            className="w-full bg-purple-500 hover:bg-purple-800 text-white px-2 py-3 rounded-xl"
+            className={`w-full bg-purple-500 hover:bg-purple-800 text-white px-2 py-3 rounded-xl ${!expiredSubscription ? "cursor-pointer" : "opacity-50 cursor-not-allowed"}`}
+            disabled={expiredSubscription}
             onClick={async (e) => {
               const meetingId = await onClickCreateMeeting();
               setMeetingId(meetingId);

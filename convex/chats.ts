@@ -1,7 +1,32 @@
 import { v } from "convex/values";
 //import { currentUser } from "@clerk/nextjs";
-import { mutation, query } from "./_generated/server";
-import { Doc, Id } from "./_generated/dataModel";
+import {  mutation, query } from "./_generated/server";
+import { DateTime } from 'luxon';
+
+export const getChatLimited = query({
+  args: {},
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+    const fourteenDaysAgo = DateTime.now().minus({ days: 14 }).toJSDate();
+
+    // Get the earliest chat for the user
+    const firstChat = await ctx.db
+      .query("chats")
+      .filter((q) => q.eq(q.field("userId"), identity?.subject))
+      .order("asc") // Order by ascending to get the earliest chat
+      .first();
+
+    // If there's no chat, or the first chat is within the last 14 days, allow chatting
+    if (!firstChat || new Date(firstChat._creationTime) >= fourteenDaysAgo) {
+      // Allow the user to chat
+      return { allowed: true };
+    }
+
+    // If the first chat is older than 14 days, return null
+    return null;
+  },
+});
+
 
 export const updatedChat = mutation({
   args: {

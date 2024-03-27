@@ -20,7 +20,7 @@ export const UpgradeModal = ({
   setOpen
 }: UpgradeModalProps) => {
   const [formattedPrice, setFormattedPrice] = useState<string>('');
-  const upgrade = useAction(api.stripe.pay);
+  const upgrade = useAction(api.stripe.pay as any);
   const price = useAction(api.stripe.getSubscriptionPrice);
   const router = useRouter();
 

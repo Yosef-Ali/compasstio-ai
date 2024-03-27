@@ -122,12 +122,10 @@ export const getSubscriptionPrice = action({
     });
 
     const price = await stripe.prices.retrieve(process.env.STRIPE_SUBSCRIPTION_PRICE_ID!)
-      
+
     if (!price) {
       throw new Error("Price not found!");
     }
-
-    console.log("price", price);
     return price
   }
 })
