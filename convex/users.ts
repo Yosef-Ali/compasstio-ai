@@ -58,7 +58,7 @@ export const store = mutation({
     return await ctx.db.insert("users", {
       userId: identity.subject,
       name: identity.name || "",
-      username: identity.preferredUsername || identity.subject,
+      username: identity.preferredUsername || "",
       avatarUrl: identity.pictureUrl || "",
       email: identity.emailVerified ? identity.email : "",
       bio: "",

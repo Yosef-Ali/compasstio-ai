@@ -45,10 +45,13 @@ const FormSchema = z.object({
 const useUsers = () => {
   const [options, setOptions] = React.useState<Option[]>([]);
   const users = useQuery(api.users.get);
+  const fullName = useUser().user?.fullName;
+  const userName = useUser().user?.username;
+
 
   React.useEffect(() => {
     const newOptions = users?.map(user => ({
-      label: `${user.name} (${user.email})`,
+      label: `${userName} (${fullName})`,
       value: user.email,
     })) as Option[];
     setOptions(newOptions);
@@ -60,7 +63,8 @@ const useUsers = () => {
 
 const useCreateGroup = () => {
   const createGroup = useMutation(api.liveSessionsGroups.create);
-  const ownerId = useUser().user?.id;
+  const ownerId = useUser().user?.fullName;
+
 
   const createGroupFunc = React.useCallback(
     async (data: z.infer<typeof FormSchema>) => {
@@ -102,6 +106,11 @@ const MultipleSelectorWithCreateGroup = React.forwardRef((props: MultipleSelecto
       form.handleSubmit(onSubmit)();
     },
   }));
+
+  const ownerId = useUser().user?.fullName;
+
+  console.log("options", options)
+
 
   return (
     <Form {...form}>
