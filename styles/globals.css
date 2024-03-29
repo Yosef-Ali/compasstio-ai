@@ -173,3 +173,20 @@ input:focus-visible {
 .custom-select .Select-menu {
   box-sizing: border-box;
 }
+
+/* clerk-user-button */
+.cl-userButtonBox {
+  display: flex;
+  flex-direction: row-reverse;
+  /* Reverse the order of the flex items */
+  align-items: center;
+}
+
+.custom-user-button .clerk-user-button .clerk-avatar {
+  margin-right: 10px;
+  /* Adjust spacing as needed */
+}
+
+.cl-userButtonOuterIdentifier {
+  @apply text-foreground;
+}

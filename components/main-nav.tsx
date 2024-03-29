@@ -52,12 +52,12 @@ export function MainNav({ items, children }: MainNavProps) {
           {isAuthenticated && !isLoading && (
             <>
               <Button variant="ghost" size="sm" asChild>
-                <Link href="/onboarding">
+                <Link href="/chat-with-ai">
                   Enter workspace
                 </Link>
               </Button>
               <UserButton
-                afterSignOutUrl="/"
+                afterSignOutUrl="/chat-with-ai"
               />
             </>
           )}
