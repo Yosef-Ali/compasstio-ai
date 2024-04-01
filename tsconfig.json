@@ -33,8 +33,13 @@
     "**/*.ts",
     "**/*.tsx",
     "next/types/**/*.ts",
-    ".next/types/**/*.ts"
-, "lib/useResponsiveSize.js", "app/(dashboard)/(route)/layout.js", "app/hooks/useMeetingIdStore.ts", "components/forms/AccountProfileEdit.tsx"  ],
+    ".next/types/**/*.ts",
+    "lib/useResponsiveSize.js",
+    "app/(dashboard)/(route)/layout.js",
+    "app/hooks/useMeetingIdStore.ts",
+    "components/forms/AccountProfileEdit.tsx",
+    "convex/httpClerk.ts"
+  ],
   "exclude": [
     "node_modules"
   ]

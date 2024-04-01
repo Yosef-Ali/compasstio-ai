@@ -1,5 +1,15 @@
+
+import {
+  internalMutation,
+  internalQuery,
+  mutation,
+  query,
+  QueryCtx,
+} from "./_generated/server";
 import { v } from "convex/values";
-import { mutation, query, internalMutation } from "./_generated/server";
+import { Doc, Id } from "./_generated/dataModel";
+import { UserJSON } from "@clerk/backend";
+import { GenericQueryCtx } from "convex/server";
 
 export const getEndsOn = query({
   args: {},
@@ -44,26 +54,33 @@ export const store = mutation({
       throw new Error("Called storeUser without authenticated user");
     }
 
-    // check if user is already stored
+    // Check if the user is already stored
     const user = await ctx.db
       .query("users")
-      .withIndex("by_token", (q) =>
-        q.eq("tokenIdentifier", identity.tokenIdentifier))
+      .withIndex("by_token", (q) => q.eq("tokenIdentifier", identity.tokenIdentifier))
       .unique();
 
     if (user) {
-      return user;
+      // User exists, update their information
+      return await ctx.db.patch(user._id, {
+        name: identity.name || "",
+        username: identity.preferredUsername || "",
+        avatarUrl: identity.pictureUrl || "",
+        email: identity.emailVerified ? identity.email : "",
+      });
+    } else {
+      // User doesn't exist, create a new one
+      return await ctx.db.insert("users", {
+        userId: identity.subject,
+        name: identity.name || "",
+        username: identity.name || "",
+        avatarUrl: identity.pictureUrl || "",
+        email: identity.emailVerified ? identity.email : "",
+        bio: "",
+        endsOn: 0,
+        tokenIdentifier: identity.tokenIdentifier,
+      });
     }
-
-    return await ctx.db.insert("users", {
-      userId: identity.subject,
-      name: identity.name || "",
-      username: identity.preferredUsername || "",
-      avatarUrl: identity.pictureUrl || "",
-      email: identity.emailVerified ? identity.email : "",
-      bio: "",
-      tokenIdentifier: identity.tokenIdentifier,
-    });
   },
 });
 
@@ -196,6 +213,7 @@ export const create = mutation({
       avatarUrl: args.avatarUrl,
       email: args.email,
       bio: args.bio,
+      endsOn: 0,
       tokenIdentifier: identity.tokenIdentifier,
     });
   },
@@ -315,3 +333,62 @@ export const updateSubscriptionById = internalMutation({
   },
 });
 
+/** Get user by Clerk use id (AKA "subject" on auth)  */
+export const _getUser = internalQuery({
+  args: { subject: v.string() },
+  async handler(ctx, args) {
+    return await userQuery(ctx, args.subject);
+  },
+});
+
+
+
+export const updateOrCreateUser = internalMutation({
+  args: { clerkData: v.any() },
+  async handler(ctx, { clerkData }) {
+    const userRecord = await userQuery(ctx, clerkData.id);
+
+
+
+
+    if (userRecord === null) {
+      // Create a new user with Clerk data
+      await ctx.db.insert("users", {
+        clerkData,
+        avatarUrl: clerkData.avatarUrl || "",
+        username: clerkData.username || "",
+        email: clerkData.email || "",
+      });
+    } else {
+      console.log("userRecord", userRecord)
+      // Update existing user with new Clerk data
+      await ctx.db.patch(userRecord._id, {
+        clerkData,
+        avatarUrl: clerkData.avatarUrl || "",
+        username: clerkData.username || "",
+        email: clerkData.email || "",
+      });
+    }
+  },
+});
+
+// Adjusted userQuery function to work with the new clerkData field
+async function userQuery(ctx: QueryCtx, clerkUserId: string): Promise<Doc<"users"> | null> {
+  return await ctx.db
+    .query("users")
+    .withIndex("by_clerk_id", (q) => q.eq("clerkData.id", clerkUserId))
+    .unique();
+}
+
+export const deleteUser = internalMutation({
+  args: { id: v.string() },
+  async handler(ctx, { id }) {
+    const userRecord = await userQuery(ctx, id);
+
+    if (userRecord === null) {
+      console.warn("can't delete user, does not exist", id);
+    } else {
+      await ctx.db.delete(userRecord._id);
+    }
+  },
+});

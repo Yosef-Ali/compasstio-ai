@@ -16,9 +16,11 @@ import type {
 } from "convex/server";
 import type * as chatMesseges from "../chatMesseges.js";
 import type * as chats from "../chats.js";
+import type * as clerk from "../clerk.js";
 import type * as files from "../files.js";
 import type * as friends from "../friends.js";
 import type * as http from "../http.js";
+import type * as httpStripe from "../httpStripe.js";
 import type * as journals from "../journals.js";
 import type * as liveSessionsGroups from "../liveSessionsGroups.js";
 import type * as meetings from "../meetings.js";
@@ -39,9 +41,11 @@ import type * as users from "../users.js";
 declare const fullApi: ApiFromModules<{
   chatMesseges: typeof chatMesseges;
   chats: typeof chats;
+  clerk: typeof clerk;
   files: typeof files;
   friends: typeof friends;
   http: typeof http;
+  httpStripe: typeof httpStripe;
   journals: typeof journals;
   liveSessionsGroups: typeof liveSessionsGroups;
   meetings: typeof meetings;

@@ -22,7 +22,8 @@
     "noEmit": true
   },
   "include": [
-    "./**/*"
+    "./**/*",
+    "clerk.ts"
   ],
   "exclude": [
     "./_generated"

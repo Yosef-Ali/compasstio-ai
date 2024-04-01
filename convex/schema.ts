@@ -51,17 +51,20 @@ export default defineSchema({
 
   users: defineTable({
     avatarUrl: v.string(),
-    bio: v.string(),
-    name: v.string(),
-    userId: v.string(),
-    username: v.string(),
+    bio: v.optional(v.string()),
+    name: v.optional(v.string()),
+    userId: v.optional(v.string()),
+    username: v.optional(v.string()),
     email: v.optional(v.string()),
-    tokenIdentifier: v.string(),
+    tokenIdentifier: v.optional(v.string()),
     endsOn: v.optional(v.number()),
     subscriptionId: v.optional(v.string()),
+    clerkData: v.optional(v.any()),
   }).index("by_username", ["username"])
     .index("by_token", ["tokenIdentifier"])
-    .index("by_subscriptionId", ["subscriptionId"]),
+    .index("by_subscriptionId", ["subscriptionId"])
+    .index("by_clerk_id", ["clerkData.id"])
+    .index("by_userId", ["userId"]),
 
 
   tasks: defineTable({
