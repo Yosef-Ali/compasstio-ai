@@ -30,7 +30,7 @@ export const getMembersInfo = query({
         const user = users.find((user) => user.email === member);
         return {
           name: user ? user.name : null,
-          email: user ? user.email : null,
+          username: user ? user.username : null,
         };
       });
     } catch (error) {

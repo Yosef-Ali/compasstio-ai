@@ -61,8 +61,8 @@ const useUsers = () => {
 
   React.useEffect(() => {
     const newOptions = users?.map(user => ({
-      label: `${user.name} (${user.email})`,
-      value: user.email,
+      label: `${user.name} (${user.username})`,
+      value: user.username,
     })) as Option[];
     setOptions(newOptions);
   }, [users]);
@@ -91,8 +91,8 @@ const useMembers = (groupId: Id<"groups">) => {
   const membersOptions = React.useMemo(() => {
     if (!groupId) return []; // Return empty array when groupId is empty
     return membersData?.map(member => ({
-      label: `${member.name} (${member.email})`,
-      value: member.email,
+      label: `${member.name} (${member.username})`,
+      value: member.username,
     })) as Option[];
   }, [groupId, membersData]);
 

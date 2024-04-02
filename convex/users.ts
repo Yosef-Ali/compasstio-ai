@@ -341,15 +341,10 @@ export const _getUser = internalQuery({
   },
 });
 
-
-
 export const updateOrCreateUser = internalMutation({
   args: { clerkData: v.any() },
   async handler(ctx, { clerkData }) {
     const userRecord = await userQuery(ctx, clerkData.id);
-
-
-
 
     if (userRecord === null) {
       // Create a new user with Clerk data
