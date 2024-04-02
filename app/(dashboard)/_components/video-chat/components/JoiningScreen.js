@@ -332,7 +332,7 @@ export function JoiningScreen({
   }, [videoTrack, setting, settingDialogueOpen]);
 
   useEffect(() => {
-    getDevices({ micEnabled, webcamEnabled });
+    getDevices({ micEnabled: false, webcamEnabled: false });
   }, []);
 
   return (
