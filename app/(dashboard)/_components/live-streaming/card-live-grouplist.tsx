@@ -76,7 +76,7 @@ export function CardGroupList({ userId, title, members, groupId }: LiveStreaming
         <div className="flex">
           <div className="flex-1">
             <div className="">
-              <div className="flex  -space-x-2">
+              <div className="flex -space-x-2 overflow-hidden">
                 {members.map((member) => (
                   <Avatars key={member} email={member} />
                 ))}

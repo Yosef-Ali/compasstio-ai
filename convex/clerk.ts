@@ -17,6 +17,10 @@ const webhookSecret = ensureEnvironmentVariable("CLERK_WEBHOOK_SECRET");
 
 // Define the Clerk webhook handler
 export const handleClerkWebhook = httpAction(async (ctx, request) => {
+
+  // Call the getUserIdentity mutation to retrieve the user identity
+
+
   // Validate the incoming webhook request
   const event = await validateRequest(request);
   if (!event) {
@@ -38,8 +42,10 @@ export const handleClerkWebhook = httpAction(async (ctx, request) => {
         console.warn(`Overwriting existing user: ${userId}`);
       }
 
+      const userIdentity = await ctx.runQuery(internal.users.getUserIdentity);
+
       console.log(`Processing user: ${userId}`);
-      await ctx.runMutation(internal.users.updateOrCreateUser, { clerkData: event.data });
+      await ctx.runMutation(internal.users.updateOrCreateUser, { clerkData: event.data, userIdentity: userIdentity?.tokenIdentifier as string });
       break;
 
     case "user.deleted":

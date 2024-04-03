@@ -45,11 +45,17 @@ export const getMembers = query({
     groupId: v.string(),
   },
   handler: async (ctx, args) => {
-    const members = await ctx.db
-      .query("groups")
-      .filter((q) => q.eq(q.field("_id"), args.groupId))
-      .collect();
-    return members[0].members;
+    try {
+      const members = await ctx.db
+        .query("groups")
+        .filter((q) => q.eq(q.field("_id"), args.groupId))
+        .unique();
+      return members;
+    } catch (error) {
+      console.error("Failed to retrieve group members:", error);
+      // Depending on your application's needs, you might throw an error, return `null`, or return a custom error message.
+      throw new Error("Error retrieving group members.");
+    }
   },
 });
 

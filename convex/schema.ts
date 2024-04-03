@@ -50,21 +50,20 @@ export default defineSchema({
     .index("by_friendId", ["friend_Id"]),
 
   users: defineTable({
-    avatarUrl: v.string(),
-    bio: v.optional(v.string()),
-    name: v.optional(v.string()),
+    tokenIdentifier: v.optional(v.string()),
+    email: v.string(),
+    name: v.string(),
+    avatarUrl: v.optional(v.string()),
     userId: v.optional(v.string()),
     username: v.optional(v.string()),
-    email: v.optional(v.string()),
-    tokenIdentifier: v.optional(v.string()),
     endsOn: v.optional(v.number()),
     subscriptionId: v.optional(v.string()),
     clerkData: v.optional(v.any()),
-  }).index("by_username", ["username"])
-    .index("by_token", ["tokenIdentifier"])
+    bio: v.optional(v.string()),
+  }).index("by_token", ["tokenIdentifier"])
     .index("by_subscriptionId", ["subscriptionId"])
     .index("by_clerk_id", ["clerkData.id"])
-    .index("by_userId", ["userId"]),
+    .index("by_user_id", ["userId"]),
 
 
   tasks: defineTable({
@@ -90,9 +89,8 @@ export default defineSchema({
     userId: v.optional(v.string()), // The creator user id
     title: v.optional(v.string()),
     members: v.array(v.string()),
-  }),
-
-
+  })
+    .index("by_user", ["userId"]),
 
 });
 
