@@ -21,7 +21,7 @@ export default function IndexPage() {
       if (isAuthenticated) {
         try {
           await storeUser();
-          router.push("/");
+          router.push("/chat-with-ai");
         } catch (error) {
           console.log(error);
         }

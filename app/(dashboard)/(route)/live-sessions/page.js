@@ -34,17 +34,17 @@ const tabs = [
 export default function Home() {
   return (
     <>
-      <TopNav />
+      {/* <TopNav />
       <Shell>
-        <Wrapper>
-          <div className='w-full bg-gray-800 h-full'>
-            <ThemeProviderContext>
-              <MeetingAppContainer />
-            </ThemeProviderContext>
-          </div>
-        </Wrapper>
+        <Wrapper> */}
+      <div className='w-full bg-gray-800 h-full'>
+        <ThemeProviderContext>
+          <MeetingAppContainer />
+        </ThemeProviderContext>
+      </div>
+      {/* </Wrapper>
         <RightAside tabs={tabs} />
-      </Shell>
+      </Shell> */}
     </>
   );
 }
