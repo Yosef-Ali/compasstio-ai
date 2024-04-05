@@ -305,8 +305,8 @@ export function MeetingContainer({
                 )}
               </div>
               <SidebarConatiner
-                //height={containerHeight - bottomBarHeight}
-                height={_windowHeight - bottomBarHeight}
+                height={containerHeight - bottomBarHeight}
+                //height={_windowHeight - bottomBarHeight}
                 setSideBarMode={setSideBarMode}
                 sideBarMode={sideBarMode}
                 raisedHandsParticipants={raisedHandsParticipants}

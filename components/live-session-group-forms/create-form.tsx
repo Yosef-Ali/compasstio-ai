@@ -51,7 +51,7 @@ const useUsers = () => {
 
   React.useEffect(() => {
     const newOptions = users?.map(user => ({
-      label: `${userName} (${fullName})`,
+      label: `${userName || fullName}`,
       value: user.email,
     })) as Option[];
     setOptions(newOptions);

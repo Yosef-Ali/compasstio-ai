@@ -37,12 +37,12 @@ export default function Home() {
       <TopNav />
       <Shell>
         <Wrapper>
-          <div className='w-full bg-gray-800 h-full'>
-            <ThemeProviderContext>
-              <MeetingAppContainer />
-            </ThemeProviderContext>
-          </div>
-        </Wrapper>
+      <div className='w-full bg-gray-800 h-full'>
+        <ThemeProviderContext>
+          <MeetingAppContainer />
+        </ThemeProviderContext>
+      </div>
+      </Wrapper>
         <RightAside tabs={tabs} />
       </Shell>
     </>

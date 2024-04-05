@@ -61,7 +61,7 @@ const useUsers = () => {
 
   React.useEffect(() => {
     const newOptions = users?.map(user => ({
-      label: `${user.name} (${user.username})`,
+      label: ` ${user.username || user.name} `,
       value: user.username,
     })) as Option[];
     setOptions(newOptions);

@@ -23,6 +23,7 @@ function MeetingAppContainer() {
   const [isMeetingLeft, setIsMeetingLeft] = useState(false);
   const [raisedHandsParticipants, setRaisedHandsParticipants] = useState([]);
 
+
   const useRaisedHandParticipants = () => {
     const raisedHandsParticipantsRef = useRef();
 
@@ -84,6 +85,8 @@ function MeetingAppContainer() {
     }
   }, [isXStoSM]);
 
+
+
   return (
     <>
       {isMeetingStarted ? (
@@ -113,6 +116,14 @@ function MeetingAppContainer() {
                 setWebcamOn(false);
                 setMicOn(false);
                 setMeetingStarted(false);
+
+                // Access the videoSDK instance and turn off the webcam
+                // const videoSDK = window.VideoSDK;
+                // if (videoSDK) {
+                //   videoSDK.toggleWebcam(false);
+                //   videoSDK.leave();
+                //   console.log("video sdk::", videoSDK);
+                //}
               }}
               setIsMeetingLeft={setIsMeetingLeft}
               selectedMic={selectedMic}
