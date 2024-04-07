@@ -26,11 +26,11 @@ export default function OnBoardingPage() {
 
   const userData = {
     userId: userInfo?.userId ?? user.id.toString(),
-    username: userInfo ? userInfo?.username : user.username,
-    name: userInfo ? userInfo?.name : user.firstName ?? "",
-    bio: userInfo ? userInfo?.bio : "",
-    image: userInfo ? userInfo?.avatarUrl : user.imageUrl,
-    email: userInfo ? userInfo?.email ?? "" : user.emailAddresses?.[0]?.emailAddress ?? "",
+    username: userInfo?.username ?? null,
+    name: userInfo?.name ?? "",
+    bio: userInfo?.bio ?? "",
+    image: userInfo?.avatarUrl ?? user.imageUrl ?? "",
+    email: userInfo?.email ?? user.emailAddresses?.[0]?.emailAddress ?? "",
   };
 
   return (
@@ -39,7 +39,7 @@ export default function OnBoardingPage() {
         <h1 className='text-2xl'>Profile</h1>
         <p className='mt-3 text-lg'>
           Edit your profile now, to use <span className='font-bold'>
-            eternalvirtueai.com
+            shibahumanity.ai
           </span>
         </p>
 

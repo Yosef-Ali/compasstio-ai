@@ -21,27 +21,43 @@ interface ChatCardProps {
 interface User {
   _id: Id<"users">;
   _creationTime: number;
-  email?: string | undefined;
-  userId: string;
+  email?: string;
+  userId?: string;
   name: string;
-  avatarUrl: string; // Add avatarUrl property here
+  avatarUrl: string;
   bio: string;
   username: string;
   tokenIdentifier: string;
+  endsOn?: number;
+  subscriptionId?: string;
+  // Add any other properties here
 }
 
+interface FullUser {
+  _id: Id<"users">;
+  _creationTime: number;
+  email?: string;
+  userId?: string;
+  name: string;
+  avatarUrl?: string;
+  bio: string;
+  username: string;
+  tokenIdentifier?: string;
+  endsOn?: number;
+  subscriptionId?: string;
+  // Add any other additional properties here
+}
 
 const CardSingle: React.FC<{
-  userIfo: User | null | undefined;
+  userIfo: FullUser | null | undefined;
   meetingId: string;
   creationTime: number;
   currentMeetingId?: string | undefined;
-}> = ({ userIfo, meetingId, creationTime, currentMeetingId }) => { // Add return type
-
+}> = ({ userIfo, meetingId, creationTime, currentMeetingId }) => {
   const formatted = useFormattedTime(creationTime);
 
   return (
-    <Card >
+    <Card>
       <CardHeader>
         <div className="flex">
           <div className="flex-1">
@@ -69,14 +85,15 @@ const CardSingle: React.FC<{
         </div>
       </CardHeader>
     </Card>
-  )
-}
-
+  );
+};
 
 export function CardLiveMeeting({ meetingId, userId, creationTime, }: ChatCardProps) {
   const meetingIdStore = useMeetingIdStore()
   const { currentMeetingId } = meetingIdStore;
-  const userIfo = useQuery(api.users.getUser, { id: userId as string });
+  const userIfo = useQuery(api.users.getUser, { id: userId as string }) as FullUser | null | undefined;
+
+
 
   return meetingId ? (
 

@@ -84,7 +84,7 @@ const TasksPage = () => {
             ) : (
               <>
                 <h2 className="text-lg font-medium">
-                  Welcome to {user?.fullName}&apos;s eternalvirtueai.com
+                    Welcome to {user?.fullName}&apos;s shibahumanity.ai
                 </h2>
                 <Button onClick={onCreate} className="flex">
                   <PlusCircleIcon className="h-4 w-4 mr-2" />

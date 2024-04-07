@@ -31,7 +31,7 @@ export function UserNav() {
           <div className="flex flex-col space-y-1">
             <p className="text-sm font-medium leading-none">Eternal virtue ai</p>
             <p className="text-xs leading-none text-muted-foreground">
-              eternalvirtueai.com
+              shibahumanity.ai
             </p>
           </div>
         </DropdownMenuLabel>

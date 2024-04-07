@@ -21,7 +21,7 @@ export default function AllUsers() {
         return (
           <CardAllUsers
             key={user._id}
-            _id={user.userId}
+            _id={user.userId ?? ""}
             name={user.name ?? ""}
             _creationTime={user._creationTime ?? 0}
             avatarUrl={user.avatarUrl ?? ""}

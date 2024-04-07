@@ -7,7 +7,7 @@ interface WelcomeMessageProps {
   buttonLabel: string;
 }
 const WelcomeMessage: React.FC<WelcomeMessageProps> = ({ userFullName, onCreate, buttonLabel }) => {
-  const welcomeText = userFullName ? `Welcome to ${userFullName}'s eternalvirtueai.com` : "Welcome";
+  const welcomeText = userFullName ? `Welcome to ${userFullName}'s shibahumanity.ai` : "Welcome";
 
   return (
     <div className="max-w-xl mx-auto flex flex-col p-12 space-y-3">

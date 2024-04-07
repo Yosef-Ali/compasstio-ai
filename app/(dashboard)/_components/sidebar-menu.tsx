@@ -37,7 +37,7 @@ const SideMenu = () => {
                   <div className="hidden flex-row items-center justify-between py-2 pr-2 md:py-4 md:flex">
                     <div className="h-8 w-20 md:w-32">
                       <Link href="/">
-                        <h1 className='text-[22px] font-semibold'>eternalvirtueai.com</h1>
+                        <h1 className='text-[22px] font-semibold'>shibahumanity.ai</h1>
                       </Link>
                     </div>
                   </div>

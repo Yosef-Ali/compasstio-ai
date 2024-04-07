@@ -181,35 +181,35 @@ export const get = query(async ({ db }) => {
 });
 
 
-// export const create = mutation({
-//   args: {
-//     userId: v.string(),
-//     name: v.string(),
-//     username: v.string(),
-//     avatarUrl: v.string(),
-//     email: v.string(),
-//     bio: v.string(),
-//   },
-//   handler: async (ctx, args) => {
-//     const identity = await ctx.auth.getUserIdentity();
-//     if (!identity) {
-//       throw new Error("Called storeUser without authenticated user");
-//     }
+export const create = mutation({
+  args: {
+    userId: v.string(),
+    name: v.string(),
+    username: v.string(),
+    avatarUrl: v.string(),
+    email: v.string(),
+    bio: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      throw new Error("Called storeUser without authenticated user");
+    }
 
 
 
-//     return await ctx.db.insert("users", {
-//       userId: args.userId,
-//       name: args.name,
-//       username: args.username,
-//       avatarUrl: args.avatarUrl,
-//       email: args.email,
-//       bio: args.bio,
-//       endsOn: 0,
-//       tokenIdentifier: identity.tokenIdentifier,
-//     });
-//   },
-// });
+    return await ctx.db.insert("users", {
+      userId: args.userId,
+      name: args.name,
+      username: args.username,
+      avatarUrl: args.avatarUrl,
+      email: args.email,
+      bio: args.bio,
+      endsOn: 0,
+      tokenIdentifier: identity.tokenIdentifier,
+    });
+  },
+});
 
 export const generateUploadUrl = mutation({
   args: {},
@@ -361,7 +361,7 @@ export const updateOrCreateUser = internalMutation({
       await ctx.db.insert("users", {
         clerkData,
         avatarUrl: clerkData.image_url || "",
-        username: clerkData.username || "",
+        username: clerkData.username || null,
         email: clerkData.email_addresses[0].email_address || "",
         name: (clerkData.first_name || '') + " " + (clerkData.last_name || ''),
         userId: clerkData.id || "",
@@ -384,7 +384,7 @@ export const updateOrCreateUser = internalMutation({
       await ctx.db.patch(userRecord._id, {
         clerkData,
         avatarUrl: clerkData.image_url || "",
-        username: clerkData.username || "",
+        username: clerkData.username || null,
         email: clerkData.email_addresses[0].email_address || "",
         name: (clerkData.first_name || '') + " " + (clerkData.last_name || ''),
         userId: clerkData.id || "",

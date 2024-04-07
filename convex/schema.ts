@@ -55,7 +55,7 @@ export default defineSchema({
     name: v.string(),
     avatarUrl: v.optional(v.string()),
     userId: v.optional(v.string()),
-    username: v.optional(v.string()),
+    username: v.string(),
     endsOn: v.optional(v.number()),
     subscriptionId: v.optional(v.string()),
     clerkData: v.optional(v.any()),
