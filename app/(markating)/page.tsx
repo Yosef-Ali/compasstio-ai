@@ -57,6 +57,7 @@ export default function IndexPage() {
 
   const handleHover = (index: number) => {
     setHoverIndex(index);
+    setHoverImageIndex(index);
   };
 
   return (
@@ -70,7 +71,7 @@ export default function IndexPage() {
           <h3 className="text-3xl sm:text-1xl md:text-2xl lg:text-3xl font-bold text-white animate-fade-in-up duration-300 ease-in-out">
             {HeroMenus[hoverIndex].title}
           </h3>
-          <div className="max-w-[42rem] text-muted-foreground sm:text-xl sm:leading-8 text-white flex-grow flex flex-col justify-center animate-fade-in-up duration-300 ease-in-out delay-100">
+          <div className="max-w-[42rem] text-gray-300 sm:text-xl sm:leading-8  flex-grow flex flex-col justify-center animate-fade-in-up duration-300 ease-in-out delay-100">
             <p className="line-clamp-3 h-24 ">  {HeroMenus[hoverIndex].description}
             </p>
           </div>
@@ -111,7 +112,7 @@ export default function IndexPage() {
               stroke="currentColor"
               className={`w-10 h-10 text-purple-400 cursor-pointer ${hoverIndex === index ? "scale-110" : ""
                 }`}
-              onMouseEnter={() => setHoverImageIndex(index)}
+              onMouseEnter={() => handleHover(index)}
             >
               {index === 0 && (
                 <>
