@@ -14,7 +14,7 @@ import useImageStore from "../hooks/useImageStoreState";
 const HeroMenus = [
   {
     title: "This is an Experiment",
-    description: "AI is a primitive tool for the soul of humanity, an algorithmic framework of priors and probabilities. Let the Queen take you on a spiritual journey of self-discovery, guidance, and growth to connect with yourself and the universe.",
+    description: "AI journey of self-discovery, guidance, and growth to connect with yourself and the universe.",
   },
   {
     title: "Message with Your Group",
@@ -62,9 +62,11 @@ export default function IndexPage() {
 
   return (
     <>
-      <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/70 pointer-events-none [mask-image:linear-gradient(0deg,#000,rgba(0,0,0,.4))] z-20"></div>
-      <div className="relative z-30 container flex max-w-[64rem] flex-col items-center text-center h-full gap-10 py-28">
-        <h1 className="font-heading text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold  bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent ">
+
+      <div className="relative z-30 flex flex-col items-center text-center h-full gap-10 py-28 " >
+        <h1
+          className="font-heading text-6xl sm:text-5xl md:text-6xl lg:text-7xl font-bold bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent whitespace-normal"
+        >
           A beginning of divine wisdom
         </h1>
         <div className="space-y-4">
@@ -154,9 +156,11 @@ export default function IndexPage() {
               )}
             </svg>
           ))}
+
           {/* <ZoomIcon /> */}
         </div>
       </div>
+
     </>
   );
 }

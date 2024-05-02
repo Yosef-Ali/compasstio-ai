@@ -38,7 +38,7 @@ export function MainNav({ items, children }: MainNavProps) {
           {!isAuthenticated && !isLoading && (
             <>
               <SignInButton mode="modal">
-                <Button variant="ghost" size="sm" className="text-purple-400">
+                <Button variant="ghost" size="sm" className="text-purple-300">
                   Log in
                 </Button>
               </SignInButton>
