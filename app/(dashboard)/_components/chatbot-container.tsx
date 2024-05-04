@@ -4,19 +4,17 @@ import { ChatInfo } from "@/types";
 import { Icons } from "@/components/icons";
 import { CardContent } from "@/components/ui/card";
 import { chatInfoConfig } from "@/config/chat-info";
-import { Avatar } from "@/components/ui/avatar";
+import { Avatar, AvatarImage, AvatarFallback, } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import ChatPromptResponse from "./chat-with-ai/chat-messages";
 import { useChat } from 'ai/react';
-import Wrapper from "./wrapper";
 import { useSlideState } from '@/app/hooks/useSlideState';
-import { useSlideStateMobile } from '@/app/hooks/useSlideStateMobile';
 import useWindowPositionAndMobile from '@/app/hooks/useWindowPositionAndMobile';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useQuery } from 'convex/react';
 import { api } from '@/convex/_generated/api';
-import { Console } from 'console';
+
 
 interface InfoListProps {
   items: ChatInfo[];
@@ -82,7 +80,7 @@ const Intro = () => {
             Welcome to Chat with AI
           </h1>
           <p className="text-center text-sm text-purple-800 md:text-md ">
-            Get started by writing a task and Chat can do the rest. Not sure where to start? Check out the Prompt Library for inspiration.
+            AI can be used as a tool for the soul of humanity, although an algorithmic framework of priors and probabilities.
           </p>
         </div>
         <InfoList items={chatInfoConfig} />
@@ -117,70 +115,63 @@ const ChatbotContainer: React.FC = () => {
   }, [freeTrail])
 
 
-  //console.log("isBlocked", isBlocked)
+
 
   return (
     <>
-      <div className="mx-auto w-full z-0 max-w-sm md:max-w-md lg:max-w-lg px-4 py-12 lg:py-24 flex flex-col space-y-10 text-center transition-width duration-500">
+      <div className="mx-auto z-0 w-sm md:max-w-md lg:max-w-lg px-4 pt-24 pb-12 md:pb-0 flex flex-col h-full">
         {!inputFocused && <Intro />}
-        <ScrollArea className="h-[82vh] w-full">
-          <div className="space-y-4">
-            {isBlocked ? (subscriptionEnds ?
-
-              <div>
-                Your subscription has expired.{" "}
-                <span className="text-purple-500 font-semibold">
-                  Upgrade to Pro for unlimited chats.
-                </span>
-              </div> :
-
-              <div>
-                You have reached the chat limit for unsubscribed users (14 days).{" "}
-                <span className="text-purple-500 font-semibold">
-                  Upgrade to Pro for unlimited chats.
-                </span>
-              </div>
-            )
-              :
-              (
+        <div className="flex-grow overflow-auto">
+          <ScrollArea className="h-full w-full">
+            <div className="space-y-4">
+              {isBlocked ? (
+                subscriptionEnds ? (
+                  <div>
+                    Your subscription has expired.{" "}
+                    <span className="text-purple-500 font-semibold">
+                      {" "}
+                      Upgrade to Pro for unlimited chats.{" "}
+                    </span>
+                  </div>
+                ) : (
+                  <div>
+                    You have reached the chat limit for unsubscribed users (14 days).{" "}
+                    <span className="text-purple-500 font-semibold">
+                      {" "}
+                      Upgrade to Pro for unlimited chats.{" "}
+                    </span>
+                  </div>
+                )
+              ) : (
                 messages.map((m: Message) => (
-                  <ChatPromptResponse
-                    key={m.id}
-                    role={m.role}
-                    content={m.content}
-                  />
+                  <ChatPromptResponse key={m.id} role={m.role} content={m.content} />
                 ))
               )}
-          </div>
-          {!isBlocked && (
-            <form
-              onSubmit={handleSubmit}
-              className={`${isMobile && !isSlideOut || !isMobile ? "fixed" : "hidden"
-                } bottom-14 md:bottom-6 w-full max-w-sm sm:max-w-md lg:max-w-sm xl:max-w-lg`}
-            >
-              <div className="flex items-center space-x-2">
-                <Input
-                  type="text"
-                  placeholder="Say something..."
-                  value={input}
-                  onChange={handleInputChange}
-                  onFocus={() => setInputFocused(true)}
-                  className="w-full px-4 py-2 border rounded-lg"
-                />
-                <Button
-                  type="submit"
-                  className="px-4 py-2 text-white bg-purple-500 rounded-lg "
-                >
-                  Send
-                </Button>
-              </div>
-            </form>
-          )}
-        </ScrollArea>
+            </div>
+          </ScrollArea>
+        </div>
+        {!isBlocked && (
+          <form onSubmit={handleSubmit} className="flex items-center space-x-2 py-4 px-3 border">
+            <Input
+              type="text"
+              placeholder="Say something..."
+              value={input}
+              onChange={handleInputChange}
+              onFocus={() => setInputFocused(true)}
+            />
+            <Button type="submit" className="text-white bg-purple-500 rounded-lg">
+              Send
+            </Button>
+          </form>
+        )}
       </div>
     </>
   );
 };
 
 export default ChatbotContainer;
+
+
+
+
 

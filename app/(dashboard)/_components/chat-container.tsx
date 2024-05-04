@@ -1,17 +1,9 @@
 "use client"
-import { useRef, useState } from "react";
+
 import { ChatInfo } from "@/types";
 import { Icons } from "@/components/icons";
-import { CardContent } from "@/components/ui/card";
 import { messageInfoConfig } from "@/config/chat-info";
 import { Avatar } from "@/components/ui/avatar";
-import RightAside from "./right-aside";
-import AllUsers from "./chat-with-group/all-users";
-import Friends from "./chat-with-group/chat-with-group";
-import { useSlideState } from "@/app/hooks/useSlideState";
-import useWindowPositionAndMobile from "@/app/hooks/useWindowPositionAndMobile";
-import { useSlideStateMobile } from "@/app/hooks/useSlideStateMobile";
-
 
 interface InfoListProps {
   items: ChatInfo[];
@@ -53,12 +45,15 @@ const InfoList = ({ items }: InfoListProps) => {
 
 const Intro = () => {
   return (
-    <div className="mx-auto w-full z-0 max-w-sm md:max-w-md lg:max-w-lg px-4  py-12 lg:py-24 flex flex-col stretch space-y-10 text-center transition-width duration-500">
+    <div className="mx-auto w-full z-0 max-w-sm md:max-w-md  px-4  py-12 lg:py-24 flex flex-col stretch space-y-10 text-center transition-width duration-500">
       <div className="flex flex-col items-center space-y-4">
-        <div className="flex  items-start space-y-4 md:items-center">
-          <h1 className="text-3xl font-bold text-purple-500 text-center">
+        <div className="flex flex-col items-start space-y-4 md:items-center">
+          <h1 className="text-center md:text-left text-3xl font-bold text-purple-500">
             Welcome to Messaging
           </h1>
+          <p className="text-center text-sm text-purple-800 md:text-md ">
+            Create your group of like-minded friends to support and uplift one another.
+          </p>
         </div>
         <InfoList items={messageInfoConfig} />
       </div>

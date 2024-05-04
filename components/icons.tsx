@@ -10,6 +10,7 @@ import {
   CreditCard,
   File,
   FileText,
+  Globe,
   HelpCircle,
   Image,
   Laptop,
@@ -33,6 +34,7 @@ import {
   VideoIcon,
   ChevronsDownUpIcon,
   PenLineIcon,
+  UsersIcon,
   FileTextIcon,
   UserPlus2Icon,
   CheckCheckIcon,
@@ -51,6 +53,7 @@ export const Icons = {
   chevronLeft: ChevronLeft,
   chevronRight: ChevronRight,
   trash: Trash,
+  Glob: Globe,
   post: FileText,
   page: File,
   media: Image,
@@ -73,6 +76,7 @@ export const Icons = {
   video: VideoIcon,
   chevronsDownUp: ChevronsDownUpIcon,
   PenLineIcon: PenLineIcon,
+  UsersIcon: UsersIcon,
   fileTextIcon: FileTextIcon,
   userPlus2: UserPlus2Icon,
   checkCheckIcon: CheckCheckIcon,
@@ -100,5 +104,4 @@ export const Icons = {
   check: Check,
 }
 
-   
-  
+

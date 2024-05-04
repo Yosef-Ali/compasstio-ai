@@ -50,15 +50,16 @@ export default function ChatPromptResponse({ role, content }: Props) {
             <AvatarImage src="/avatarAi.svg" />
             <AvatarFallback>YA</AvatarFallback>
           </Avatar>
-          <div className="flex flex-col items-start ml-3 ">
+          <div className="flex flex-col items-start ml-3">
             <div
-              className="px-3 py-2 rounded-lg inline-block bg-muted/30 rounded-l-none text-left "
+              className=" px-3 py-2 rounded-lg inline-block bg-muted/30 rounded-l-none text-left "
             >
               {content}
             </div>
           </div>
 
           <div ref={messagesEndRef} />
+
         </div>
       )}
     </div>
