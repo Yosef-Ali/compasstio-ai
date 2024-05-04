@@ -62,7 +62,6 @@ export default function IndexPage() {
 
   return (
     <>
-
       <div className="relative z-30 flex flex-col items-center text-center h-full gap-10 py-28 " >
         <h1
           className="font-heading text-6xl sm:text-5xl md:text-6xl lg:text-7xl font-bold bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent whitespace-normal"
@@ -156,8 +155,6 @@ export default function IndexPage() {
               )}
             </svg>
           ))}
-
-          {/* <ZoomIcon /> */}
         </div>
       </div>
 

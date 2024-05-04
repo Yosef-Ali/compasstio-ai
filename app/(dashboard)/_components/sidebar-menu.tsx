@@ -10,6 +10,7 @@ import { useAction, useQuery } from "convex/react";
 import { useRouter } from "next/navigation";
 import { api } from "@/convex/_generated/api";
 import { UpgradeModal } from "./upgrade-modal";
+import { ModeToggle } from "@/components/mode-toggle";
 
 //import "@/styles/CustomUserButton.css"
 
@@ -76,7 +77,9 @@ const SideMenu = () => {
                           <UserButton showName={true} />
                         </div>
                       </button>
+                      <ModeToggle />
                     </div>
+
                   </div>
                 </div>
               </div>

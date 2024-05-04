@@ -25,13 +25,6 @@ export default function MarketingLayout({
     <div className="flex h-screen flex-col">
       <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/70 pointer-events-none [mask-image:linear-gradient(0deg,#000,rgba(0,0,0,.4))] z-20"></div>
 
-      {/* <div
-        className={`relative h-screen bg-cover bg-center bg-no-repeat z-10 animate-fade-in-out duration-300 ease-in-out ${hoverImageIndex !== null ? '' : 'opacity-0'
-          }`}
-        style={{
-          backgroundImage,
-        }}> */}
-
 
       <Image
         src={`/hero-${hoverImageIndex + 1}.webp`}
