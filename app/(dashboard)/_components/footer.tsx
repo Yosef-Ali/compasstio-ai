@@ -1,7 +1,5 @@
 
 import { ModeToggle } from "@/components/mode-toggle";
-import ChatInput from "./chat-input";
-import { ChatInputForm } from "./chat-input-test";
 
 export const Footer = () => {
   return (
