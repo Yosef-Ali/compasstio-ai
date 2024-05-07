@@ -21,7 +21,7 @@ interface Journal extends Doc<"journals"> {
 
 
 export default function RecentJournal() {
-  const journals = useQuery(api.journals.get) as Journal[];
+  const journals = useQuery(api.journals.recentJournals) as Journal[];
   const { isLoading } = useConvexAuth()
 
   if (journals === undefined || isLoading) {

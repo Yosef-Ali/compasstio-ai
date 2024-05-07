@@ -21,7 +21,7 @@ interface Task extends Doc<"tasks"> {
 
 
 export default function CurrentTasks() {
-  const tasks = useQuery(api.tasks.get) as Task[] | undefined;
+  const tasks = useQuery(api.tasks.getDone) as Task[] | undefined;
   const { isLoading } = useConvexAuth()
 
   if (tasks === undefined || isLoading) {

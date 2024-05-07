@@ -57,7 +57,7 @@ const ChatContainerSinglePage = () => {
   }
 
   return (
-    <div className="mx-auto w-full max-w-md pt-24 pb-8 md:pb-0 px-4 h-full flex flex-col">
+    <div className="mx-auto w-sm md:max-w-md lg:max-w-lg pt-24 pb-8 md:pb-0 px-4 h-full flex flex-col">
       <div className="flex-grow overflow-auto">
         {messages.length > 0 ? (
           messages.map((m) => (

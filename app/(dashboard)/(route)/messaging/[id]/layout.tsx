@@ -33,7 +33,7 @@ const ChatWithGroupPage = ({
 }: {
   children: React.ReactNode;
 }) => {
-  
+
   return (
     <>
       <TopNav />

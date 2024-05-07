@@ -1,3 +1,5 @@
+"use client"
+import { useEffect, useRef } from 'react';
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Doc, Id } from "@/convex/_generated/dataModel";
@@ -13,13 +15,23 @@ interface TitleProps {
 
 const TopNavTasks = () => {
   const { taskId } = useParams<{ taskId: Id<"tasks"> }>();
+  const isMounted = useRef(true);
+
   const { createTask } = useCreateTask(taskId)
-
-
   let task = taskId ? useQuery(api.tasks.getById, { taskId }) : null;
 
+
+  useEffect(() => {
+    return () => {
+      isMounted.current = false;
+    };
+  }, []);
+
+
   const handleCreateTask = () => {
-    createTask()
+    if (isMounted.current) {
+      createTask()
+    }
   };
 
   return (

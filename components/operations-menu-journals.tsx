@@ -5,8 +5,8 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSepara
 import { Icons } from "@/components/icons"
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
-import useDeleteChat from "@/app/hooks/useDeleteChat";
 import useDeleteJournal from "@/app/hooks/useDeleteJournal";
+import { useRouter } from "next/navigation";
 
 
 interface PostProps {
@@ -71,6 +71,7 @@ function RecentJournalOptions({ id }: RecentChatOptionsProps) {
 }
 
 function ArchivedJournalOptions({ id }: RecentChatOptionsProps) {
+  const router = useRouter();
   const { deleteJournal } = useDeleteJournal(id as Id<"journals">);
   const restore = useMutation(api.journals.restoreJournal);
 
@@ -80,9 +81,10 @@ function ArchivedJournalOptions({ id }: RecentChatOptionsProps) {
     });
   }
 
-  const onDelete = () => {
-    deleteJournal();
-  }
+  const onDeleteJournal = async () => {
+    await deleteJournal(); // Use await here to ensure the journal is deleted before navigating
+    router.push('/journals'); // Navigate to the journal route
+  };
 
   return (
     <DropdownMenu>
@@ -95,7 +97,7 @@ function ArchivedJournalOptions({ id }: RecentChatOptionsProps) {
           Restore
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={onDelete}>
+        <DropdownMenuItem onClick={onDeleteJournal}>
           Delete Journal
         </DropdownMenuItem>
       </DropdownMenuContent>

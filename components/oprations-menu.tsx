@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import Link from "next/link"
-import { useRouter, useParams } from "next/navigation"
+import { useRouter } from "next/navigation"
 
 import {
   DropdownMenu,
@@ -16,7 +16,7 @@ import { Icons } from "@/components/icons"
 
 import { Id } from "@/convex/_generated/dataModel"
 import useDeleteJournal from "@/app/hooks/useDeleteJournal"
-import useDeleteTasks from "@/app/hooks/ useDeleteTask"
+import useDeleteTasks from "@/app/hooks/useDeleteTask"
 import useDeleteChat from "@/app/hooks/useDeleteChat"
 
 interface PostProps {
@@ -25,36 +25,19 @@ interface PostProps {
 }
 
 
-function JournalOperationsMenu({ id }: PostProps) {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const { deleteJournal } = useDeleteJournal(id as Id<"journals">);
-  const handleDelete = () => {
-    deleteJournal();
-  }
-
-  return (
-    <>
-      <DropdownMenu>
-        {/* Dropdown menu content */}
-        <DropdownMenuItem
-          className="flex cursor-pointer items-center text-destructive focus:text-destructive"
-          onSelect={handleDelete}
-        >
-          Delete
-        </DropdownMenuItem>
-      </DropdownMenu>
-    </>
-  )
-}
-
-
 
 function TaskOperationsMenu({ id }: PostProps) {
+  const router = useRouter();
+
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const { deleteTask } = useDeleteTasks(id as Id<"tasks">);
-  const handleDelete = () => {
-    deleteTask();
-  }
+  const handleDeleteTask = async () => {
+    await deleteTask();
+    router.push('/tasks');
+  };
+
+
+
 
   return (
     <>
@@ -62,9 +45,9 @@ function TaskOperationsMenu({ id }: PostProps) {
         {/* Dropdown menu content */}
         <DropdownMenuItem
           className="flex cursor-pointer items-center text-destructive focus:text-destructive"
-          onSelect={handleDelete}
+          onSelect={handleDeleteTask}
         >
-          Delete
+          Delete Task
         </DropdownMenuItem>
       </DropdownMenu>
     </>
@@ -81,7 +64,7 @@ function ChatOptionsMenu({ id }: PostProps) {
 
   return (
     <>
-    <DropdownMenu>
+      <DropdownMenu>
         {/* Dropdown menu content */}
         <DropdownMenuItem
           className="flex cursor-pointer items-center text-destructive focus:text-destructive"
@@ -90,13 +73,12 @@ function ChatOptionsMenu({ id }: PostProps) {
           Delete
         </DropdownMenuItem>
       </DropdownMenu>
- 
+
     </>
   )
 }
 
 export function OperationsMenu({ id, identity }: PostProps) {
-
 
   return (
     <>
@@ -112,9 +94,7 @@ export function OperationsMenu({ id, identity }: PostProps) {
             </Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          {identity === 'journal' ? (
-            <JournalOperationsMenu id={id as Id<"journals">} identity={identity} />
-          ) : identity === 'tasks' ? (
+          {identity === 'tasks' ? (
             <TaskOperationsMenu id={id as Id<"tasks">} identity={identity} />
           ) : (
             <ChatOptionsMenu id={id as Id<"chats">} identity={identity} />

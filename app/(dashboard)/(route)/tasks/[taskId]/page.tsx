@@ -43,6 +43,7 @@ const TaskSinglePage = ({
 
   const task = params.taskId ? useQuery(api.tasks.getById, { taskId: params.taskId }) : null;
 
+
   const update = useMutation(api.tasks.update);
 
   const onChange = (description: string) => {

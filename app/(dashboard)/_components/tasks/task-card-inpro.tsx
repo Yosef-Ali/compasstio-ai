@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge"
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { Id } from "@/convex/_generated/dataModel";
-import { OperationsMenu } from "@/components/oprations-menu";
+import OperationsMenuTasks from "@/components/oprations-menu-task";
 
 
 interface CardData {
@@ -41,7 +41,7 @@ export function TaskCardInProgress({ _id, title, description, status, creationTi
         <CardHeader>
           <div className="flex justify-between">
             <CardTitle className="text-lg truncated">{title}</CardTitle>
-            <OperationsMenu id={_id} identity="task" />
+            <OperationsMenuTasks id={_id} />
           </div>
           <CardDescription className="line-clamp-2">{Description}</CardDescription>
           <CardDescription>

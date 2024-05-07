@@ -2,7 +2,7 @@
 "use client"
 
 import RightAside from '../../_components/right-aside'
-import ChatContainer from '../../_components/chat-container'
+import ChatContainer from '../../_components/chat-with-group-container'
 import AllUsers from '../../_components/chat-with-group/all-users'
 import TopNav from '../../_components/top-nav'
 import Wrapper from '../../_components/wrapper'

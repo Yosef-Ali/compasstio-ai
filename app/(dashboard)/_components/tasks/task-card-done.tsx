@@ -8,6 +8,7 @@ import { Id } from "@/convex/_generated/dataModel";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { OperationsMenu } from "@/components/oprations-menu";
+import OperationsMenuTasks from "@/components/oprations-menu-task";
 
 
 interface CardData {
@@ -40,9 +41,7 @@ export function TaskCardDone({ _id, title, description, status, creationTime, du
         <CardHeader>
           <div className="flex justify-between">
             <CardTitle className="text-lg">{title}</CardTitle>
-
-            <OperationsMenu id={_id} identity={"task"} />
-
+            <OperationsMenuTasks id={_id} />
           </div>
           <CardDescription>{Description}</CardDescription>
           <CardDescription>

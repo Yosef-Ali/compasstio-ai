@@ -1,6 +1,41 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 
+export const recentJournals = query({
+  handler: async (ctx) => {
+    try {
+      const identity = await ctx.auth.getUserIdentity();
+
+      if (!identity) {
+        throw new Error("Not authenticated");
+      }
+
+      const journals = await ctx.db
+        .query("journals")
+        .filter((q) => q.eq(q.field("userId"), identity.subject))
+        .filter((q) => q.eq(q.field("isArchived"), false))
+        .order("desc")
+        .take(100);
+      if (!journals) {
+        throw new Error("No journals found");
+      }
+
+      return journals;
+    } catch (error) {
+      // Log the error
+      console.error(error);
+
+      // Return a meaningful response to the user
+      return {
+        statusCode: 500,
+        body: {
+          message: "An error occurred while fetching the journals.",
+        },
+      };
+    }
+  },
+});
+
 export const get = query({
   handler: async (ctx) => {
     try {

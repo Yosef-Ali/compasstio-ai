@@ -1,6 +1,59 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 
+export const getDone = query({
+  handler: async (ctx) => {
+    try {
+      const identity = await ctx.auth.getUserIdentity();
+
+      if (!identity) {
+        throw new Error("Not authenticated");
+      }
+
+      const tasks = await ctx.db
+        .query("tasks")
+        .filter((q) => q.eq(q.field("userId"), identity.subject))
+        .filter((q) => q.eq(q.field("status"), "done"))
+        .order("desc")
+        .take(100);
+      if (!tasks) {
+        throw new Error("No tasks found");
+      }
+      return tasks;
+    } catch (error) {
+      // Log the error
+      console.error(error);
+    }
+  },
+});
+
+export const getInProgress = query({
+  handler: async (ctx) => {
+    try {
+      const identity = await ctx.auth.getUserIdentity();
+
+      if (!identity) {
+        throw new Error("Not authenticated");
+      }
+
+      const tasks = await ctx.db
+        .query("tasks")
+        .filter((q) => q.eq(q.field("userId"), identity.subject))
+        .filter((q) => q.eq(q.field("status"), "in progress"))
+        .order("desc")
+        .take(100);
+      if (!tasks) {
+        throw new Error("No tasks found");
+      }
+      return tasks;
+    } catch (error) {
+      // Log the error
+      console.error(error);
+    }
+  },
+});
+
+
 export const get = query({
   handler: async (ctx) => {
     try {
