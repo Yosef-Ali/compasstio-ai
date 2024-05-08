@@ -67,7 +67,7 @@ const CardSingle: React.FC<{
                 <AvatarFallback>YA</AvatarFallback>
               </Avatar>
               <div className="ml-4 space-y-1">
-                <div className="text-lg font-medium">{userIfo?.name}</div>
+                <div className="text-lg font-medium">{userIfo?.username}</div>
                 <MeetingIdCopyBTN meetingId={meetingId as string} />
                 <p className="text-sm text-muted-foreground truncate ">
                   Copy Meeting Code.

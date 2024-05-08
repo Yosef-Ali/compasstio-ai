@@ -58,7 +58,7 @@ export function CardFriends({ friends_Id, _creationTime, message, isRead }: Card
             <AvatarFallback>YA</AvatarFallback>
           </Avatar>
           <div className="flex-grow">
-            <CardTitle className="text-lg font-semibold">{friendInfo?.name}</CardTitle>
+            <CardTitle className="text-lg font-semibold">{friendInfo?.username}</CardTitle>
             <CardDescription className="text-sm text-gray-500 dark:text-gray-400">
               {message}
             </CardDescription>

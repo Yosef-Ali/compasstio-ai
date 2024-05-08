@@ -51,7 +51,7 @@ const useUsers = () => {
 
   React.useEffect(() => {
     const newOptions = users?.map(user => ({
-      label: `${userName || fullName}`,
+      label: user.username, // Use the correct property for username
       value: user.email,
     })) as Option[];
     setOptions(newOptions);
@@ -63,7 +63,7 @@ const useUsers = () => {
 
 const useCreateGroup = () => {
   const createGroup = useMutation(api.liveSessionsGroups.create);
-  const ownerId = useUser().user?.fullName;
+  const ownerId = useUser().user?.id;
 
 
   const createGroupFunc = React.useCallback(
@@ -109,7 +109,7 @@ const MultipleSelectorWithCreateGroup = React.forwardRef((props: MultipleSelecto
 
   const ownerId = useUser().user?.fullName;
 
-  console.log("options", options)
+  console.log("options:::", options)
 
 
   return (

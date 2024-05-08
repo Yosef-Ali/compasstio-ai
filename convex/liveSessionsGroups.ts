@@ -72,7 +72,9 @@ export const getGroups = query({
       .filter((q) => q.eq(q.field("userId"), args.userId))
       .collect();
   },
+  
 })
+
 export const addMember = mutation({
   args: {
     groupId: v.string(),

@@ -22,7 +22,7 @@ export default function AllUsers() {
           <CardAllUsers
             key={user._id}
             _id={user.userId ?? ""}
-            name={user.name ?? ""}
+            name={user.username ?? ""}
             _creationTime={user._creationTime ?? 0}
             avatarUrl={user.avatarUrl ?? ""}
           />

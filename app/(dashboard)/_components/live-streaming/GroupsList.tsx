@@ -14,6 +14,9 @@ export default function ParticipantList() {
     userId: user?.id as string,
   })
 
+  console.log("groups:::", groups)
+  console.log("user:::", user?.id)
+
   return (
     <div className="grid grid-cols-1 gap-4 p-3">
       {groups ?
