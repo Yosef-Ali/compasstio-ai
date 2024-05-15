@@ -155,7 +155,7 @@ const ChatbotContainer: React.FC = () => {
             {!isBlocked && (
               <form
                 onSubmit={handleSubmit}
-                className="flex items-center space-x-2 py-4 px-3 border mb-6 md:mb-0"
+                className="flex items-center space-x-2 py-4 px-3 border mb-8 md:mb-0"
               >
                 <Input
                   type="text"
