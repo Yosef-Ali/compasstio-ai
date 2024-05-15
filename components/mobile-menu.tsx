@@ -12,7 +12,7 @@ import {
 import { Button } from './ui/button';
 import { DashboardNav } from './nav';
 import { dashboardConfig } from '@/config/dashboard';
-import { ChevronDownIcon } from '@radix-ui/react-icons';
+
 import { ChevronUpIcon } from 'lucide-react';
 import { UpgradeModal } from '@/app/(dashboard)/_components/upgrade-modal';
 import { UserButton } from '@clerk/nextjs';
@@ -29,17 +29,16 @@ export const CustomDrawer = () => {
   return (
     <>
       <Drawer open={open} onOpenChange={setOpen} >
-        <div className="z-30 fixed bottom-1 left-0 right-0 flex justify-center ">
+        <div className="z-30 fixed bottom-1 right-6 border">
           <DrawerTrigger  >
             <Button variant="outline" size="icon">
               <ChevronUpIcon className="h-5 w-5" />
             </Button>
           </DrawerTrigger>
         </div>
-        <DrawerContent>
+        <DrawerContent className='p-3'>
           <DashboardNav items={dashboardConfig.sidebarNav} />
           <div className='w-40 m-2'>
-
             <button onClick={handleUpgrade}
               data-testid="upgrade-button" aria-label="Upgrade to Pro" className="focus:outline-none flex select-none items-center py-3 text-xs font-medium ring-offset-2 focus:ring-2 text-white justify-center rounded-lg bg-purple-500 hover:bg-purple-700 w-full px-5">
               <span className="flex-nowrap whitespace-nowrap mr-2">Upgrade to Pro</span>
@@ -50,9 +49,7 @@ export const CustomDrawer = () => {
           </div>
 
           <DrawerFooter>
-            <div className="flex items-center justify-between">
-              <UserButton showName={true} />
-              <ModeToggle />
+            <div className="flex items-center justify-end">
               <DrawerClose>
                 <Button variant="outline">Cancel</Button>
               </DrawerClose>
@@ -63,7 +60,5 @@ export const CustomDrawer = () => {
       </Drawer>
       <UpgradeModal open={openUpgrade} setOpen={setOpenUpgrade} />
     </>
-
-
   );
 };

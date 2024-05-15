@@ -26,7 +26,7 @@ const MainLayout = ({ children }) => {
 
     <div className="flex">
       <SideMenu />
-      <main className="flex flex-col h-screen w-full self-center">{children}</main>
+      <main className="flex flex-col min-h-screen w-full self-center">{children}</main>
     </div>
 
 

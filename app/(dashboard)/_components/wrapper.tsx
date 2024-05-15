@@ -2,9 +2,11 @@ import { useSlideState } from "@/app/hooks/useSlideState";
 import { useSlideStateMobile } from "@/app/hooks/useSlideStateMobile";
 import useWindowPositionAndMobile from "@/app/hooks/useWindowPositionAndMobile";
 import { CustomDrawer } from "@/components/mobile-menu";
+import { ModeToggle } from "@/components/mode-toggle";
 
 
 import { cn } from "@/lib/utils";
+import { UserButton } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
 
 
@@ -45,6 +47,15 @@ const Wrapper: React.FC<WrapperProps> = ({ children }) => {
       </div>
       {/* mobile menu */}
       {showCustomDrawer && <CustomDrawer />}
+      <div className="z-20 fixed bottom-1 md:hidden ">
+        <div className="flex items-center pl-6">
+          <UserButton showName={true} />
+          <div className="ml-4">
+
+            <ModeToggle />
+          </div>
+        </div>
+      </div>
 
     </main>
   );
