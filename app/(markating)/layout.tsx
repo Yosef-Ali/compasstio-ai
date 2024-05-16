@@ -41,7 +41,7 @@ export default function MarketingLayout({
       <div className="relative z-30 h-full" >
         <main className="flex-grow ">{children}</main>
       </div>
-      <SiteFooter className="container z-40 -mt-16" />
+      {/* <SiteFooter className="container z-40 -mt-16" /> */}
     </div>
 
   )
