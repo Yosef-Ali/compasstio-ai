@@ -21,7 +21,7 @@ export default function MarketingLayout({
 
 
   return (
-    <div className="flex min-h-screen flex-col md:h-screen overflow-x-hidden">
+    <div className="flex min-h-screen flex-col md:h-screen overflow-y-hidden">
       <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/70 pointer-events-none [mask-image:linear-gradient(0deg,#000,rgba(0,0,0,.4))] z-20"></div>
 
 
@@ -37,10 +37,10 @@ export default function MarketingLayout({
       <header className="container z-40">
         <MainNav items={marketingConfig.mainNav} />
       </header>
-      <div className="relative z-30 h-full" >
+      <div className="relative z-30 h-full border" >
         <main className="flex-grow ">{children}</main>
       </div>
-      <SiteFooter className=" container z-40 -mt-16 bg-purple-500" />
+      {/* <SiteFooter className=" container z-40 " /> */}
     </div>
 
   )
