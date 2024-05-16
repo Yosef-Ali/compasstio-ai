@@ -2,7 +2,7 @@ import { authMiddleware } from "@clerk/nextjs";
 
 export default authMiddleware(
   // { publicRoutes: ["/", '/api/clerk']}
-  { publicRoutes: ["/"] }
+  { publicRoutes: ["/", '/api/clerk'] }
 );
 
 export const config = {

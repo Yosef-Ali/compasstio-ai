@@ -15,8 +15,7 @@ import { dashboardConfig } from '@/config/dashboard';
 
 import { ChevronUpIcon } from 'lucide-react';
 import { UpgradeModal } from '@/app/(dashboard)/_components/upgrade-modal';
-import { UserButton } from '@clerk/nextjs';
-import { ModeToggle } from './mode-toggle';
+
 
 export const CustomDrawer = () => {
   const [open, setOpen] = React.useState(false);

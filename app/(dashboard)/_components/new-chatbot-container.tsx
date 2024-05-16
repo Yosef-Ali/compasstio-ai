@@ -41,7 +41,9 @@ export default function ChatbotContainer() {
                 {message.role === "user" ? (
                   <div className="flex items-end  mb-4 w-full ">
                     <div className="flex items-start">
-                      <UserButton />
+                      <UserButton
+                        afterSignOutUrl="/"
+                      />
                       <div className="px-3 py-2 ml-3 rounded-lg rounded-l-none inline-block bg-muted">
                         {message.content}
                       </div>

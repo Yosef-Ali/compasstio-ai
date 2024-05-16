@@ -49,7 +49,7 @@ const Wrapper: React.FC<WrapperProps> = ({ children }) => {
       {showCustomDrawer && <CustomDrawer />}
       <div className="z-20 fixed bottom-1 md:hidden ">
         <div className="flex items-center pl-6">
-          <UserButton showName={true} />
+          <UserButton showName={true} afterSignOutUrl="/" />
           <div className="ml-4">
 
             <ModeToggle />

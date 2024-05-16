@@ -74,7 +74,8 @@ const SideMenu = () => {
                     <div className="z-30 flex h-20 cursor-pointer items-center justify-between py-10 relative">
                       <button className="focus:outline-none flex h-full w-full cursor-pointer items-center text-left focus:ring-0">
                         <div className="custom-user-button">
-                          <UserButton showName={true} />
+                          <UserButton showName={true} afterSignOutUrl="/" />
+
                         </div>
                       </button>
                       <ModeToggle />
