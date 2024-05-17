@@ -354,7 +354,7 @@ export const updateOrCreateUser = internalMutation({
     // If userIdentity is not provided, use a default value or handle accordingly
     const tokenIdentifier = userIdentity?.tokenIdentifier as string; // Replace 'default_value' with an appropriate value
 
-    console.log("userRecord", userRecord);
+    //console.log("userRecord", userRecord);
 
     if (userRecord === null) {
       // Create a new user with Clerk data

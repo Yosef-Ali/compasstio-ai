@@ -11,7 +11,7 @@ import { auth } from "@clerk/nextjs";
 //const Hf = new HfInference(process.env.HUGGINGFACE_API_KEY);
 
 
-const endpointUrl = 'https://mg2otmezfmuyqmpt.us-east-1.aws.endpoints.huggingface.cloud';
+const endpointUrl = 'https://z9lgifjjqncn49bq.us-east-1.aws.endpoints.huggingface.cloud';
 //const endpointUrl = 'https://khi0hb5ldx8qdg7q.us-east-1.aws.endpoints.huggingface.cloud';
 const Hf = new HfInferenceEndpoint(
   endpointUrl,
