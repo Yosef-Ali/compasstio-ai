@@ -62,7 +62,7 @@ export default function IndexPage() {
 
   return (
     <>
-      <div className="relative z-30 flex flex-col items-center text-center h-full gap-6" >
+      <div className="relative z-30 flex flex-col items-center text-center h-full gap-4 md:gap-8" >
         <h1
           className="font-heading text-4xl md:text-6xl lg:text-7xl font-bold bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent whitespace-normal"
         >
@@ -72,8 +72,8 @@ export default function IndexPage() {
           <h3 className="container mx-auto  text-2xl md:text-3xl lg:text-4xl font-bold text-white animate-fade-in-up duration-300 ease-in-out">
             {HeroMenus[hoverIndex].title}
           </h3>
-          <div className="max-w-[42rem] text-gray-300 sm:text-xl sm:leading-8  flex-grow flex flex-col justify-center animate-fade-in-up duration-300 ease-in-out delay-100">
-            <p className="line-clamp-3 h-24 "> {HeroMenus[hoverIndex].description}
+          <div className="max-w-[42rem] text-gray-300 sm:text-xl   flex-grow flex flex-col justify-center animate-fade-in-up duration-300 ease-in-out delay-100">
+            <p className="line-clamp-3 "> {HeroMenus[hoverIndex].description}
             </p>
           </div>
         </div>
