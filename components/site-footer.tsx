@@ -26,7 +26,7 @@ export function SiteFooter({ className }: React.HTMLAttributes<HTMLElement>) {
               href={siteConfig.links.twitter}
               target="_blank"
               rel="noreferrer"
-              className="font-medium underline underline-offset-4 text-white/70"
+              className="font-medium md:underline md:underline-offset-4 text-white/70"
             >
               DataTech
             </a>
