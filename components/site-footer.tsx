@@ -13,13 +13,13 @@ export function SiteFooter({ className }: React.HTMLAttributes<HTMLElement>) {
         discretion.</p>
       <div className="container flex flex-col items-center justify-between gap-3 z-50  md:flex-row">
 
-        <div className="flex items-center gap-2 leading-3">
+        <div className="flex items-center gap-2 leading-5">
           <Image src="./logo.svg" alt="Logo" width={30} height={30} />
           <span className="font-bold sm:inline-block text-xl text-white/70">
             {siteConfig.name}
           </span>
         </div>
-        <div className="flex items-center justify-between gap-2 ">
+        <div className="flex items-center justify-between gap-2 pb-1 ">
           <p className="text-center md:text-left text-sm  text-white/70">
             Built by{" "}
             <a
