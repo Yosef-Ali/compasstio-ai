@@ -29,11 +29,9 @@ export default function ChatbotContainer() {
     handleSubmit(event);
   };
 
-
   return (
     <Wrapper>
       <div className="mx-auto w-full max-w-2xl py-24 flex flex-col stretch space-y-10 ">
-
         {messages.length !== 0 ? (
           <div className="pb-32 pt-5 space-y-5 w-[75%] mx-auto ">
             {messages.map((message) => (
@@ -47,12 +45,10 @@ export default function ChatbotContainer() {
                       <div className="px-3 py-2 ml-3 rounded-lg rounded-l-none inline-block bg-muted">
                         {message.content}
                       </div>
-
                     </div>
                   </div>
                 ) : (
                   <div className="flex items-start">
-
                     <Avatar>
                       <AvatarImage src="https://github.com/shadcn.png" />
                       <AvatarFallback>YA</AvatarFallback>

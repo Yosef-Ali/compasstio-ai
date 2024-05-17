@@ -62,18 +62,18 @@ export default function IndexPage() {
 
   return (
     <>
-      <div className="relative z-30 flex flex-col items-center text-center h-full gap-10 py-28 " >
+      <div className="relative z-30 flex flex-col items-center text-center h-full gap-6" >
         <h1
-          className="font-heading text-6xl sm:text-5xl md:text-6xl lg:text-7xl font-bold bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent whitespace-normal"
+          className="font-heading text-4xl md:text-6xl lg:text-7xl font-bold bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent whitespace-normal"
         >
           A beginning of divine wisdom
         </h1>
-        <div className="space-y-4">
-          <h3 className="text-3xl sm:text-1xl md:text-2xl lg:text-3xl font-bold text-white animate-fade-in-up duration-300 ease-in-out">
+        <div className="">
+          <h3 className="container mx-auto  text-2xl md:text-3xl lg:text-4xl font-bold text-white animate-fade-in-up duration-300 ease-in-out">
             {HeroMenus[hoverIndex].title}
           </h3>
           <div className="max-w-[42rem] text-gray-300 sm:text-xl sm:leading-8  flex-grow flex flex-col justify-center animate-fade-in-up duration-300 ease-in-out delay-100">
-            <p className="line-clamp-3 h-24 ">  {HeroMenus[hoverIndex].description}
+            <p className="line-clamp-3 h-24 "> {HeroMenus[hoverIndex].description}
             </p>
           </div>
         </div>
@@ -83,7 +83,7 @@ export default function IndexPage() {
           </div>
         )}
         {isAuthenticated && !isLoading && (
-          <div className="space-x-4">
+          <div className="">
             <Link
               href="/chat-with-ai"
               rel="noreferrer"
@@ -94,7 +94,7 @@ export default function IndexPage() {
           </div>
         )}
         {!isAuthenticated && !isLoading && (
-          <div className="space-x-4">
+          <div className="">
             <SignInButton mode="modal">
               <Button className={cn(buttonVariants({ size: "lg" }), 'bg-purple-500 hover:bg-purple-700')}>
                 Join Now
@@ -111,7 +111,7 @@ export default function IndexPage() {
               viewBox="0 0 24 24"
               strokeWidth="1.5"
               stroke="currentColor"
-              className={`w-10 h-10 text-purple-400 cursor-pointer ${hoverIndex === index ? "scale-110" : ""
+              className={`w-8 h-8 md:w-10 md:h-10 text-purple-400 cursor-pointer ${hoverIndex === index ? "scale-110" : ""
                 }`}
               onMouseEnter={() => handleHover(index)}
             >
@@ -157,7 +157,6 @@ export default function IndexPage() {
           ))}
         </div>
       </div>
-
     </>
   );
 }
