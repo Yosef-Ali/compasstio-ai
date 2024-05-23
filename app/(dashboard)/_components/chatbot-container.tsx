@@ -97,8 +97,6 @@ const ChatbotContainer: React.FC = () => {
   const freeTrail = useQuery(api.users.getEndsOn, {});
   const [isBlocked, setIsBlocked] = useState<boolean>(false);
 
-
-
   const { messages, input, handleInputChange, handleSubmit } = useChat({
     api: "/api/chat"
   });
@@ -115,63 +113,53 @@ const ChatbotContainer: React.FC = () => {
   }, [freeTrail])
 
 
-
-
   return (
     <>
-      <div className="mx-auto z-0 w-sm md:max-w-md lg:max-w-lg px-4 pt-24 pb-12 md:pb-0 min-h-[calc(100vh-65px)] flex flex-col">
-        {!inputFocused && <Intro />}
-        <div className="flex-grow flex flex-col">
-          <div className="flex-grow overflow-auto">
-            <ScrollArea className="h-full w-full">
-              <div className="space-y-4">
-                {isBlocked ? (
-                  subscriptionEnds ? (
-                    <div>
-                      Your subscription has expired.{" "}
-                      <span className="text-purple-500 font-semibold">
-                        {" "}
-                        Upgrade to Pro for unlimited chats.{" "}
-                      </span>
-                    </div>
-                  ) : (
-                    <div>
-                      You have reached the chat limit for unsubscribed users (14 days).{" "}
-                      <span className="text-purple-500 font-semibold">
-                        {" "}
-                        Upgrade to Pro for unlimited chats.{" "}
-                      </span>
-                    </div>
-                  )
+      <div className="mx-auto z-0 w-sm md:max-w-md lg:max-w-lg px-4 pt-24 pb-12 md:pb-0 flex flex-col h-full">
+        <div className="flex-1 overflow-auto">
+          <ScrollArea className=" w-full flex-grow  h-[calc(100vh-240px)]">
+            {!inputFocused && <Intro />}
+            <div className="space-y-4">
+              {isBlocked ? (
+                subscriptionEnds ? (
+                  <div>
+                    Your subscription has expired.{" "}
+                    <span className="text-purple-500 font-semibold">
+                      {" "}
+                      Upgrade to Pro for unlimited chats.{" "}
+                    </span>
+                  </div>
                 ) : (
-                  messages.map((m: Message) => (
-                    <ChatPromptResponse key={m.id} role={m.role} content={m.content} />
-                  ))
-                )}
-              </div>
-            </ScrollArea>
-          </div>
-          <div className="mt-auto">
-            {!isBlocked && (
-              <form
-                onSubmit={handleSubmit}
-                className="flex items-center space-x-2 py-4 px-3 border mb-8 md:mb-0"
-              >
-                <Input
-                  type="text"
-                  placeholder="Say something..."
-                  value={input}
-                  onChange={handleInputChange}
-                  onFocus={() => setInputFocused(true)}
-                  className="flex-grow"
-                />
-                <Button type="submit" className="text-white bg-purple-500 rounded-lg">
-                  Send
-                </Button>
-              </form>
-            )}
-          </div>
+                  <div>
+                    You have reached the chat limit for unsubscribed users (14 days).{" "}
+                    <span className="text-purple-500 font-semibold">
+                      {" "}
+                      Upgrade to Pro for unlimited chats.{" "}
+                    </span>
+                  </div>
+                )
+              ) : (
+                messages.map((m: Message) => (
+                  <ChatPromptResponse key={m.id} role={m.role} content={m.content} />
+                ))
+              )}
+            </div>
+          </ScrollArea>
         </div>
+        {!isBlocked && (
+          <form onSubmit={handleSubmit} className="flex items-center space-x-2 py-4 px-3 border">
+            <Input
+              type="text"
+              placeholder="Say something..."
+              value={input}
+              onChange={handleInputChange}
+              onFocus={() => setInputFocused(true)}
+            />
+            <Button type="submit" className="text-white bg-purple-500 rounded-lg">
+              Send
+            </Button>
+          </form>
+        )}
       </div>
     </>
   );

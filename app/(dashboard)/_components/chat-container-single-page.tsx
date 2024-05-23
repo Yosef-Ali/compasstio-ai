@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import useWindowPositionAndMobile from "@/app/hooks/useWindowPositionAndMobile";
 import { useSlideState } from "@/app/hooks/useSlideState";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const ChatContainerSinglePage = () => {
   const [inputValue, setInputValue] = useState("");
@@ -58,14 +59,16 @@ const ChatContainerSinglePage = () => {
 
   return (
     <div className="mx-auto w-sm md:max-w-md lg:max-w-lg pt-24 pb-8 md:pb-0 px-4 min-h-[calc(100vh-65px)] flex flex-col">
-      <div className="flex-grow flex flex-col overflow-auto">
-        {messages.length > 0 ? (
-          messages.map((m) => (
-            <GroupMessages key={m._id} sender_id={m.sender_id} message={m.content} />
-          ))
-        ) : (
-          <p className="text-center">No messages</p>
-        )}
+      <div className="flex-1 overflow-auto">
+        <ScrollArea className=" w-full flex-grow  h-[calc(100vh-240px)]">
+          {messages.length > 0 ? (
+            messages.map((m) => (
+              <GroupMessages key={m._id} sender_id={m.sender_id} message={m.content} />
+            ))
+          ) : (
+            <p className="text-center">No messages</p>
+          )}
+        </ScrollArea>
       </div>
       <div className="mt-auto">
         <form onSubmit={handleFormSubmit} className="flex items-center space-x-2 py-4 px-3 border mb-8 md:mb-0">

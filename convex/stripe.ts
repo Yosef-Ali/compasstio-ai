@@ -26,6 +26,8 @@ export const pay = action({
 
     const domain = process.env.NEXT_PUBLIC_HOSTING_URL!;
 
+    console.log("domain", domain);
+
     const session: Stripe.Response<Stripe.Checkout.Session> = await stripe.checkout.sessions.create(
       {
         mode: "subscription",
@@ -39,6 +41,8 @@ export const pay = action({
         metadata: {
           userId: user._id,
         },
+
+        // redirect to your success url
         success_url: `${domain}`,
         cancel_url: `${domain}`,
       }
