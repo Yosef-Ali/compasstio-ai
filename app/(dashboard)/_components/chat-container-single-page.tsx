@@ -60,7 +60,7 @@ const ChatContainerSinglePage = () => {
   return (
     <div className="mx-auto w-sm md:max-w-md lg:max-w-lg pt-24 pb-8 md:pb-0 px-4 min-h-[calc(100vh-65px)] flex flex-col">
       <div className="flex-1 overflow-auto">
-        <ScrollArea className=" w-full flex-grow  h-[calc(100vh-240px)]">
+        <ScrollArea className=" w-full flex-grow  h-[calc(100vh-240px)] px-4">
           {messages.length > 0 ? (
             messages.map((m) => (
               <GroupMessages key={m._id} sender_id={m.sender_id} message={m.content} />

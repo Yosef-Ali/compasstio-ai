@@ -57,9 +57,7 @@ export default function ChatPromptResponse({ role, content }: Props) {
               {content}
             </div>
           </div>
-
           <div ref={messagesEndRef} />
-
         </div>
       )}
     </div>

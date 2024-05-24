@@ -83,7 +83,7 @@ const RightAside = ({ tabs }: TabsProps) => {
 
             {tabs.map(tab => (
               <TabsContent key={tab.name} value={tab.name} >
-                <ScrollArea className="h-[82vh] w-full overflow-y-auto p-4">
+                <ScrollArea className="min-h-[calc(100vh-130px)] w-full overflow-y-auto p-4">
                   {tab.content}
                 </ScrollArea>
               </TabsContent>
