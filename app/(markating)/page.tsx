@@ -13,24 +13,24 @@ import useImageStore from "../hooks/useImageStoreState";
 
 const HeroMenus = [
   {
-    title: "This is an Experiment",
-    description: "AI journey of self-discovery, guidance, and growth to connect with yourself and the universe.",
+    title: "AI Journey of Self-Discovery",
+    description: "Guidance to connect with yourself and the universe.",
   },
   {
     title: "Message with Your Group",
-    description: "Create your group of like-minded friends to support and uplift one another.",
+    description: "Create your group to support and uplift one another.",
   },
   {
     title: "Keep Your Journals",
-    description: "Discover the truth about yourself and embrace change.",
+    description: "Discover the truth about yourself, embrace change.",
   },
   {
     title: "Set Goals and Tasks",
     description: "Set milestones and track your progress with ease.",
   },
   {
-    title: "Live Sessions",
-    description: "Engage in live video sessions and events, and interact with your community to enrich your experience of your world.",
+    title: "Live Video Sessions",
+    description: "Engage in live video sessions to enrich your world.",
   },
 ];
 
