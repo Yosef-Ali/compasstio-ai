@@ -19,7 +19,7 @@ export function SiteFooter({ className }: React.HTMLAttributes<HTMLElement>) {
           </span>
         </div>
         <div className="flex items-center justify-between gap-2 pb-1">
-          <p className="text-center md:text-left text-sm  text-white/70">
+          {/* <p className="text-center md:text-left text-sm  text-white/70">
             Built by{" "}
             <a
               href={siteConfig.links.twitter}
@@ -29,7 +29,7 @@ export function SiteFooter({ className }: React.HTMLAttributes<HTMLElement>) {
             >
               DataTech
             </a>
-          </p>
+          </p> */}
           <ModeToggle />
         </div>
       </div>
