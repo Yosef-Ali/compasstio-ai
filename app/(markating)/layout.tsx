@@ -23,9 +23,7 @@ export default function MarketingLayout({
 
   return (
     <div className="flex h-screen flex-col md:h-screen overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/70 pointer-events-none [mask-image:linear-gradient(0deg,#000,rgba(0,0,0,.4))] z-20"></div>
-
-
+      <div className="absolute inset-0 bg-gradient-to-r from-black/90 to-black/90 pointer-events-none [mask-image:linear-gradient(0deg,#000,rgba(0,0,0,.8))] z-20"></div>
       <Image
         src={`/hero-${hoverImageIndex + 1}.webp`}
         layout="fill"
@@ -43,6 +41,5 @@ export default function MarketingLayout({
       </div>
       <SiteFooter className=" container z-40 " />
     </div>
-
   )
 }

@@ -10,12 +10,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import { Icons } from "@/components/icons";
-import ItemButton from "@/app/(dashboard)/_components/item-button";
-import { MoreHorizontal } from "lucide-react";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import { Button } from "react-day-picker";
 
 
 interface PostProps {

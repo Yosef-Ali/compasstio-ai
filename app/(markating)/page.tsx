@@ -13,24 +13,24 @@ import useImageStore from "../hooks/useImageStoreState";
 
 const HeroMenus = [
   {
-    title: "AI Journey of Self-Discovery",
-    description: "Guidance to connect with yourself and the universe.",
+    title: "Shiba AI",
+    description: "Platform to assist with personal evolution",
   },
   {
-    title: "Message with Your Group",
-    description: "Create your group to support and uplift one another.",
+    title: "Shiba Net",
+    description: "Communicate private messages with others",
   },
   {
-    title: "Keep Your Journals",
-    description: "Discover the truth about yourself, embrace change.",
+    title: "Shiba Perspective",
+    description: "Journal your thoughts and embrace change",
   },
   {
-    title: "Set Goals and Tasks",
-    description: "Set milestones and track your progress with ease.",
+    title: "Shiba Focus",
+    description: "Set goals and tasks to track your progress",
   },
   {
-    title: "Live Video Sessions",
-    description: "Engage in live video sessions to enrich your world.",
+    title: "Shiba Link",
+    description: "Live video sessions with your community",
   },
 ];
 
