@@ -31,6 +31,7 @@ export function MeetingContainer({
 }) {
   const [containerHeight, setContainerHeight] = useState(0);
   const [containerWidth, setContainerWidth] = useState(0);
+  const [controlsVisible, setControlsVisible] = useState(true); // Add this line
   const mMeetingRef = useRef();
   const [localParticipantAllowedJoin, setLocalParticipantAllowedJoin] =
     useState(null);
@@ -241,6 +242,8 @@ export function MeetingContainer({
       style={{ height: windowHeight }}
       ref={containerRef}
       className="h-screen flex flex-col bg-gray-800"
+      onMouseEnter={() => setControlsVisible(true)}
+      onMouseLeave={() => setControlsVisible(false)}
     >
       {typeof localParticipantAllowedJoin === "boolean" ? (
         localParticipantAllowedJoin ? (

@@ -71,6 +71,7 @@
     "react-day-picker": "^8.9.1",
     "react-dom": "^18",
     "react-dropzone": "^14.2.3",
+    "react-error-boundary": "^5.0.0",
     "react-hook-form": "^7.47.0",
     "react-lottie": "^1.2.4",
     "react-markdown": "^9.0.1",

@@ -12,7 +12,7 @@ import { useEffect, useMemo, useRef } from "react";
 import ReactPlayer from "react-player";
 import { nameTructed } from "@/utils/helper";
 
-export function PresenterView({ height }) {
+export default function PresenterView({ height }) {
   const mMeeting = useMeeting();
   const presenterId = mMeeting?.presenterId;
   const theme = useTheme();

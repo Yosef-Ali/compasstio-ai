@@ -233,7 +233,7 @@ export function MeetingContainer({
 
   const bottomBarHeight = 60;
   const [sideBarMode, setSideBarMode] = useState(null);
-
+  const [controlsVisible, setControlsVisible] = useState(false);
 
   usePubSub("RAISE_HAND", {
     onMessageReceived: (data) => {
@@ -284,52 +284,66 @@ export function MeetingContainer({
 
   return (
     <div
-      style={{ height: _windowHeight }}
+      style={{ height: windowHeight }}
       ref={containerRef}
-      className="h-80vh flex flex-col bg-gray-800"
+      className="h-screen flex flex-col bg-gray-800 relative group"
+      onMouseEnter={() => setControlsVisible(true)}
+      onMouseLeave={() => setControlsVisible(false)}
     >
       {typeof localParticipantAllowedJoin === "boolean" ? (
         localParticipantAllowedJoin ? (
-          <>
-            <div className={` flex flex-1 flex-row bg-gray-800 `}>
-              <div className={`flex flex-1 `}>
+          <div className="flex flex-col h-full overflow-hidden relative">
+            {/* Main content area */}
+            <div className="flex flex-1 overflow-hidden">
+              {/* Video area */}
+              <div className={`flex-1 min-h-0 transition-all duration-300 relative ${sideBarMode ? 'w-3/4' : 'w-full'}`}>
                 {isPresenting ? (
                   <PresenterView height={containerHeight - bottomBarHeight} />
-                ) : null}
-                {isPresenting && isMobile ? null : (
+                ) : (
                   <ParticipantsViewer
                     isPresenting={isPresenting}
                     sideBarMode={sideBarMode}
-                  //flexBasis={flexWrap ? '50%' : 'auto'}
                   />
                 )}
+
+                {/* Bottom control bar with transition effect - partially visible by default */}
+                <div
+                  className="absolute left-0 right-0 transition-transform duration-300 ease-in-out bg-gray-800 bg-opacity-95 border-t border-gray-700 px-4 py-2 backdrop-blur-sm"
+                  style={{
+                    zIndex: 100,
+                    bottom: 70,
+                    transform: controlsVisible ? 'translateY(0)' : 'translateY(70px)',
+                  }}
+                >
+                  <BottomBar
+                    bottomBarHeight={bottomBarHeight}
+                    sideBarMode={sideBarMode}
+                    setSideBarMode={setSideBarMode}
+                    setIsMeetingLeft={setIsMeetingLeft}
+                    selectWebcamDeviceId={selectWebcamDeviceId}
+                    setSelectWebcamDeviceId={setSelectWebcamDeviceId}
+                    selectMicDeviceId={selectMicDeviceId}
+                    setSelectMicDeviceId={setSelectMicDeviceId}
+                  />
+                </div>
               </div>
-              <SidebarConatiner
-                height={containerHeight - bottomBarHeight}
-                //height={_windowHeight - bottomBarHeight}
-                setSideBarMode={setSideBarMode}
-                sideBarMode={sideBarMode}
-                raisedHandsParticipants={raisedHandsParticipants}
-              />
+
+              {/* Sidebar */}
+              {sideBarMode && (
+                <div className="w-1/4 border-l border-gray-700">
+                  <SidebarConatiner
+                    height={containerHeight - bottomBarHeight}
+                    setSideBarMode={setSideBarMode}
+                    sideBarMode={sideBarMode}
+                    raisedHandsParticipants={raisedHandsParticipants}
+                  />
+                </div>
+              )}
             </div>
-            <BottomBar
-              bottomBarHeight={bottomBarHeight}
-              sideBarMode={sideBarMode}
-              setSideBarMode={setSideBarMode}
-              setIsMeetingLeft={setIsMeetingLeft}
-              selectWebcamDeviceId={selectWebcamDeviceId}
-              setSelectWebcamDeviceId={setSelectWebcamDeviceId}
-              selectMicDeviceId={selectMicDeviceId}
-              setSelectMicDeviceId={setSelectMicDeviceId}
-            />
-          </>
-        ) : (
-          <></>
-        )
+          </div>
+        ) : null
       ) : (
-        !mMeeting.isMeetingJoined
-        &&
-        <WaitingToJoin />
+        !mMeeting.isMeetingJoined && <WaitingToJoin />
       )}
     </div>
   );
