@@ -1,60 +1,92 @@
-import { useContext, createContext, useState, useEffect, useRef } from "react";
+import { createContext, useContext, useState, useEffect, useRef } from 'react';
 
-export const MeetingAppContext = createContext();
+const MeetingAppContext = createContext();
 
-export const useMeetingAppContext = () => useContext(MeetingAppContext);
+export const useMeetingAppContext = () => {
+  const context = useContext(MeetingAppContext);
+  if (!context) {
+    throw new Error('useMeetingAppContext must be used within a MeetingAppProvider');
+  }
+  return context;
+};
 
 export const MeetingAppProvider = ({ children }) => {
+  // Persistent meeting state
+  const [meetingId, setMeetingId] = useState(null);
+  const [micDeviceId, setMicDeviceId] = useState(null);
+  const [webcamDeviceId, setWebcamDeviceId] = useState(null);
+
+  // UI states
   const [raisedHandsParticipants, setRaisedHandsParticipants] = useState([]);
   const [sideBarMode, setSideBarMode] = useState(null);
   const [pipMode, setPipMode] = useState(false);
 
+  // Load persisted state on mount
+  useEffect(() => {
+    const savedState = localStorage.getItem('meetingState');
+    if (savedState) {
+      try {
+        const state = JSON.parse(savedState);
+        setMeetingId(state.meetingId);
+        setMicDeviceId(state.micId);
+        setWebcamDeviceId(state.webcamId);
+      } catch (error) {
+        console.error('Failed to load meeting state:', error);
+      }
+    }
+  }, []);
+
+  // Save state before unload
+  useEffect(() => {
+    const saveState = () => {
+      if (meetingId) {
+        localStorage.setItem('meetingState', JSON.stringify({
+          meetingId,
+          micId: micDeviceId,
+          webcamId: webcamDeviceId
+        }));
+      }
+    };
+
+    window.addEventListener('beforeunload', saveState);
+    return () => window.removeEventListener('beforeunload', saveState);
+  }, [meetingId, micDeviceId, webcamDeviceId]);
+
+  // Raised hands functionality
   const useRaisedHandParticipants = () => {
-    const raisedHandsParticipantsRef = useRef();
+    const participantsRef = useRef(raisedHandsParticipants);
 
     const participantRaisedHand = (participantId) => {
-      const raisedHandsParticipants = [...raisedHandsParticipantsRef.current];
+      const newParticipants = [...participantsRef.current];
+      const newEntry = { participantId, raisedHandOn: Date.now() };
 
-      const newItem = { participantId, raisedHandOn: new Date().getTime() };
-
-      const participantFound = raisedHandsParticipants.findIndex(
-        ({ participantId: pID }) => pID === participantId
-      );
-
-      if (participantFound === -1) {
-        raisedHandsParticipants.push(newItem);
+      const existingIndex = newParticipants.findIndex(p => p.participantId === participantId);
+      if (existingIndex > -1) {
+        newParticipants[existingIndex] = newEntry;
       } else {
-        raisedHandsParticipants[participantFound] = newItem;
+        newParticipants.push(newEntry);
       }
 
-      setRaisedHandsParticipants(raisedHandsParticipants);
+      setRaisedHandsParticipants(newParticipants);
     };
 
+    // Sync ref with state
     useEffect(() => {
-      raisedHandsParticipantsRef.current = raisedHandsParticipants;
+      participantsRef.current = raisedHandsParticipants;
     }, [raisedHandsParticipants]);
 
-    const _handleRemoveOld = () => {
-      const raisedHandsParticipants = [...raisedHandsParticipantsRef.current];
-
-      const now = new Date().getTime();
-
-      const persisted = raisedHandsParticipants.filter(({ raisedHandOn }) => {
-        return parseInt(raisedHandOn) + 15000 > parseInt(now);
-      });
-
-      if (raisedHandsParticipants.length !== persisted.length) {
-        setRaisedHandsParticipants(persisted);
-      }
-    };
-
+    // Cleanup old entries
     useEffect(() => {
-      const interval = setInterval(_handleRemoveOld, 1000);
+      const interval = setInterval(() => {
+        const cutoff = Date.now() - 15000;
+        const filtered = raisedHandsParticipants.filter(p => p.raisedHandOn > cutoff);
+        if (filtered.length !== raisedHandsParticipants.length) {
+          setRaisedHandsParticipants(filtered);
+        }
+      }, 1000);
 
-      return () => {
-        clearInterval(interval);
-      };
-    }, []);
+      return () => clearInterval(interval);
+    }, [raisedHandsParticipants]);
 
     return { participantRaisedHand };
   };
@@ -62,19 +94,26 @@ export const MeetingAppProvider = ({ children }) => {
   return (
     <MeetingAppContext.Provider
       value={{
-        // states
+        // Persistent state
+        meetingId,
+        micDeviceId,
+        webcamDeviceId,
 
+        // UI state
         raisedHandsParticipants,
-
         sideBarMode,
         pipMode,
-        // setters
 
+        // Setters
+        setMeetingId,
+        setMicDeviceId,
+        setWebcamDeviceId,
         setRaisedHandsParticipants,
-
         setSideBarMode,
         setPipMode,
-        useRaisedHandParticipants,
+
+        // Handlers
+        useRaisedHandParticipants
       }}
     >
       {children}
