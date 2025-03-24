@@ -26,14 +26,20 @@ export const pay = action({
 
     const domain = process.env.NEXT_PUBLIC_HOSTING_URL!;
 
-    console.log("domain", domain);
 
     const session: Stripe.Response<Stripe.Checkout.Session> = await stripe.checkout.sessions.create(
       {
-        mode: "subscription",
+        mode: "payment",
         line_items: [
           {
-            price: process.env.STRIPE_SUBSCRIPTION_PRICE_ID!,
+            price_data: {
+              currency: 'usd',
+              product_data: {
+                name: 'Pro Subscription',
+                description: 'One-time payment for Pro access'
+              },
+              unit_amount: 100, // $1.00
+            },
             quantity: 1,
           },
         ],
@@ -41,7 +47,6 @@ export const pay = action({
         metadata: {
           userId: user._id,
         },
-
         // redirect to your success url
         success_url: `${domain}`,
         cancel_url: `${domain}`,
