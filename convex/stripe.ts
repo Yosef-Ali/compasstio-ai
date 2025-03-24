@@ -29,16 +29,19 @@ export const pay = action({
 
     const session: Stripe.Response<Stripe.Checkout.Session> = await stripe.checkout.sessions.create(
       {
-        mode: "payment",
+        mode: "subscription",
         line_items: [
           {
             price_data: {
               currency: 'usd',
               product_data: {
                 name: 'Pro Subscription',
-                description: 'One-time payment for Pro access'
+                description: 'Monthly Pro access'
               },
               unit_amount: 100, // $1.00
+              recurring: {
+                interval: 'month'
+              }
             },
             quantity: 1,
           },
