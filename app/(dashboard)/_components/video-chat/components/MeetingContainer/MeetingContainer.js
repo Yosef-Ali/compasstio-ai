@@ -4,7 +4,7 @@ import { useMeeting, usePubSub } from "@videosdk.live/react-sdk";
 import { BottomBar } from "../BottomBar";
 import { SidebarConatiner } from "../SidebarContainer/SidebarContainer";
 import { ParticipantsViewer } from "./ParticipantView";
-import { PresenterView } from "./PresenterView";
+import PresenterView from "./PresenterView";
 import { useSnackbar } from "notistack";
 import { nameTructed, trimSnackBarText } from "@/utils/helper";
 import useResponsiveSize from "@/utils/useResponsiveSize";
