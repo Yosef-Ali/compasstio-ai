@@ -1,4 +1,3 @@
-
 import {
   internalMutation,
   internalQuery,
@@ -348,14 +347,14 @@ export const updateOrCreateUser = internalMutation({
   },
   async handler(ctx, { clerkData }) {
     const userRecord = await userQuery(ctx, clerkData.id);
-    const userIdentity = await getUserIdentity(ctx, {});
-
-
-    // If userIdentity is not provided, use a default value or handle accordingly
-    const tokenIdentifier = userIdentity?.tokenIdentifier as string; // Replace 'default_value' with an appropriate value
-
+    
+    // Fix: Use ctx.auth.getUserIdentity() directly instead of calling the query function
+    const identity = await ctx.auth.getUserIdentity();
+    
+    // Use a default value if identity is null
+    const tokenIdentifier = identity?.tokenIdentifier || 'default_token';
+    
     //console.log("userRecord", userRecord);
-
     if (userRecord === null) {
       // Create a new user with Clerk data
       await ctx.db.insert("users", {
@@ -367,13 +366,13 @@ export const updateOrCreateUser = internalMutation({
         userId: clerkData.id || "",
         tokenIdentifier,
       })
-      const identity = await ctx.auth.getUserIdentity();
-
+      
+      // We already have the identity from above, no need to fetch it again
       if (identity) {
         // Patch the user record with the new userIdentity
         //@ts-ignore
         await ctx.db.patch(userRecord._id, {
-          tokenIdentifier: identity?.tokenIdentifier || 'default_value', // Replace 'default_value' with an appropriate value
+          tokenIdentifier: identity.tokenIdentifier || 'default_token',
         });
       } else {
         // Handle the case where userIdentity is not found
