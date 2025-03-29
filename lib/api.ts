@@ -5,20 +5,43 @@ const API_AUTH_URL = process.env.NEXT_PUBLIC_AUTH_URL;
 //export const getToken: string | undefined = process.env.NEXT_PUBLIC_VIDEOSDK_TOKEN;
 
 export const getToken = async () => {
-  if (VIDEOSDK_TOKEN && API_AUTH_URL) {
-    console.error(
-      "Error: Provide only ONE PARAMETER - either Token or Auth API"
-    );
-  } else if (VIDEOSDK_TOKEN) {
-    return VIDEOSDK_TOKEN;
-  } else if (API_AUTH_URL) {
-    const res = await fetch(`${API_AUTH_URL}/get-token`, {
-      method: "GET",
+  try {
+    console.log("Requesting video token...");
+    const response = await fetch('/api/video-token');
+
+    const responseText = await response.text();
+    console.log("Token response:", {
+      status: response.status,
+      text: responseText
     });
-    const { token } = await res.json();
-    return token;
-  } else {
-    console.error("Error: ", Error("Please add a token or Auth Server URL"));
+
+    if (!response.ok) {
+      throw new Error(`Failed to get token: ${response.status} - ${responseText}`);
+    }
+
+    let data;
+    try {
+      data = JSON.parse(responseText);
+    } catch (e) {
+      console.error("Failed to parse token response:", responseText);
+      throw new Error("Invalid JSON response from token endpoint");
+    }
+
+    if (!data.token) {
+      if (data.error) {
+        throw new Error(`Token error: ${data.error}${data.details ? `\nDetails: ${JSON.stringify(data.details)}` : ''}`);
+      }
+      throw new Error('No token returned from server');
+    }
+
+    return data.token;
+  } catch (error: any) {
+    console.error("Error getting token:", {
+      message: error.message,
+      stack: error.stack,
+      cause: error.cause
+    });
+    throw error; // Preserve the original error for better debugging
   }
 };
 
@@ -38,18 +61,62 @@ export const getToken = async () => {
 // };
 
 export const createMeeting = async ({ token }: { token: string }) => {
-  const url = `${API_BASE_URL}/v2/rooms`;
+  try {
+    console.log("Creating meeting with token:", token.substring(0, 20) + "...");
+    const response = await fetch(`${API_BASE_URL}/v2/rooms`, {
+      method: "POST",
+      headers: {
+        Authorization: token, // Remove "Bearer " prefix to match VideoSDK's expectations
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        region: "sg001",
+        template: "group-call",
+      }),
+    });
 
-  const options = {
-    method: "POST",
-    headers: { Authorization: token, "Content-Type": "application/json" },
-  };
+    const responseText = await response.text();
+    console.log("Room creation response:", {
+      status: response.status,
+      text: responseText
+    });
 
-  const { roomId } = await fetch(url, options)
-    .then((response) => response.json())
-    .catch((error) => console.error("error", error));
+    if (!response.ok) {
+      let errorDetails = '';
+      try {
+        const errorData = JSON.parse(responseText);
+        errorDetails = errorData.error || errorData.message || responseText;
+      } catch {
+        errorDetails = responseText;
+      }
+      throw new Error(`VideoSDK API Error ${response.status}: ${errorDetails}`);
+    }
 
-  return roomId;
+    let data;
+    try {
+      data = JSON.parse(responseText);
+    } catch (e) {
+      console.error("Failed to parse room creation response:", responseText);
+      throw new Error("Invalid JSON response from VideoSDK");
+    }
+
+    if (!data.roomId) {
+      console.error("Room creation response data:", data);
+      throw new Error("No room ID in response");
+    }
+
+    console.log("Successfully created room:", data.roomId);
+    return data.roomId;
+
+  } catch (error: any) {
+    console.error("Error creating meeting:", {
+      message: error.message,
+      stack: error.stack,
+      cause: error.cause,
+      token: token ? "present" : "missing"
+    });
+    throw error; // Preserve the original error
+  }
 };
 
 export const validateMeeting = async ({ roomId, token }: { roomId: string, token: string }) => {

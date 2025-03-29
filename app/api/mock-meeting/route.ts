@@ -1,33 +1,44 @@
-import { NextRequest, NextResponse } from 'next/server';
-import crypto from 'crypto';
+import { NextRequest, NextResponse } from "next/server";
 
-// Mock implementation since VideoSDK tokens aren't working
-export async function GET(req: NextRequest) {
-  try {
-    // Generate a mock token that doesn't need validation
-    const mockToken = "mock-token-" + crypto.randomBytes(16).toString('hex');
-    
-    return NextResponse.json({ token: mockToken });
-  } catch (error) {
-    console.error('Error generating mock token:', error);
+export async function POST(req: NextRequest) {
+  const { owner, repo, title, body, branch } = await req.json();
+
+  if (!owner || !repo || !title || !body || !branch) {
     return NextResponse.json(
-      { error: "Failed to generate mock token" },
-      { status: 500 }
+      { error: "Missing required parameters" },
+      { status: 400 }
     );
   }
-}
 
-// Mock endpoint to create a meeting
-export async function POST(req: NextRequest) {
   try {
-    // Generate a random meeting ID
-    const meetingId = "mock-meeting-" + crypto.randomBytes(8).toString('hex');
-    
-    return NextResponse.json({ roomId: meetingId });
-  } catch (error) {
-    console.error('Error creating mock meeting:', error);
+    const githubResponse = await fetch("http://localhost:3000/api/mcp", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        server_name: "github",
+        tool_name: "create_issue",
+        arguments: {
+          owner: owner,
+          repo: repo,
+          title: title,
+          body: body,
+        },
+      }),
+    });
+
+    const githubData = await githubResponse.json();
+
+    if (!githubData.issueNumber) {
+      throw new Error("Failed to create meeting issue");
+    }
+
+    return NextResponse.json({ issueNumber: githubData.issueNumber });
+  } catch (error: any) {
+    console.error("Error creating meeting issue:", error);
     return NextResponse.json(
-      { error: "Failed to create mock meeting" },
+      { error: error.message || "Failed to create meeting issue" },
       { status: 500 }
     );
   }
