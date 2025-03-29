@@ -46,9 +46,8 @@ export async function GET(): Promise<NextResponse<TokenResult>> {
 
         console.log("Successfully generated JWT token");
 
-        // Store the token for other parts of the app
-        process.env.NEXT_PUBLIC_VIDEOSDK_TOKEN = token;
-
+        // Store the token for other parts of the app (use environment variables safely)
+        // Note: We can't modify process.env at runtime in production
         return NextResponse.json({ token });
     } catch (error: any) {
         console.error("Error generating token:", {
