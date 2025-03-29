@@ -1,17 +1,18 @@
 import React, { useEffect, useState, useRef } from 'react';
-// Use safe wrappers from our video-sdk-wrapper
 import { useMeeting as originalUseMeeting, usePubSub as originalUsePubSub } from "@videosdk.live/react-sdk";
-import { CONSTANTS, safeUseMeeting, safePubSub } from "@/lib/video-sdk-wrapper";
+import { CONSTANTS, safeUseMeeting, safePubSub, initializeVideoSDKConstants } from "@/lib/video-sdk-wrapper";
 import { useRouter } from 'next/navigation';
 
 // Create safe versions of the hooks
 const useMeeting = (config) => safeUseMeeting(originalUseMeeting, config);
 const usePubSub = (topic, options) => safePubSub(originalUsePubSub, topic, options);
 
-// Import necessary components
+// Import necessary UI components
 import { Box, Typography, Button, CircularProgress } from "@material-ui/core";
-import SelfView from './MeetingContainer/SelfView';
 
+/**
+ * Main VideoConference component that handles the meeting UI and functionality
+ */
 const VideoConference = ({
     meetingId,
     participantName,
@@ -23,30 +24,12 @@ const VideoConference = ({
     const [isMeetingJoined, setIsMeetingJoined] = useState(false);
     const [isMeetingLeft, setIsMeetingLeft] = useState(false);
     const [participants, setParticipants] = useState([]);
-    const [activeSpeakerId, setActiveSpeakerId] = useState(null);
-    const [raisedHandsParticipants, setRaisedHandsParticipants] = useState([]);
     const mMeetingRef = useRef();
 
-    // Function to track participants who raised their hands
-    const useRaisedHandParticipants = () => {
-        return {
-            participantRaisedHand: (participantId) => {
-                setRaisedHandsParticipants((prev) => {
-                    if (!prev.includes(participantId)) {
-                        return [...prev, participantId];
-                    }
-                    return prev;
-                });
-
-                // Auto-remove raised hand after 5 seconds
-                setTimeout(() => {
-                    setRaisedHandsParticipants((prev) =>
-                        prev.filter(id => id !== participantId)
-                    );
-                }, 5000);
-            },
-        };
-    };
+    // Initialize VideoSDK constants
+    useEffect(() => {
+        initializeVideoSDKConstants();
+    }, []);
 
     // Event handlers for the meeting
     function onParticipantJoined(participant) {
@@ -60,10 +43,6 @@ const VideoConference = ({
             prevParticipants.filter(pId => pId !== participant.id)
         );
     }
-
-    const onSpeakerChanged = (activeSpeakerId) => {
-        setActiveSpeakerId(activeSpeakerId);
-    };
 
     function onMeetingJoined() {
         console.log("Meeting joined!");
@@ -80,7 +59,6 @@ const VideoConference = ({
     const mMeeting = useMeeting({
         onParticipantJoined,
         onParticipantLeft,
-        onSpeakerChanged,
         onMeetingJoined,
         onMeetingLeft,
     });
@@ -88,45 +66,7 @@ const VideoConference = ({
     // Store meeting reference for later use
     useEffect(() => {
         mMeetingRef.current = mMeeting;
-
-        // Log available constants for debugging
-        console.log("Available Constants:", CONSTANTS);
-        console.log("PARTICIPANTS value:", CONSTANTS.PARTICIPANTS);
     }, [mMeeting]);
-
-    // Handle participant events based on their mode
-    const handleParticipantEvent = (participant) => {
-        // Using our safe CONSTANTS wrapper
-        switch (participant.mode) {
-            case CONSTANTS.PARTICIPANTS.MODERATOR:
-                console.log(`${participant.displayName} is a moderator`);
-                break;
-            case CONSTANTS.PARTICIPANTS.VIEWER:
-                console.log(`${participant.displayName} is a viewer`);
-                break;
-            default:
-                console.log(`${participant.displayName} has role: ${participant.mode}`);
-                break;
-        }
-    };
-
-    // Setup PubSub for chat messages and raised hands
-    const { raisedHandsParticipants: raiseHandParticipants } = useRaisedHandParticipants();
-
-    usePubSub("CHAT", {
-        onMessageReceived: (data) => {
-            const { senderId, senderName, message } = data;
-            console.log(`Chat message from ${senderName}: ${message}`);
-        },
-    });
-
-    usePubSub("RAISE_HAND", {
-        onMessageReceived: (data) => {
-            const { senderId, senderName } = data;
-            console.log(`${senderName} raised hand`);
-            raiseHandParticipants(senderId);
-        },
-    });
 
     // Render waiting state if not joined yet
     if (!isMeetingJoined) {
@@ -178,7 +118,7 @@ const VideoConference = ({
             <Box className="participants-area" display="flex" flexWrap="wrap" flex={1}>
                 {participants.length === 0 ? (
                     <Box width="100%" height="100%" display="flex" justifyContent="center" alignItems="center">
-                        <SelfView />
+                        <Typography>No other participants yet</Typography>
                     </Box>
                 ) : (
                     participants.map((participantId) => (
@@ -189,7 +129,6 @@ const VideoConference = ({
                             height={participants.length <= 2 ? "100%" : "50%"}
                             padding={1}
                         >
-                            {/* This would be your ParticipantView component */}
                             <Box
                                 className="participant-video"
                                 width="100%"
@@ -215,6 +154,7 @@ const VideoConference = ({
                 padding={2}
                 display="flex"
                 justifyContent="center"
+                alignItems="center"
                 bgcolor="rgba(0,0,0,0.1)"
             >
                 <Button
