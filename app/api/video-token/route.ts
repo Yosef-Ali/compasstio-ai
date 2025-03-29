@@ -1,13 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server';
 import jwt from 'jsonwebtoken';
-import { API_KEY, SECRET_KEY } from '@/lib/constants';
+// import { API_KEY, SECRET_KEY } from '@/lib/constants'; // Remove this line
 
 export async function GET(req: NextRequest) {
   try {
     console.log("Token generation endpoint called");
 
-    if (!API_KEY || !SECRET_KEY) {
-      console.error("Missing API_KEY or SECRET_KEY");
+    const API_KEY = process.env.API_KEY;
+    const VIDEOSDK_SECRET_KEY = process.env.VIDEOSDK_SECRET_KEY;
+
+    if (!API_KEY || !VIDEOSDK_SECRET_KEY) {
+      console.error("Missing API_KEY or VIDEOSDK_SECRET_KEY");
       return NextResponse.json(
         { error: "API key or Secret key not configured" },
         { status: 500 }
@@ -15,8 +18,8 @@ export async function GET(req: NextRequest) {
     }
 
     // Validate that API_KEY is a string to prevent instanceof errors
-    if (typeof API_KEY !== 'string' || typeof SECRET_KEY !== 'string') {
-      console.error("API_KEY or SECRET_KEY is not a string");
+    if (typeof API_KEY !== 'string' || typeof VIDEOSDK_SECRET_KEY !== 'string') {
+      console.error("API_KEY or VIDEOSDK_SECRET_KEY is not a string");
       return NextResponse.json(
         { error: "Invalid API key or Secret key format" },
         { status: 500 }
@@ -35,7 +38,7 @@ export async function GET(req: NextRequest) {
     // Use try-catch specifically for the JWT signing to catch any potential errors
     let token;
     try {
-      token = jwt.sign(payload, SECRET_KEY);
+      token = jwt.sign(payload, VIDEOSDK_SECRET_KEY as string);
       console.log("Generated token:", token);
     } catch (signError) {
       console.error("Error signing JWT:", signError);

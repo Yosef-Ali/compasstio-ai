@@ -1,80 +1,101 @@
-"use client";
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useRef, useState, Dispatch, SetStateAction } from "react";
 import { JoiningScreen } from "../components/JoiningScreen";
-import { MeetingContainer } from "../components/MeetingContainer/MeetingContainer";
+import { MeetingContainer, MeetingContainerProps } from "../components/MeetingContainer/MeetingContainer";
 import { SnackbarProvider } from "notistack";
 import { LeaveScreen } from "../components/LeaveScreen";
-import { useTheme } from "@material-ui/core";
+import { ThemeProvider, useMediaQuery, useTheme } from "@material-ui/core";
 import { MeetingProvider } from "@videosdk.live/react-sdk";
-import {
-  DeviceSelection,
-  MeetingConfig,
-} from "@/types/video-chat";
-import useRaisedHandParticipants from "@/app/hooks/useRaisedHandParticipants";
-import useWindowSize from "@/utils/useWindowSize";
+import generateMuiTheme from "@/mui/theme";
 
-interface MeetingAppContainerProps {
-  controlsVisible?: boolean;
+interface MicWebcam {
+  id: string | null;
 }
 
-function MeetingAppContainer({ controlsVisible = true }: MeetingAppContainerProps): JSX.Element {
-  // Meeting state
+interface MeetingAppContainerProps {}
+
+function MeetingAppContainer({}: MeetingAppContainerProps) {
   const [token, setToken] = useState<string>("");
   const [meetingId, setMeetingId] = useState<string>("");
   const [participantName, setParticipantName] = useState<string>("");
-
-  // Media device states
   const [micOn, setMicOn] = useState<boolean>(true);
   const [webcamOn, setWebcamOn] = useState<boolean>(true);
-  const [selectedMic, setSelectedMic] = useState<DeviceSelection>({ id: null });
-  const [selectedWebcam, setSelectedWebcam] = useState<DeviceSelection>({ id: null });
-  const [selectWebcamDeviceId, setSelectWebcamDeviceId] = useState<string | null>(null);
-  const [selectMicDeviceId, setSelectMicDeviceId] = useState<string | null>(null);
-
-  // Meeting flow states
+  const [selectedMic, setSelectedMic] = useState<MicWebcam>({ id: null });
+  const [selectedWebcam, setSelectedWebcam] = useState<MicWebcam>({ id: null });
+  const [selectWebcamDeviceId, setSelectWebcamDeviceId] = useState<string | null>(
+    selectedWebcam.id
+  );
+  const [selectMicDeviceId, setSelectMicDeviceId] = useState<string | null>(selectedMic.id);
   const [isMeetingStarted, setMeetingStarted] = useState<boolean>(false);
   const [isMeetingLeft, setIsMeetingLeft] = useState<boolean>(false);
+  const [raisedHandsParticipants, setRaisedHandsParticipants] = useState<
+    { participantId: string; raisedHandOn: number }[]
+  >([]);
 
-  // Hooks
+
+  const useRaisedHandParticipants = () => {
+    const raisedHandsParticipantsRef = useRef<
+      { participantId: string; raisedHandOn: number }[]
+    >([]);
+
+    const participantRaisedHand = (participantId: string) => {
+      const raisedHandsParticipants = [...raisedHandsParticipantsRef.current];
+
+      const newItem = { participantId, raisedHandOn: new Date().getTime() };
+
+      const participantFound = raisedHandsParticipants.findIndex(
+        ({ participantId: pID }) => pID === participantId
+      );
+
+      if (participantFound === -1) {
+        raisedHandsParticipants.push(newItem);
+      } else {
+        raisedHandsParticipants[participantFound] = newItem;
+      }
+
+      setRaisedHandsParticipants(raisedHandsParticipants);
+    };
+
+    useEffect(() => {
+      raisedHandsParticipantsRef.current = raisedHandsParticipants;
+    }, [raisedHandsParticipants]);
+
+    const _handleRemoveOld = () => {
+      const raisedHandsParticipants = [...raisedHandsParticipantsRef.current];
+
+      const now = new Date().getTime();
+
+      const persisted = raisedHandsParticipants.filter(({ raisedHandOn }) => {
+        return parseInt(raisedHandOn.toString()) + 15000 > parseInt(now.toString());
+      });
+
+      if (raisedHandsParticipants.length !== persisted.length) {
+        setRaisedHandsParticipants(persisted);
+      }
+    };
+
+    useEffect(() => {
+      const interval = setInterval(_handleRemoveOld, 1000);
+
+      return () => {
+        clearInterval(interval);
+      };
+    }, []);
+
+    return { participantRaisedHand };
+  };
+
   const theme = useTheme();
-  const { width: windowWidth, height: windowHeight } = useWindowSize();
-  const { participantRaisedHand, raisedHandsParticipants } = useRaisedHandParticipants();
+  const isXStoSM = useMediaQuery(theme.breakpoints.only("xs"));
 
-  // Set up beforeunload handler to prevent accidental exits
   useEffect(() => {
-    if (typeof window !== "undefined") {
+    if (isXStoSM) {
       window.onbeforeunload = () => {
         return "Are you sure you want to exit?";
       };
-
-      return () => {
-        window.onbeforeunload = null;
-      };
     }
-  }, []);
+  }, [isXStoSM]);
 
-  // Update device IDs when selections change
-  useEffect(() => {
-    setSelectWebcamDeviceId(selectedWebcam.id);
-  }, [selectedWebcam]);
 
-  useEffect(() => {
-    setSelectMicDeviceId(selectedMic.id);
-  }, [selectedMic]);
-
-  // Handler for meeting leave
-  const handleMeetingLeave = useCallback(() => {
-    setToken("");
-    setMeetingId("");
-    setWebcamOn(false);
-    setMicOn(false);
-    setMeetingStarted(false);
-  }, []);
-
-  // Handler for starting a meeting
-  const handleStartMeeting = useCallback(() => {
-    setMeetingStarted(true);
-  }, []);
 
   return (
     <>
@@ -92,14 +113,28 @@ function MeetingAppContainer({ controlsVisible = true }: MeetingAppContainerProp
               meetingId,
               micEnabled: micOn,
               webcamEnabled: webcamOn,
-              name: participantName || "TestUser",
-            } as MeetingConfig}
+              name: participantName ? participantName : "TestUser",
+            }}
             token={token}
             reinitialiseMeetingOnConfigChange={true}
             joinWithoutUserInteraction={true}
           >
             <MeetingContainer
-              onMeetingLeave={handleMeetingLeave}
+              onMeetingLeave={() => {
+                setToken("");
+                setMeetingId("");
+                setWebcamOn(false);
+                setMicOn(false);
+                setMeetingStarted(false);
+
+                // Access the videoSDK instance and turn off the webcam
+                // const videoSDK = window.VideoSDK;
+                // if (videoSDK) {
+                //   videoSDK.toggleWebcam(false);
+                //   videoSDK.leave();
+                //   console.log("video sdk::", videoSDK);
+                //}
+              }}
               setIsMeetingLeft={setIsMeetingLeft}
               selectedMic={selectedMic}
               selectedWebcam={selectedWebcam}
@@ -107,10 +142,10 @@ function MeetingAppContainer({ controlsVisible = true }: MeetingAppContainerProp
               setSelectWebcamDeviceId={setSelectWebcamDeviceId}
               selectMicDeviceId={selectMicDeviceId}
               setSelectMicDeviceId={setSelectMicDeviceId}
+              useRaisedHandParticipants={useRaisedHandParticipants}
+              raisedHandsParticipants={raisedHandsParticipants}
               micEnabled={micOn}
               webcamEnabled={webcamOn}
-              controlsVisible={controlsVisible}
-              raisedHandsParticipants={raisedHandsParticipants}
             />
           </MeetingProvider>
         </SnackbarProvider>
@@ -123,10 +158,12 @@ function MeetingAppContainer({ controlsVisible = true }: MeetingAppContainerProp
           setMeetingId={setMeetingId}
           setToken={setToken}
           setMicOn={setMicOn}
-          setWebcamOn={setWebcamOn}
-          micEnabled={micOn}
           webcamEnabled={webcamOn}
-          onClickStartMeeting={handleStartMeeting}
+          micEnabled={micOn}
+          setWebcamOn={setWebcamOn}
+          onClickStartMeeting={() => {
+            setMeetingStarted(true);
+          }}
           setIsMeetingLeft={setIsMeetingLeft}
         />
       )}

@@ -22,9 +22,13 @@ const DynamicVideoChatWrapper = dynamic(
         ),
     }
 );
+console.log("[LiveSessionsPage] DynamicVideoChatWrapper defined");
 
 const DynamicThemeProvider = dynamic(
-    () => import("@/app/context/ThemeProvider").then((mod) => mod.default),
+    () => {
+        console.log("[LiveSessionsPage] Importing ThemeProvider dynamically");
+        return import("@/app/context/ThemeProvider").then((mod) => mod.default);
+    },
     { ssr: false }
 );
 
@@ -34,6 +38,7 @@ interface ErrorFallbackProps {
 }
 
 const ErrorFallback = ({ error, resetErrorBoundary }: ErrorFallbackProps) => {
+    console.error("[LiveSessionsPage] Rendering ErrorFallback:", error);
     return (
         <div className="flex flex-col items-center justify-center w-full h-full bg-gray-800 text-white p-4">
             <h2 className="text-xl font-semibold mb-4">Video Chat Error</h2>
@@ -76,7 +81,7 @@ const tabs: Tab[] = [
 
 export default function LiveSessionsPage() {
     const [hasError, setHasError] = useState(false);
-    const { controlsVisible, setVideoState } = useMeetingStore();
+    const { videoState, setVideoState } = useMeetingStore();
     const [isClient, setIsClient] = useState(false);
 
     useEffect(() => {
@@ -84,13 +89,16 @@ export default function LiveSessionsPage() {
     }, []);
 
     useEffect(() => {
-        setVideoState({ controlsVisible: true });
+        console.log("[LiveSessionsPage] Setting initial video state");
+        setVideoState(true);
         return () => {
-            setVideoState({ controlsVisible: false });
+            console.log("[LiveSessionsPage] Cleaning up video state");
+            setVideoState(false);
         };
     }, [setVideoState]);
 
     if (!isClient) {
+        console.log("[LiveSessionsPage] Rendering server/initial state (isClient=false)");
         return (
             <div className="flex flex-col h-screen">
                 <TopNav />
@@ -116,12 +124,13 @@ export default function LiveSessionsPage() {
                             <ErrorBoundary
                                 FallbackComponent={ErrorFallback}
                                 onError={(error: Error) => {
-                                    console.error("Error in video chat:", error);
+                                    console.error("[LiveSessionsPage] ErrorBoundary caught error:", error);
                                     setHasError(true);
                                 }}
                                 onReset={() => setHasError(false)}
                             >
-                                <DynamicVideoChatWrapper controlsVisible={controlsVisible} />
+
+                                <DynamicVideoChatWrapper controlsVisible={videoState} />
                             </ErrorBoundary>
                         </DynamicThemeProvider>
                     </div>

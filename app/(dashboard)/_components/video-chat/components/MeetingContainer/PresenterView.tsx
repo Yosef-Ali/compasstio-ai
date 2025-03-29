@@ -20,15 +20,15 @@ export function PresenterView({ height }: PresenterViewProps) {
   const videoPlayer = useRef<ReactPlayer>(null);
   const audioPlayer = useRef<HTMLAudioElement>(null);
 
-  // Get presenter participant information
+  // Get presenter participant information - handle the case when presenterId is undefined
   const {
-    micOn,
-    isLocal,
-    screenShareStream,
-    screenShareAudioStream,
-    screenShareOn,
-    displayName,
-  } = useParticipant(presenterId);
+    micOn = false,
+    isLocal = false,
+    screenShareStream = null,
+    screenShareAudioStream = null,
+    screenShareOn = false,
+    displayName = "",
+  } = presenterId ? useParticipant(presenterId) : {};
 
   // Create media stream for screen sharing
   const mediaStream = useMemo(() => {
@@ -94,10 +94,8 @@ export function PresenterView({ height }: PresenterViewProps) {
           </div>
         )}
       </div>
-
       {/* Audio element for screen share audio */}
       <audio ref={audioPlayer} autoPlay playsInline />
-
       {/* Presenter info overlay */}
       <div className="absolute bottom-4 left-4 bg-black/50 px-4 py-2 rounded-lg flex items-center gap-2">
         {!micOn && <MicOff className="text-white h-4 w-4" />}
@@ -108,4 +106,4 @@ export function PresenterView({ height }: PresenterViewProps) {
       </div>
     </div>
   );
-} 
+}

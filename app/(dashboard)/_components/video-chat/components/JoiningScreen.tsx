@@ -5,7 +5,7 @@ import { requestMediaPermissions, getMediaErrorMessage } from '@/lib/media-utils
 import { createMeeting, getToken, validateMeeting } from '@/lib/api';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { useMeetingStore } from '@/app/hooks/useMeetingIdStore';
+import useMeetingIdStore from '@/app/hooks/useMeetingIdStore';
 
 interface JoiningScreenProps {
   participantName: string;
@@ -38,34 +38,34 @@ export function JoiningScreen({
   const handleStartMeeting = async () => {
     setIsLoading(true);
     setError(null);
-    
+
     try {
       console.log("Starting meeting creation process...");
-      
+
       // First check media permissions
       await requestMediaPermissions();
-      
+
       // Get a fresh token from our server-side API
       const token = await getToken();
       console.log("Got token:", token);
-      
+
       // Create meeting with the token
       const meetingId = await createMeeting({ token });
       console.log("Successfully created meeting with ID:", meetingId);
-      
+
       if (!meetingId) {
         throw new Error("No meeting ID returned");
       }
-      
+
       // Set local state
       setToken(token);
       setMeetingId(meetingId);
       setIsMeetingLeft(false);
-      
+
       // Store in persistent store
-      useMeetingStore.getState().setMeetingId(meetingId);
-      useMeetingStore.getState().setToken(token);
-      
+      useMeetingIdStore.getState().setMeetingId(meetingId);
+      useMeetingIdStore.getState().setToken(token);
+
       onClickStartMeeting();
     } catch (error: unknown) {
       const errorMessage = getMediaErrorMessage(error);
@@ -84,14 +84,14 @@ export function JoiningScreen({
       // First check media permissions
       await requestMediaPermissions();
 
+      // Get a fresh token
+      const token = await getToken();
+      
       // Validate the meeting ID
-      const isValid = await validateMeeting(meetingId);
+      const isValid = await validateMeeting({ roomId: meetingId, token });
       if (!isValid) {
         throw new Error("Invalid meeting ID");
       }
-
-      // Get a fresh token
-      const token = await getToken();
       
       // Update state
       setToken(token);
@@ -99,9 +99,9 @@ export function JoiningScreen({
       setIsMeetingLeft(false);
 
       // Store in persistent store
-      useMeetingStore.getState().setMeetingId(meetingId);
-      useMeetingStore.getState().setToken(token);
-      
+      useMeetingIdStore.getState().setMeetingId(meetingId);
+      useMeetingIdStore.getState().setToken(token);
+
     } catch (error: unknown) {
       const errorMessage = getMediaErrorMessage(error);
       setError(errorMessage);
