@@ -135,16 +135,30 @@ export function ParticipantsViewer({
   localParticipant,
   pinnedParticipant
 }: ParticipantsViewerProps) {
+  // Get the meeting to access the local participant
+  const mMeeting = useMeeting();
+
   const participantIds = useMemo(() => {
     const ids = Array.from(participants.keys());
-    if (localParticipant) {
+
+    // Always ensure local participant is included, even when alone
+    if (mMeeting.localParticipant) {
+      if (!ids.includes(mMeeting.localParticipant.id)) {
+        ids.unshift(mMeeting.localParticipant.id);
+      }
+    }
+
+    // Include other participants
+    if (localParticipant && !ids.includes(localParticipant.id)) {
       ids.unshift(localParticipant.id);
     }
+
     if (pinnedParticipant && !ids.includes(pinnedParticipant)) {
       ids.unshift(pinnedParticipant);
     }
+
     return Array.from(new Set(ids));
-  }, [participants, localParticipant, pinnedParticipant]);
+  }, [participants, localParticipant, pinnedParticipant, mMeeting.localParticipant]);
 
   if (participantIds.length === 0) {
     return (

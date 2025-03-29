@@ -1,0 +1,36 @@
+{
+  "mcpServers": {
+    "mcp-installer": {
+      "command": "npx",
+      "args": [
+        "@anaisbetts/mcp-installer"
+      ]
+    },
+    "mcp-youtube": {
+      "command": "npx",
+      "args": [
+        "@anaisbetts/mcp-youtube"
+      ]
+    },
+    "desktop-commander": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@smithery/cli@latest",
+        "run",
+        "@wonderwhy-er/desktop-commander",
+        "--config",
+        "{}"
+      ]
+    },
+    "mcp-obsidian": {
+      "command": "/Users/mekdesyared/.local/bin/uv",
+      "args": [
+        "--directory",
+        "/Users/mekdesyared/mcp-obsidian",
+        "run",
+        "mcp-obsidian"
+      ]
+    }
+  }
+}

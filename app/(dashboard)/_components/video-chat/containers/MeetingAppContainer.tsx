@@ -11,9 +11,11 @@ interface MicWebcam {
   id: string | null;
 }
 
-interface MeetingAppContainerProps {}
+interface MeetingAppContainerProps {
+  controlsVisible?: boolean;
+}
 
-function MeetingAppContainer({}: MeetingAppContainerProps) {
+function MeetingAppContainer({ controlsVisible: parentControlsVisible }: MeetingAppContainerProps) {
   const [token, setToken] = useState<string>("");
   const [meetingId, setMeetingId] = useState<string>("");
   const [participantName, setParticipantName] = useState<string>("");
@@ -30,6 +32,8 @@ function MeetingAppContainer({}: MeetingAppContainerProps) {
   const [raisedHandsParticipants, setRaisedHandsParticipants] = useState<
     { participantId: string; raisedHandOn: number }[]
   >([]);
+  // Use the parent's controlsVisible prop or default to false
+  const [controlsVisible, setControlsVisible] = useState<boolean>(parentControlsVisible || false);
 
 
   const useRaisedHandParticipants = () => {
@@ -95,6 +99,12 @@ function MeetingAppContainer({}: MeetingAppContainerProps) {
     }
   }, [isXStoSM]);
 
+  // Keep local controls in sync with parent controls
+  useEffect(() => {
+    if (parentControlsVisible !== undefined) {
+      setControlsVisible(parentControlsVisible);
+    }
+  }, [parentControlsVisible]);
 
 
   return (
@@ -114,6 +124,7 @@ function MeetingAppContainer({}: MeetingAppContainerProps) {
               micEnabled: micOn,
               webcamEnabled: webcamOn,
               name: participantName ? participantName : "TestUser",
+              debugMode: false,
             }}
             token={token}
             reinitialiseMeetingOnConfigChange={true}
@@ -146,6 +157,7 @@ function MeetingAppContainer({}: MeetingAppContainerProps) {
               raisedHandsParticipants={raisedHandsParticipants}
               micEnabled={micOn}
               webcamEnabled={webcamOn}
+              controlsVisible={controlsVisible}
             />
           </MeetingProvider>
         </SnackbarProvider>

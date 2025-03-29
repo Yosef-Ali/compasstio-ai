@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import jwt from 'jsonwebtoken';
 
 interface TokenResult {
     token?: string;
@@ -19,43 +20,31 @@ export async function GET(): Promise<NextResponse<TokenResult>> {
             secretKeyLength: SECRET_KEY?.length
         });
 
-        // Call VideoSDK's token generation API
-        const response = await fetch("https://api.videosdk.live/v2/rooms/authenticate", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                apiKey: API_KEY,
-                apiSecret: SECRET_KEY, // Note: Changed from secretKey to apiSecret
-                // Optionally configure token settings
-                permissions: ["allow_join", "allow_mod"], // Basic permissions
-            }),
-        });
+        // Generate JWT token locally
+        // Clean keys - remove any comments or whitespace
+        const cleanApiKey = API_KEY.split('#')[0].trim();
+        const cleanSecretKey = SECRET_KEY.split('#')[0].trim();
 
-        console.log("VideoSDK API Response Status:", response.status);
+        console.log("Using cleaned API key:", cleanApiKey);
 
-        const responseText = await response.text();
-        console.log("VideoSDK API Response Text:", responseText);
+        const payload = {
+            apikey: cleanApiKey,
+            permissions: ["allow_join", "allow_mod", "allow_create_room"],
+            version: 2,
+            role: "host",
+            iat: Math.floor(Date.now() / 1000),
+            exp: Math.floor(Date.now() / 1000) + 60 * 60 * 3 // 3 hour expiration
+        };
 
-        if (!response.ok) {
-            throw new Error(`VideoSDK token generation failed: ${response.status} - ${responseText}`);
-        }
+        const token = jwt.sign(
+            payload,
+            cleanSecretKey,
+            {
+                algorithm: 'HS256'
+            }
+        );
 
-        let data;
-        try {
-            data = JSON.parse(responseText);
-        } catch (e) {
-            console.error("Failed to parse response as JSON:", responseText);
-            throw new Error("Invalid JSON response from VideoSDK");
-        }
-
-        const token = data.token || data.authToken; // Try both possible token field names
-
-        if (!token) {
-            console.error("Response data:", data);
-            throw new Error("No token found in VideoSDK response");
-        }
+        console.log("Successfully generated JWT token");
 
         // Store the token for other parts of the app
         process.env.NEXT_PUBLIC_VIDEOSDK_TOKEN = token;

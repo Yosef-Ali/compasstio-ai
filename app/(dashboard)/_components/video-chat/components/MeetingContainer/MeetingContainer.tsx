@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect, useRef, Dispatch, SetStateAction } from "react";
+// Import the real SDK hooks
 import { useMeeting, usePubSub } from "@videosdk.live/react-sdk";
 import { BottomBar } from "../BottomBar";
 import { SidebarConatiner } from "../SidebarContainer/SidebarContainer";
@@ -37,6 +38,7 @@ export interface MeetingContainerProps {
   raisedHandsParticipants: { participantId: string; raisedHandOn: number }[];
   micEnabled: boolean;
   webcamEnabled: boolean;
+  controlsVisible?: boolean;
 }
 
 export function MeetingContainer({
@@ -52,6 +54,7 @@ export function MeetingContainer({
   raisedHandsParticipants,
   micEnabled,
   webcamEnabled,
+  controlsVisible: parentControlsVisible,
 }: MeetingContainerProps) {
   const [containerHeight, setContainerHeight] = useState<number>(0);
   const [containerWidth, setContainerWidth] = useState<number>(0);
@@ -74,7 +77,15 @@ export function MeetingContainer({
   useEffect(() => {
     if (meetingId) {
       setMeetingId(meetingId);
-      saveMeetingId({ meetingId });
+      // Wrap in try/catch to handle Convex connection issues
+      try {
+        saveMeetingId({ meetingId }).catch((err) => {
+          console.warn("Failed to save meeting ID to Convex database:", err);
+          // Meeting can still continue without saving to database
+        });
+      } catch (err) {
+        console.warn("Error calling saveMeetingId:", err);
+      }
     }
   }, [meetingId, setMeetingId, saveMeetingId]);
 
@@ -83,7 +94,13 @@ export function MeetingContainer({
     // Define a function that removes the meeting
     const removeCurrentMeeting = () => {
       if (currentMeetingId && user.user?.id) {
-        removeMeeting({ userId: user.user.id });
+        try {
+          removeMeeting({ userId: user.user.id }).catch((err) => {
+            console.warn("Failed to remove meeting from Convex database:", err);
+          });
+        } catch (err) {
+          console.warn("Error calling removeMeeting:", err);
+        }
       }
     };
 
@@ -197,7 +214,13 @@ export function MeetingContainer({
   function onMeetingLeft() {
     // Use userId as indicated by the TypeScript error
     if (user.user?.id) {
-      removeMeeting({ userId: user.user.id });
+      try {
+        removeMeeting({ userId: user.user.id }).catch((err) => {
+          console.warn("Failed to remove meeting from Convex database:", err);
+        });
+      } catch (err) {
+        console.warn("Error calling removeMeeting:", err);
+      }
     }
     setMeetingId(null);
     onMeetingLeave();
@@ -264,7 +287,14 @@ export function MeetingContainer({
 
   const bottomBarHeight = 60;
   const [sideBarMode, setSideBarMode] = useState<string | null>(null);
-  const [controlsVisible, setControlsVisible] = useState<boolean>(false);
+  const [controlsVisible, setControlsVisible] = useState<boolean>(parentControlsVisible ?? false);
+
+  // Keep local controls in sync with parent controls
+  useEffect(() => {
+    if (parentControlsVisible !== undefined) {
+      setControlsVisible(parentControlsVisible);
+    }
+  }, [parentControlsVisible]);
 
   usePubSub("RAISE_HAND", {
     onMessageReceived: (data: any) => {
@@ -274,9 +304,15 @@ export function MeetingContainer({
 
       const isLocal = senderId === localParticipantId;
 
-      new Audio(
-        `https://static.videosdk.live/prebuilt/notification.mp3`
-      ).play();
+      try {
+        new Audio(
+          `https://static.videosdk.live/prebuilt/notification.mp3`
+        ).play().catch(err => {
+          console.warn("Failed to play notification sound:", err);
+        });
+      } catch (err) {
+        console.warn("Error playing audio:", err);
+      }
 
       enqueueSnackbar(
         `${isLocal ? "You" : nameTructed(senderName, 15)} raised hand 🖐🏼`
@@ -295,9 +331,15 @@ export function MeetingContainer({
       const isLocal = senderId === localParticipantId;
 
       if (!isLocal) {
-        new Audio(
-          `https://static.videosdk.live/prebuilt/notification.mp3`
-        ).play();
+        try {
+          new Audio(
+            `https://static.videosdk.live/prebuilt/notification.mp3`
+          ).play().catch(err => {
+            console.warn("Failed to play notification sound:", err);
+          });
+        } catch (err) {
+          console.warn("Error playing audio:", err);
+        }
 
         enqueueSnackbar(
           trimSnackBarText(`${nameTructed(senderName, 15)} says: ${message}`)
@@ -321,63 +363,71 @@ export function MeetingContainer({
       onMouseEnter={() => setControlsVisible(true)}
       onMouseLeave={() => setControlsVisible(false)}
     >
-      {typeof localParticipantAllowedJoin === "boolean" ? (
-        localParticipantAllowedJoin ? (
-          <div className="flex flex-col h-full overflow-hidden relative">
-            {/* Main content area */}
-            <div className="flex flex-1 overflow-hidden">
-              {/* Video area */}
-              <div className={`flex-1 min-h-0 transition-all duration-300 relative ${sideBarMode ? 'w-3/4' : 'w-full'}`}>
-                {isPresenting ? (
-                  <PresenterView height={containerHeight - bottomBarHeight} />
-                ) : (
-                  <ParticipantsViewer
-                    isPresenting={isPresenting}
-                    sideBarMode={sideBarMode}
-                    participants={participants} // Pass participants prop
-                  />
-                )}
-
-                {/* Bottom control bar with transition effect - partially visible by default */}
-                <div
-                  className="absolute left-0 right-0 transition-transform duration-300 ease-in-out bg-gray-800 bg-opacity-95 border-t border-gray-700 px-4 py-2 backdrop-blur-sm"
-                  style={{
-                    zIndex: 100,
-                    bottom: 70,
-                    transform: controlsVisible ? 'translateY(0)' : 'translateY(70px)',
-                  }}
-                >
-                  <BottomBar
-                    bottomBarHeight={bottomBarHeight}
-                    sideBarMode={sideBarMode}
-                    setSideBarMode={setSideBarMode}
-                    setIsMeetingLeft={setIsMeetingLeft}
-                    selectWebcamDeviceId={selectWebcamDeviceId}
-                    setSelectWebcamDeviceId={setSelectWebcamDeviceId}
-                    selectMicDeviceId={selectMicDeviceId}
-                    setSelectMicDeviceId={setSelectMicDeviceId}
-                    controlsVisible={controlsVisible} // Pass controlsVisible prop
-                  />
-                </div>
-              </div>
-
-              {/* Sidebar */}
-              {sideBarMode && (
-                <div className="w-1/4 border-l border-gray-700">
-                  <SidebarConatiner
-                    height={containerHeight - bottomBarHeight}
-                    setSideBarMode={setSideBarMode}
-                    sideBarMode={sideBarMode}
-                    raisedHandsParticipants={raisedHandsParticipants}
-                  />
-                </div>
+      {/* Always show participants view when participants object exists */}
+      {participants ? (
+        <div className="flex flex-col h-full overflow-hidden relative">
+          {/* Main content area */}
+          <div className="flex flex-1 overflow-hidden">
+            {/* Video area */}
+            <div className={`flex-1 min-h-0 transition-all duration-300 relative ${sideBarMode ? 'w-3/4' : 'w-full'}`}>
+              {isPresenting ? (
+                <PresenterView height={containerHeight - bottomBarHeight} />
+              ) : (
+                <ParticipantsViewer
+                  isPresenting={isPresenting}
+                  sideBarMode={sideBarMode}
+                  participants={participants} // Pass participants prop
+                />
               )}
+
+              {/* Bottom control bar with transition effect - partially visible by default */}
+              <div
+                className="absolute left-0 right-0 transition-transform duration-300 ease-in-out bg-gray-800 bg-opacity-95 border-t border-gray-700 px-4 py-2 backdrop-blur-sm"
+                style={{
+                  zIndex: 100,
+                  bottom: 70,
+                  transform: controlsVisible ? 'translateY(0)' : 'translateY(70px)',
+                }}
+              >
+                <BottomBar
+                  bottomBarHeight={bottomBarHeight}
+                  sideBarMode={sideBarMode}
+                  setSideBarMode={setSideBarMode}
+                  setIsMeetingLeft={setIsMeetingLeft}
+                  selectWebcamDeviceId={selectWebcamDeviceId}
+                  setSelectWebcamDeviceId={setSelectWebcamDeviceId}
+                  selectMicDeviceId={selectMicDeviceId}
+                  setSelectMicDeviceId={setSelectMicDeviceId}
+                  controlsVisible={controlsVisible} // Pass controlsVisible prop
+                />
+              </div>
             </div>
+
+            {/* Sidebar */}
+            {sideBarMode && (
+              <div className="w-1/4 border-l border-gray-700">
+                <SidebarConatiner
+                  height={containerHeight - bottomBarHeight}
+                  setSideBarMode={setSideBarMode}
+                  sideBarMode={sideBarMode}
+                  raisedHandsParticipants={raisedHandsParticipants}
+                />
+              </div>
+            )}
           </div>
-        ) : null
+
+          {/* Show waiting message overlay when user is the only participant, but don't block video */}
+          {participants && Object.keys(participants).length <= 1 && (
+            <div className="absolute top-4 left-0 right-0 flex justify-center z-10 pointer-events-none">
+              <div className="bg-gray-800 bg-opacity-80 p-3 rounded-lg shadow-lg border border-gray-700">
+                <p className="text-white">Waiting for participants to join...</p>
+              </div>
+            </div>
+          )}
+        </div>
       ) : (
-        // Check if localParticipant exists to determine if joined
-        !mMeeting.localParticipant && <WaitingToJoin />
+        // Show waiting screen if participants object is not available yet
+        <WaitingToJoin message="Initializing meeting..." />
       )}
     </div>
   );

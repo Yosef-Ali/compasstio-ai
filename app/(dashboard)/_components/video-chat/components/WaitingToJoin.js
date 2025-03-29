@@ -4,7 +4,8 @@ import animationData from "../animations/join_meeting.json";
 import Lottie from "react-lottie";
 import { useTheme } from "@material-ui/core";
 
-const WaitingToJoin = () => {
+// Add message prop with a default value
+const WaitingToJoin = ({ message: customMessage }) => {
   const theme = useTheme();
 
   const waitingMessages = [
@@ -16,18 +17,21 @@ const WaitingToJoin = () => {
   const intervalRef = useRef(null);
 
   useEffect(() => {
-    intervalRef.current = setInterval(() => {
-      setMessage((s) =>
-        s.index === waitingMessages.length - 1
-          ? s
-          : waitingMessages[s.index + 1]
-      );
-    }, 3000);
+    // Only cycle through default messages if no custom message is provided
+    if (!customMessage) {
+      intervalRef.current = setInterval(() => {
+        setMessage((s) =>
+          s.index === waitingMessages.length - 1
+            ? s
+            : waitingMessages[s.index + 1]
+        );
+      }, 3000);
 
-    return () => {
-      clearInterval(intervalRef.current);
-    };
-  }, []);
+      return () => {
+        clearInterval(intervalRef.current);
+      };
+    }
+  }, [customMessage]);
 
   const lottieSize = useResponsiveSize({
     xl: 250,
@@ -64,7 +68,7 @@ const WaitingToJoin = () => {
           width={lottieSize}
         />
         <h1 className="text-white text-center font-bold mt-1 text-xl">
-          {message.text}
+          {customMessage || message.text}
         </h1>
       </div>
     </div>

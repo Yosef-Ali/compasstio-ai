@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, Dispatch, SetStateAction, useEffect } from "react";
-import { createMeeting, getToken } from "@/lib/api";
+// Import validateMeeting as well
+import { createMeeting, getToken, validateMeeting } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
@@ -40,54 +41,74 @@ export function JoiningScreen({
   onClickStartMeeting,
   setIsMeetingLeft,
 }: JoiningScreenProps) {
-  const [isLoading, setIsLoading] = React.useState(false);
+  const [isLoadingCreate, setIsLoadingCreate] = React.useState(false);
+  const [isLoadingJoin, setIsLoadingJoin] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
-  const [meetingId, setMeetingIdLocal] = React.useState<string | null>(null);
+  const [joinMeetingId, setJoinMeetingId] = React.useState<string>(""); // State for join input
   const router = useRouter();
 
-  React.useEffect(() => {
-    if (meetingId && onClickStartMeeting) {
-      console.log("Meeting ID received, triggering onClickStartMeeting");
-      onClickStartMeeting();
-    }
-  }, [meetingId, onClickStartMeeting]);
+  // No need for useEffect based on local meetingId state anymore
 
-  const handleStartMeeting = async () => {
-    setIsLoading(true);
+  const handleCreateMeeting = async () => {
+    setIsLoadingCreate(true);
     setError(null);
-    setMeetingIdLocal(null);
 
     try {
       console.log("Starting meeting creation process...");
-
-      // 1. Get a fresh token
+      // 1. Get a token with create permissions (no roomId)
       const token = await getToken();
-      console.log("Got token:", token);
       setToken(token);
 
-      // 2. Create a meeting room
+      // 2. Create a meeting room using the token
       const roomId = await createMeeting({ token });
       console.log("Successfully created meeting with room ID:", roomId);
+      setMeetingId(roomId); // Set the main meetingId state
 
-      // 3. Set the meeting ID
-      setMeetingIdLocal(roomId);
-      setMeetingId(roomId);
-
-      // 4. Update persistent store
-      import('@/app/hooks/useMeetingIdStore').then((module) => {
-        const useMeetingIdStore = module.default;
-        const store = useMeetingIdStore.getState();
-        store.setToken(token);
-        store.setParticipantName(participantName);
-      });
-
+      // 3. Trigger meeting start
+      if (onClickStartMeeting) {
+        onClickStartMeeting();
+      }
       setIsMeetingLeft(false);
-      setIsLoading(false);
 
     } catch (error: any) {
-      console.error("Error starting meeting:", error);
-      setError(error?.message || "Failed to start meeting. Please try again.");
-      setIsLoading(false);
+      console.error("Error creating meeting:", error);
+      setError(error?.message || "Failed to create meeting. Please try again.");
+    } finally {
+      setIsLoadingCreate(false);
+    }
+  };
+
+  const handleJoinMeeting = async () => {
+    setIsLoadingJoin(true);
+    setError(null);
+
+    if (!joinMeetingId.trim()) {
+      setError("Please enter a Meeting ID to join.");
+      setIsLoadingJoin(false);
+      return;
+    }
+
+    try {
+      console.log(`Attempting to join meeting: ${joinMeetingId}`);
+      // 1. Get a token specifically for joining this room
+      const token = await getToken(joinMeetingId);
+      setToken(token);
+
+      // 2. Set the meeting ID (Validation removed - SDK handles join auth)
+      console.log("Setting meeting ID for join:", joinMeetingId);
+      setMeetingId(joinMeetingId); // Set the main meetingId state
+
+      // 3. Trigger meeting start
+      if (onClickStartMeeting) {
+        onClickStartMeeting();
+      }
+      setIsMeetingLeft(false);
+
+    } catch (error: any) {
+      console.error("Error joining meeting:", error);
+      setError(error?.message || "Failed to join meeting. Please try again.");
+    } finally {
+      setIsLoadingJoin(false);
     }
   };
 
@@ -109,20 +130,44 @@ export function JoiningScreen({
           </div>
         )}
 
-        <Input
-          type="text"
-          placeholder="Your Name"
-          value={participantName}
-          onChange={(e) => setParticipantName(e.target.value)}
-          className="mb-4"
-        />
-        <Button
-          onClick={handleStartMeeting}
-          disabled={isLoading || !participantName}
-          className="w-full"
-        >
-          {isLoading ? "Creating meeting..." : "Start Meeting"}
-        </Button>
+        <div className="space-y-4">
+          <Input
+            type="text"
+            placeholder="Your Name"
+            value={participantName}
+            onChange={(e) => setParticipantName(e.target.value)}
+            className="mb-2" // Reduced margin
+          />
+          <Button
+            onClick={handleCreateMeeting}
+            disabled={isLoadingCreate || isLoadingJoin || !participantName}
+            className="w-full"
+          >
+            {isLoadingCreate ? "Creating..." : "Create New Meeting"}
+          </Button>
+
+          <div className="relative flex py-3 items-center">
+            <div className="flex-grow border-t border-gray-300"></div>
+            <span className="flex-shrink mx-4 text-gray-500">OR</span>
+            <div className="flex-grow border-t border-gray-300"></div>
+          </div>
+
+          <Input
+            type="text"
+            placeholder="Enter Meeting ID to Join"
+            value={joinMeetingId}
+            onChange={(e) => setJoinMeetingId(e.target.value)}
+            className="mb-2" // Reduced margin
+          />
+          <Button
+            onClick={handleJoinMeeting}
+            disabled={isLoadingJoin || isLoadingCreate || !participantName || !joinMeetingId}
+            className="w-full"
+            variant="outline" // Use outline style for join button
+          >
+            {isLoadingJoin ? "Joining..." : "Join Existing Meeting"}
+          </Button>
+        </div>
       </div>
     </div>
   );
