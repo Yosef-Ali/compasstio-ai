@@ -5,6 +5,7 @@ import { SnackbarProvider } from "notistack";
 import { LeaveScreen } from "../components/LeaveScreen";
 import { ThemeProvider, useMediaQuery, useTheme } from "@material-ui/core";
 import { MeetingProvider } from "@videosdk.live/react-sdk";
+import { useMeetingContext } from "@/app/context/MeetingContext"; // Import our context
 import generateMuiTheme from "@/mui/theme";
 
 interface MicWebcam {
@@ -16,8 +17,13 @@ interface MeetingAppContainerProps {
 }
 
 function MeetingAppContainer({ controlsVisible: parentControlsVisible }: MeetingAppContainerProps) {
+  // Get the global meeting state from our context
+  const { meetingId: contextMeetingId, isMeetingActive } = useMeetingContext();
+
+  // Local states for the component
   const [token, setToken] = useState<string>("");
-  const [meetingId, setMeetingId] = useState<string>("");
+  // Use the context meeting ID if available
+  const [meetingId, setMeetingId] = useState<string>(contextMeetingId || "");
   const [participantName, setParticipantName] = useState<string>("");
   const [micOn, setMicOn] = useState<boolean>(true);
   const [webcamOn, setWebcamOn] = useState<boolean>(true);
@@ -27,7 +33,8 @@ function MeetingAppContainer({ controlsVisible: parentControlsVisible }: Meeting
     selectedWebcam.id
   );
   const [selectMicDeviceId, setSelectMicDeviceId] = useState<string | null>(selectedMic.id);
-  const [isMeetingStarted, setMeetingStarted] = useState<boolean>(false);
+  // Set meeting started based on context if a meeting is active
+  const [isMeetingStarted, setMeetingStarted] = useState<boolean>(isMeetingActive || false);
   const [isMeetingLeft, setIsMeetingLeft] = useState<boolean>(false);
   const [raisedHandsParticipants, setRaisedHandsParticipants] = useState<
     { participantId: string; raisedHandOn: number }[]
@@ -99,6 +106,15 @@ function MeetingAppContainer({ controlsVisible: parentControlsVisible }: Meeting
     }
   }, [isXStoSM]);
 
+  // Sync local state with context
+  useEffect(() => {
+    if (contextMeetingId) {
+      setMeetingId(contextMeetingId);
+      // If we have a meeting ID from context, make sure we mark the meeting as started
+      setMeetingStarted(true);
+    }
+  }, [contextMeetingId, isMeetingActive]);
+
   // Keep local controls in sync with parent controls
   useEffect(() => {
     if (parentControlsVisible !== undefined) {
@@ -106,6 +122,16 @@ function MeetingAppContainer({ controlsVisible: parentControlsVisible }: Meeting
     }
   }, [parentControlsVisible]);
 
+
+  // Don't show anything here if there's an active meeting in our context
+  // This prevents duplicate UIs - we'll let the VideoConference component handle display
+  if (isMeetingActive && contextMeetingId) {
+    return (
+      <div className="flex items-center justify-center w-full h-full min-h-[500px] bg-gray-800 text-white p-6 rounded-lg shadow-inner">
+        <p>Meeting is currently active in its own overlay window.</p>
+      </div>
+    );
+  }
 
   return (
     <>

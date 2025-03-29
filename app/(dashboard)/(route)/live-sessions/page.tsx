@@ -8,11 +8,11 @@ import Shell from '../../_components/shell';
 import ParticipantList from "../../_components/live-streaming/GroupsList";
 import MeetingList from "../../_components/live-streaming/MeetingList";
 import { ErrorBoundary } from "react-error-boundary";
-import { useMeetingStore } from "@/app/hooks/useMeetingStore";
+import { Typography, Box } from "@material-ui/core";
 
-// Dynamically import components that use VideoSDK to prevent SSR issues
-const DynamicVideoChatWrapper = dynamic(
-    () => import("@/app/(dashboard)/_components/video-chat/VideoChatWrapper"),
+// Dynamically import the client-side content wrapper
+const DynamicLiveSessionsClientContent = dynamic(
+    () => import("./LiveSessionsClientContent"),
     {
         ssr: false,
         loading: () => (
@@ -79,26 +79,31 @@ const tabs: Tab[] = [
     }
 ];
 
+// Helper component for the active meeting message
+const ActiveMeetingMessage = ({ meetingId }: { meetingId: string | null }) => (
+    <Box className="flex flex-col items-center justify-center w-full h-full min-h-[calc(100vh-6rem)] bg-gray-800 text-white p-6 rounded-lg shadow-inner">
+        <Typography variant="h5" component="h2" className="font-semibold mb-4">
+            Meeting in Progress
+        </Typography>
+        <Typography variant="body1" className="mb-2">
+            The active meeting is displayed in the overlay.
+        </Typography>
+        <Typography variant="caption" className="text-gray-400">
+            Meeting ID: {meetingId}
+        </Typography>
+    </Box>
+);
+
 export default function LiveSessionsPage() {
-    const [hasError, setHasError] = useState(false);
-    const { videoState, setVideoState } = useMeetingStore();
-    const [isClient, setIsClient] = useState(false);
+    // This page component is now very simple, mainly setting up the structure
+    const [isClient, setIsClient] = useState(false); // Still need this for initial render control
 
     useEffect(() => {
-        setIsClient(true);
+        setIsClient(true); // Set client flag on mount
     }, []);
 
-    useEffect(() => {
-        console.log("[LiveSessionsPage] Setting initial video state");
-        setVideoState(true);
-        return () => {
-            console.log("[LiveSessionsPage] Cleaning up video state");
-            setVideoState(false);
-        };
-    }, [setVideoState]);
-
+    // Render loading state during SSR or before client mount
     if (!isClient) {
-        console.log("[LiveSessionsPage] Rendering server/initial state (isClient=false)");
         return (
             <div className="flex flex-col h-screen">
                 <TopNav />
@@ -114,26 +119,13 @@ export default function LiveSessionsPage() {
         );
     }
 
+    // Once client-side, render the dynamic component which handles context and conditional UI
     return (
         <div className="flex flex-col h-screen">
             <TopNav />
             <Shell>
                 <Wrapper>
-                    <div className="relative w-full h-full min-h-[calc(100vh-6rem)] bg-gray-800 overflow-hidden">
-                        <DynamicThemeProvider>
-                            <ErrorBoundary
-                                FallbackComponent={ErrorFallback}
-                                onError={(error: Error) => {
-                                    console.error("[LiveSessionsPage] ErrorBoundary caught error:", error);
-                                    setHasError(true);
-                                }}
-                                onReset={() => setHasError(false)}
-                            >
-
-                                <DynamicVideoChatWrapper controlsVisible={videoState} />
-                            </ErrorBoundary>
-                        </DynamicThemeProvider>
-                    </div>
+                    <DynamicLiveSessionsClientContent />
                 </Wrapper>
                 <RightAside tabs={tabs} />
             </Shell>

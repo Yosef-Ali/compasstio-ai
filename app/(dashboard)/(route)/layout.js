@@ -3,11 +3,16 @@
 import { useConvexAuth } from "convex/react";
 import { redirect } from "next/navigation";
 import { Spinner } from "@/components/spinner";
-import SideMenu from "../_components/sidebar-menu"
+import { MeetingProvider } from "@/app/context/MeetingContext";
+import dynamic from 'next/dynamic';
 
+// Dynamically import MeetingContext hook to prevent SSR issues
+const ClientMeetingContent = dynamic(
+  () => import("./ClientMeetingContent").then((mod) => mod.default),
+  { ssr: false }
+);
 
 const MainLayout = ({ children }) => {
-
   const { isAuthenticated, isLoading } = useConvexAuth();
 
   if (isLoading) {
@@ -22,14 +27,12 @@ const MainLayout = ({ children }) => {
     return redirect("/");
   }
 
+  // Simple layout for server side rendering
   return (
-
-    <div className="flex">
-      <SideMenu />
-      <main className="flex flex-col min-h-screen w-full self-center">{children}</main>
-    </div>
-
-
+    <MeetingProvider>
+      <ClientMeetingContent>{children}</ClientMeetingContent>
+    </MeetingProvider>
   )
 }
+
 export default MainLayout;
